@@ -1,4 +1,5 @@
-# Fluent HTML builder for PHP
+# [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
+Uses Laravel Illuminate to provide common interfaces for Collections and Htmlable objects.
 
 ## Installation & configuration
 > composer require fewagency/fluent-html
