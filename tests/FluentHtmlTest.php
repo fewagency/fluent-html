@@ -285,11 +285,23 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
     public function testWithContentFluidHtml()
     {
         $e = new FluentHtml('p');
+        $e2 = new FluentHtml('br');
         $e->withContent('text');
-        $e->withContent(new FluentHtml('br'));
+        $e->withContent($e2);
         $e->withContent('text');
 
         $this->assertHtmlEquals("<p> text <br> text </p>", $e);
+        $this->assertSame($e, $e2->getParentElement(), "The inserted element doesn't reference its parent");
+    }
+
+    public function testWithContentFluidHtmlIsCloned() {
+        $e = new FluentHtml('div');
+        $e2 = new FluentHtml('p','abc');
+        $e->withContent($e2);
+        $e->withContent($e2);
+        $e2->withContent('123');
+
+        $this->assertHtmlEquals("<div> <p> abc 123 </p> <p>abc</p> </div>", $e);
     }
 
     public function testNoElementName()

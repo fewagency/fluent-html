@@ -277,8 +277,12 @@ class FluentHtml implements Htmlable
     |
     */
 
-    protected function getParentElement()
+    /**
+     * @return FluentHtml
+     */
+    public function getParentElement()
     {
+        return $this->parent ?: new FluentHtml(null, $this);
     }
 
     protected function getNextElement()
@@ -411,18 +415,33 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * Takes a multidimensional array of contents, flattens it and makes sure objects are ok
+     * Takes a multidimensional array of contents and flattens it.
+     * Also makes sure FluentHtml objects are cloned and have their parent set to the current object.
      *
-     * @param string|Htmlable|array|Arrayable $html_contents,...
+     * @param string|Htmlable|FluentHtml|array|Arrayable $html_contents,...
      * @return Collection of contents that are ok to insert into a FluentHtml element
      */
     protected function prepareContentsForInsertion($html_contents)
     {
-        $html_contents = HtmlBuilder::flatten(func_get_args());
-
-        //TODO: check if any FluentHtml object already has a parent, if so clone it
-
-        return $html_contents;
+        return HtmlBuilder::flatten(func_get_args())->map(function ($item) {
+            if ($item instanceof FluentHtml) {
+                if ($item->parent) {
+                    $item = clone $item;
+                }
+                $item->parent = $this;
+            }
+            return $item;
+        });
     }
 
+    /**
+     * Cloning an object makes sure any html contents are cloned as well,
+     * to keep the html a proper tree and never reference any object
+     * from multiple places.
+     */
+    private function __clone()
+    {
+        $this->parent = null;
+        $this->html_contents = $this->prepareContentsForInsertion($this->html_contents);
+    }
 }
