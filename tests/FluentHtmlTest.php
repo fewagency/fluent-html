@@ -24,7 +24,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
      */
     protected static function comparableHtml($html_string)
     {
-        return preg_replace("/\s+/", ' ', $html_string);
+        return preg_replace('/\s+/', ' ', $html_string);
     }
 
 
@@ -237,7 +237,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
         $this->assertHtmlEquals("<br class=\"a b c\">", $e);
 
-        $e->withoutClass('b','c');
+        $e->withoutClass('b', 'c');
 
         $this->assertHtmlEquals("<br class=\"a\">", $e);
     }
@@ -255,7 +255,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $e = new FluentHtml('p');
         $e->withContent('a')->withAppendedContent('b');
 
-        $this->assertHtmlEquals("<p>\na\nb\n</p>", $e);
+        $this->assertHtmlEquals("<p> a b </p>", $e);
     }
 
     public function testWithPrependedContent()
@@ -263,7 +263,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $e = new FluentHtml('p');
         $e->withContent('b')->withPrependedContent('a');
 
-        $this->assertHtmlEquals("<p>\na\nb\n</p>", $e);
+        $this->assertHtmlEquals("<p> a b </p>", $e);
     }
 
     public function testWithContentMultiple()
@@ -280,5 +280,25 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertHtmlEquals('<p> a b </p>', $e);
+    }
+
+    public function testWithContentFluidHtml()
+    {
+        $e = new FluentHtml('p');
+        $e->withContent('text');
+        $e->withContent(new FluentHtml('br'));
+        $e->withContent('text');
+
+        $this->assertHtmlEquals("<p> text <br> text </p>", $e);
+    }
+
+    public function testNoElementName()
+    {
+        $e = new FluentHtml();
+        $e->withContent('text');
+        $e->withContent(new FluentHtml('br'));
+        $e->withContent('text');
+
+        $this->assertHtmlEquals("text <br> text", $e);
     }
 }

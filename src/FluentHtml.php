@@ -354,8 +354,7 @@ class FluentHtml implements Htmlable
 
             return HtmlBuilder::buildHtmlElement($html_element_name, $html_attributes, $html_contents);
         } else {
-            //TODO: return only contents
-            return '';
+            return HtmlBuilder::buildContentsString($html_contents);
         }
     }
 

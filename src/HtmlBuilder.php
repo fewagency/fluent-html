@@ -79,7 +79,7 @@ class HtmlBuilder
      * @param string|Htmlable|array|Arrayable $contents
      * @return string
      */
-    protected static function buildContentsString($contents, $escape_contents = true)
+    public static function buildContentsString($contents, $escape_contents = true)
     {
         return self::flatten(self::evaluate($contents))->transform(function ($item, $key) use ($escape_contents) {
             if ($item instanceof Htmlable) {
