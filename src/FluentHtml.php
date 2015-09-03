@@ -93,7 +93,7 @@ class FluentHtml implements Htmlable
      * Alias for withAppendedContent, to add html content last within this element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withContent($html_contents)
     {
@@ -104,7 +104,7 @@ class FluentHtml implements Htmlable
      * Add html content after existing content.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withAppendedContent($html_contents)
     {
@@ -117,7 +117,7 @@ class FluentHtml implements Htmlable
      * Add html content before existing content.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withPrependedContent($html_contents)
     {
@@ -133,7 +133,7 @@ class FluentHtml implements Htmlable
      *
      * @param string|callable|array|Arrayable $attributes Attribute name as string, can also be an array of names and values, or a callable returning such an array.
      * @param string|bool|callable|array|Arrayable $value to set, only used if $attributes is a string
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withAttribute($attributes, $value = true)
     {
@@ -152,7 +152,7 @@ class FluentHtml implements Htmlable
      * Remove named attributes from the current element.
      *
      * @param string|array|Arrayable $attributes,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withoutAttribute($attributes)
     {
@@ -168,7 +168,7 @@ class FluentHtml implements Htmlable
      * Add class names to the current element.
      *
      * @param string|callable|array|Arrayable $classes,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withClass($classes)
     {
@@ -179,7 +179,7 @@ class FluentHtml implements Htmlable
      * Remove class names from the current element.
      *
      * @param string|array|Arrayable $classes,...
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withoutClass($classes)
     {
@@ -190,7 +190,7 @@ class FluentHtml implements Htmlable
      * Will not display current element if any added condition evaluates to false
      *
      * @param bool|callable $condition
-     * @return $this
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function onlyDisplayedIf($condition)
     {
@@ -201,7 +201,7 @@ class FluentHtml implements Htmlable
 
     /**
      * @param string|callable $html_element_name
-     * @return $this|FluentHtml
+     * @return $this|FluentHtml can be method-chained to modify the current element
      */
     public function withHtmlElementName($html_element_name)
     {
@@ -339,8 +339,7 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * String containing html of this element and all its descendants
-     * @return string
+     * @return string containing rendered html of this element and all its descendants
      */
     public function toHtml()
     {
@@ -355,16 +354,15 @@ class FluentHtml implements Htmlable
 
             return HtmlBuilder::buildHtmlElement($html_element_name, $html_attributes, $html_contents);
         } else {
-            //TODO: return contents
+            //TODO: return only contents
             return '';
         }
     }
 
     /**
-     * String containing the full rendered html of the entire tree this element belongs to.
-     * Renders the full tree regardless of the position of the last element in the fluent chain of calls.
+     * Renders the full tree from top down, regardless of the position of the last element in the fluent chain of calls.
      *
-     * @return string
+     * @return string containing the full rendered html of the entire tree this element belongs to.
      */
     public function __toString()
     {
@@ -388,8 +386,7 @@ class FluentHtml implements Htmlable
 
     /**
      * Recursively evaluates input value if it's a callable, or returns the original value.
-     *
-     * The current FluentHtml object is sent to the callable as the first parameter.
+     * The current FluentHtml object is sent to each callable as the first parameter.
      *
      * @param mixed $value to evaluate, if it's a callback it will be invoked.
      * @return mixed Evaluated value, guaranteed not to be a callable.
@@ -416,8 +413,9 @@ class FluentHtml implements Htmlable
 
     /**
      * Takes a multidimensional array of contents, flattens it and makes sure objects are ok
-     * @param string|array|Arrayable $html_contents,...
-     * @return Collection
+     *
+     * @param string|Htmlable|array|Arrayable $html_contents,...
+     * @return Collection of contents that are ok to insert into a FluentHtml element
      */
     protected function prepareContentsForInsertion($html_contents)
     {
