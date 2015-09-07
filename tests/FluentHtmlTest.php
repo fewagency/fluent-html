@@ -294,9 +294,10 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertSame($e, $e2->getParentElement(), "The inserted element doesn't reference its parent");
     }
 
-    public function testWithContentFluidHtmlIsCloned() {
+    public function testWithContentFluidHtmlIsCloned()
+    {
         $e = new FluentHtml('div');
-        $e2 = new FluentHtml('p','abc');
+        $e2 = new FluentHtml('p', 'abc');
         $e->withContent($e2);
         $e->withContent($e2);
         $e2->withContent('123');
@@ -312,5 +313,42 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $e->withContent('text');
 
         $this->assertHtmlEquals("text <br> text", $e);
+    }
+
+    public function testContainingElement()
+    {
+        $e = new FluentHtml('div', 'text');
+
+        $this->assertHtmlEquals(
+            '<div> text <br class="a"> </div>',
+            $e->containingElement('br')->withClass('a')
+        );
+    }
+
+    public function testStartingWithElement()
+    {
+        $e = new FluentHtml('div', 'text');
+
+        $this->assertHtmlEquals(
+            '<div> <br class="a"> text </div>',
+            $e->startingWithElement('br')->withClass('a')
+        );
+    }
+
+    public function testFollowedByElement() {
+        $e = FluentHtml::create('br')->withClass('a')->followedByElement('hr')->withClass('b');
+
+        $this->assertHtmlEquals('<br class="a"> <hr class="b">', $e);
+    }
+
+    public function testWrappedInElement() {
+        $e = FluentHtml::create('div')->containingElement('br')->wrappedInElement('p');
+
+        $this->assertHtmlEquals('<div><p><br></p></div>', $e);
+    }
+
+    public function testSiblingsWrappedInElement()
+    {
+        //TODO: implement test
     }
 }

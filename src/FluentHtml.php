@@ -80,6 +80,17 @@ class FluentHtml implements Htmlable
         $this->withAttribute($tag_attributes);
     }
 
+    /**
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml
+     */
+    public static function create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
+    {
+        return new static($html_element_name, $tag_contents, $tag_attributes);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods modifying and returning same element
@@ -219,53 +230,114 @@ class FluentHtml implements Htmlable
     |
     */
 
-    //Alias for endingWithElement()
-    public function containingElement()
+    /**
+     * Adds a new element at end children and returns the new element
+     * Alias for endingWithElement()
+     *
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function containingElement($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: implement containingElement
+        return $this->endingWithElement($html_element_name, $tag_contents, $tag_attributes);
     }
 
     /**
      * Adds a new element last among this element's children
      *
-     * @param string|callable $html_element_name
+     * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml
+     * @return FluentHtml representing the new element
      */
     public function endingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: implement endingWithElement
+        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $this->withContent($e);
+
+        return $e;
     }
 
-    //Adds a new element first among this element's children
-    public function startingWithElement()
+    /**
+     * Adds a new element first among this element's children
+     *
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function startingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: implement startingWithElement
+        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $this->withPrependedContent($e);
+
+        return $e;
     }
 
-    //Wraps this element together with its siblings in a new element
-    public function siblingsWrappedInElement()
+    /**
+     * Adds a new element just after this element
+     *
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: implement siblingsWrappedInElement
+        return $this->wrappedInElement()->endingWithElement($html_element_name, $tag_contents, $tag_attributes);
     }
 
-    //Wraps only this element in a new element
-    public function wrappedInElement()
-    {
-        //TODO: implement wrappedInElement
-    }
-
-    //Adds a new element just after this element
-    public function followedByElement()
-    {
-        //TODO: implement followedByElement
-    }
-
-    //Adds a new element just before this element
-    public function precededByElement()
+    /**
+     * Adds a new element just before this element
+     *
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
         //TODO: implement precededByElement
+    }
+
+    /**
+     * Wraps only this element in a new element
+     *
+     * @param string|callable|null $html_element_name
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function wrappedInElement($html_element_name = null, $tag_attributes = [])
+    {
+        $parent = $this->getParentElement();
+        $wrapper = self::create($html_element_name, $this, $tag_attributes);
+
+        $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
+            if ($this === $item) {
+                $wrapper->parent = $parent;
+
+                return $wrapper;
+            } else {
+                return $item;
+            }
+        });
+
+        return $wrapper;
+    }
+
+    /**
+     * Wraps this element together with its siblings in a new element
+     *
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     * @return FluentHtml representing the new element
+     */
+    public function siblingsWrappedInElement($html_element_name, $tag_contents = [], $tag_attributes = [])
+    {
+        //TODO: implement siblingsWrappedInElement
     }
 
     /*
@@ -406,6 +478,33 @@ class FluentHtml implements Htmlable
         }
 
         return $value;
+    }
+
+    /**
+     * Return debug data for this object
+     * @return mixed
+     */
+    public function __debugInfo()
+    {
+        $info['OBJECT#'] = spl_object_hash($this);
+        $html_element_name = $this->evaluate($this->html_element_name);
+        if ($html_element_name) {
+            $info['tag'] = $html_element_name;
+            $html_attributes = $this->evaluate($this->html_attributes);
+            if ($html_attributes->count()) {
+                $info['attributes'] = $html_attributes->toArray();
+            }
+        }
+        if ($this->parent) {
+            $info['parent']['tag'] = $this->parent->html_element_name;
+            $info['parent']['OBJECT#'] = spl_object_hash($this->parent);
+            //$info['parent'] = $this->parent->__debugInfo();
+        }
+        foreach ($this->html_contents as $content) {
+            $info['contents'][] = $content->html_element_name;
+        }
+
+        return $info;
     }
 
     /*
