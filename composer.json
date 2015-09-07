@@ -1,6 +1,12 @@
 {
   "name": "fewagency/fluent-html",
   "description": "A fluent interface style HTML generator for PHP",
+  "keywords": [
+    "fluent",
+    "html",
+    "builder",
+    "generator"
+  ],
   "license": "MIT",
   "authors": [
     {
@@ -22,7 +28,7 @@
   },
   "autoload-dev": {
     "classmap": [
-      "tests"
+      "tests/HtmlContent.php"
     ]
   }
 }
