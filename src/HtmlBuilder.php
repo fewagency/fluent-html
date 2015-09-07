@@ -76,32 +76,38 @@ class HtmlBuilder
     /**
      * Build a string of html contents
      *
-     * @param string|Htmlable|array|Arrayable $contents
+     * @param string|Htmlable|array|Arrayable $contents If a key is a valid string, it will be used for content if the corresponding value is truthy
+     * @param bool $escape_contents can be set to false to not html-encode content strings
      * @return string
      */
     public static function buildContentsString($contents, $escape_contents = true)
     {
         return self::flatten(self::evaluate($contents))->transform(function ($item, $key) use ($escape_contents) {
-            if ($item instanceof Htmlable) {
-                return $item->toHtml();
-            }
             if (is_object($item)) {
-                if (method_exists($item, '__toString')) {
+                if ($item instanceof Htmlable) {
+                    return $item->toHtml();
+                } elseif (method_exists($item, '__toString')) {
                     $item = strval($item);
                 } else {
+                    //This object couldn't safely be converted to string
                     return false;
                 }
             }
+
             if (is_string($key) and trim($key) and $item) {
+                //This key is valid as content and its value is truthy
                 $item = $key;
             }
+
             $item = trim($item);
+
             if ($escape_contents) {
                 return self::escapeHtml($item);
+            } else {
+                return $item;
             }
-
-            return $item;
         })->filter(function ($item) {
+            //Filter out empty strings and such
             return !is_null($item) and !is_bool($item) and '' !== $item;
         })->implode("\n");
     }
