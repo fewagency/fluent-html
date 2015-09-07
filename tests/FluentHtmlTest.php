@@ -335,13 +335,29 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFollowedByElement() {
+    public function testFollowedByElement()
+    {
         $e = FluentHtml::create('br')->withClass('a')->followedByElement('hr')->withClass('b');
 
         $this->assertHtmlEquals('<br class="a"> <hr class="b">', $e);
     }
 
-    public function testWrappedInElement() {
+    public function testPrecededByElement()
+    {
+        $e = FluentHtml::create('br')->withClass('a')->precededByElement('hr')->withClass('b');
+
+        $this->assertHtmlEquals('<hr class="b"> <br class="a">', $e);
+    }
+
+    public function testWrappedInElement()
+    {
+        $e = FluentHtml::create('br')->wrappedInElement('p');
+
+        $this->assertHtmlEquals('<p><br></p>', $e);
+    }
+
+    public function testWrappedInElementDeep()
+    {
         $e = FluentHtml::create('div')->containingElement('br')->wrappedInElement('p');
 
         $this->assertHtmlEquals('<div><p><br></p></div>', $e);
@@ -349,6 +365,15 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
     public function testSiblingsWrappedInElement()
     {
-        //TODO: implement test
+        $e = FluentHtml::create('br')->followedByElement('hr')->siblingsWrappedInElement('div');
+
+        $this->assertHtmlEquals('<div> <br> <hr> </div>', $e);
+    }
+
+    public function testSiblingsWrappedInElementDeep()
+    {
+        $e = FluentHtml::create('div')->withContent('text')->containingElement('br')->followedByElement('hr')->siblingsWrappedInElement('p');
+
+        $this->assertHtmlEquals('<div> <p> text <br> <hr> </p> </div>', $e);
     }
 }

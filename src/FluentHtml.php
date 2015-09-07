@@ -299,7 +299,7 @@ class FluentHtml implements Htmlable
      */
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: implement precededByElement
+        return $this->wrappedInElement()->startingWithElement($html_element_name, $tag_contents, $tag_attributes);
     }
 
     /**
@@ -331,13 +331,18 @@ class FluentHtml implements Htmlable
      * Wraps this element together with its siblings in a new element
      *
      * @param string|callable|null $html_element_name
-     * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
      * @return FluentHtml representing the new element
      */
-    public function siblingsWrappedInElement($html_element_name, $tag_contents = [], $tag_attributes = [])
+    public function siblingsWrappedInElement($html_element_name, $tag_attributes = [])
     {
-        //TODO: implement siblingsWrappedInElement
+        $parent = $this->getSiblingsCommonParent();
+        $wrapper = self::create($html_element_name, $parent->html_contents, $tag_attributes);
+
+        $parent->html_contents = new Collection();
+        $parent->withContent($wrapper);
+
+        return $wrapper;
     }
 
     /*
@@ -350,19 +355,27 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * @return FluentHtml
+     * @return FluentHtml parent object or a generated empty object
      */
     public function getParentElement()
     {
         return $this->parent ?: new FluentHtml(null, $this);
     }
 
-    protected function getNextElement()
+    /**
+     * @return FluentHtml representing the closest named parent or an unnamed parent if none found
+     */
+    public function getSiblingsCommonParent()
     {
-    }
-
-    protected function getPreviousElement()
-    {
+        if ($this->parent) {
+            if ($this->parent->html_element_name) {
+                return $this->parent;
+            } else {
+                return $this->parent->getSiblingsCommonParent();
+            }
+        } else {
+            return $this->getParentElement();
+        }
     }
 
     /**
