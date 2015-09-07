@@ -430,6 +430,7 @@ class FluentHtml implements Htmlable
                 }
                 $item->parent = $this;
             }
+
             return $item;
         });
     }
