@@ -1,5 +1,7 @@
 <?php
 
+//TODO: replace this Htmlable with https://github.com/illuminate/support/blob/master/HtmlString.php
+
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
