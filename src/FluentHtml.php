@@ -286,6 +286,7 @@ class FluentHtml implements Htmlable
      */
     public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
+        //TODO: investigate if wrappedInElement empty can be replaced by a Collection::splice() with 3rd argument to replace one item with itself + another item: http://laravel.com/docs/5.1/collections#method-splice
         return $this->wrappedInElement()->endingWithElement($html_element_name, $tag_contents, $tag_attributes);
     }
 
@@ -299,6 +300,7 @@ class FluentHtml implements Htmlable
      */
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
+        //TODO: investigate if wrappedInElement empty can be replaced by a Collection::splice() with 3rd argument to replace one item with itself + another item: http://laravel.com/docs/5.1/collections#method-splice
         return $this->wrappedInElement()->startingWithElement($html_element_name, $tag_contents, $tag_attributes);
     }
 
