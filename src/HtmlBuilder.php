@@ -143,7 +143,7 @@ class HtmlBuilder
     /**
      * Flatten out contents of any numeric attribute keys
      *
-     * @param array|Collection|Arrayable $attributes
+     * @param array|Arrayable $attributes
      * @return array
      */
     protected static function flattenAttributes($attributes)
