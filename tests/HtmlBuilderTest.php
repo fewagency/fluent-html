@@ -22,7 +22,7 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             "<p title='text'></p>",
-            HtmlBuilder::buildHtmlElement('p', ['title' => 'text'], [], HtmlBuilder::ESCAPED, "'")
+            HtmlBuilder::buildHtmlElement('p', ['title' => 'text'], [], HtmlBuilder::DO_ESCAPE, "'")
         );
     }
 
@@ -114,7 +114,7 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             "<p><br></p>",
-            HtmlBuilder::buildHtmlElement('p', [], '<br>', HtmlBuilder::UNESCAPED)
+            HtmlBuilder::buildHtmlElement('p', [], '<br>', HtmlBuilder::DONT_ESCAPE)
         );
     }
 

@@ -14,8 +14,8 @@ class HtmlBuilder
     /**
      * Constants to use for readability with the $escape_contents parameter
      */
-    const ESCAPED = true;
-    const UNESCAPED = false;
+    const DO_ESCAPE = true;
+    const DONT_ESCAPE = false;
 
     /**
      * The html elements that have no closing element
