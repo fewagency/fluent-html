@@ -1,5 +1,5 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
-
+//TODO: replace these silly examples with one good example, e.g. a bootstrap form-group with options 
 ```php
 //Simple example
 echo FluentHtml::create('div')->withClass('wrapper')
@@ -68,11 +68,10 @@ You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` 
 ```
 
 ## Usage
-TODO: write usage section
 
 ### Collections as method input
 Most methods accept arrays or Arrayable collections (and other implementations of Arrayable) as input parameters.
-Values may then also be another such collection, in which case the whole collection is recursively flattened
+Values may sometimes also be nested collection, in which case the whole collection is recursively flattened
 (with preserved associative keys).
 When flattening a collection, any duplicate associative keys will be merged over by those appearing later in the
 collection.
@@ -88,11 +87,19 @@ Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.p
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
 evaluated and merged into the collection of it's context.
-All closures receive the current `FluentHtml` instance as their first parameter, this can be used for pretty advanced
+All closures will receive the current `FluentHtml` instance as their first parameter, this can be used for pretty advanced
 conditionals.
+
+//TODO: add example of closure using parameter
 
 ### Multiple attribute values
 If an html attribute is supplied more than one value, they will be concatenated into a comma-separated list.
+
+### Usage with [Blade](http://laravel.com/docs/blade) templates
+Because the 
+`{!! FluidHtml::create('p')->withContent('Text') !!}`
+
+//TODO: describe yielding Blade sections with $__env->yieldContent('section_name','Default content')
 
 ## Authors
 I, Björn Nilsved, work at largest communication agency in southern Sweden. We call ourselves [FEW](http://fewagency.se) (oh, the irony).

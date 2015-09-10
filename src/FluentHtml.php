@@ -137,6 +137,12 @@ class FluentHtml implements Htmlable
         return $this;
     }
 
+    public function withRawHtmlContent($raw_html_content) {
+        //TODO: put raw html content into Htmlable(s), then append it
+
+        return $this->withContent($raw_html_content);
+    }
+
     /**
      * Add named attributes to the current element.
      * Overrides any set attributes with same name.
@@ -357,7 +363,7 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * @return FluentHtml parent object or a generated empty object
+     * @return FluentHtml existing parent object or a generated empty parent object
      */
     public function getParentElement()
     {
