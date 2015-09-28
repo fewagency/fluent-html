@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\HtmlString;
 
 /*
 Examples how I'd like this to work:
@@ -137,10 +138,11 @@ class FluentHtml implements Htmlable
         return $this;
     }
 
-    public function withRawHtmlContent($raw_html_content) {
-        //TODO: put raw html content into Htmlable(s), then append it
+    public function withRawHtmlContent($raw_html_content)
+    {
+        $html = new HtmlString($raw_html_content);
 
-        return $this->withContent($raw_html_content);
+        return $this->withContent($html);
     }
 
     /**

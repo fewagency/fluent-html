@@ -122,7 +122,7 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             "<p><br></p>",
-            HtmlBuilder::buildHtmlElement('p', [], new HtmlContent('<br>'))
+            HtmlBuilder::buildHtmlElement('p', [], new \Illuminate\Support\HtmlString('<br>'))
         );
     }
 
@@ -133,4 +133,5 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
             HtmlBuilder::buildHtmlElement('p', ['id' => new HtmlBuilderTest()], new HtmlBuilderTest())
         );
     }
+
 }
