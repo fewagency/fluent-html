@@ -230,9 +230,7 @@ class FluentHtml implements Htmlable
     public function onlyDisplayedIfHasContent()
     {
         $this->onlyDisplayedIf(function (FluentHtml $current_object) {
-            $html_contents = $this->evaluate($current_object->html_contents);
-
-            return HtmlBuilder::buildContentsString($html_contents);
+            return $current_object->hasContent();
         });
 
         return $this;
@@ -436,6 +434,16 @@ class FluentHtml implements Htmlable
         return !$this->render_in_html->contains(function ($key, $value) {
             return !$this->evaluate($value);
         });
+    }
+
+    /**
+     * @return bool true if this element has content to render after evaluation
+     */
+    public function hasContent()
+    {
+        $html_contents = $this->evaluate($this->html_contents);
+
+        return (bool)HtmlBuilder::buildContentsString($html_contents);
     }
 
     /**
