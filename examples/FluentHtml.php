@@ -28,3 +28,23 @@ echo FluentHtml::create(function () use ($show_div) {
     });
 
 echo "\n\n";
+
+//Bootstrap form-group with options
+$name = 'username';
+$control_id = $name;
+$control_help_id = "{$control_id}_help";
+$errors['username'] = ["{$name} is required", "{$name} must be a valid email address"];
+$help_text = "{$name} is your email address";
+
+$control_help = FluentHtml::create('div')->withAttribute('id', $control_help_id)->onlyDisplayedIfHasContent();
+//TODO: loop through errors and add them to $control_help
+//TODO: add a normal text-block and add it to $control_help
+
+echo FluentHtml::create('input')->withAttribute('type', 'text')->withClass('form-control')
+    ->withAttribute('name', $name)->withAttribute('id', $control_id)
+    ->siblingsWrappedInElement('div')->withClass('input-group')
+    ->precededByElement('label', empty($label) ? $name : $label)->withClass('control-label')
+    ->siblingsWrappedInElement('div')->withClass('form-group')
+    ->withAppendedContent($control_help);
+
+echo "\n\n";
