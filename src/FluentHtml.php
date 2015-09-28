@@ -214,10 +214,26 @@ class FluentHtml implements Htmlable
     public function onlyDisplayedIf($condition)
     {
         //Collection::contains() doesn't handle inverted null values very well, so we replace null with false
-        if(is_null($condition)) {
+        if (is_null($condition)) {
             $condition = false;
         }
         $this->render_in_html->push($condition);
+
+        return $this;
+    }
+
+    /**
+     * Will not display current element if it has no content
+     *
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
+    public function onlyDisplayedIfHasContent()
+    {
+        $this->onlyDisplayedIf(function (FluentHtml $current_object) {
+            $html_contents = $this->evaluate($current_object->html_contents);
+
+            return HtmlBuilder::buildContentsString($html_contents);
+        });
 
         return $this;
     }
