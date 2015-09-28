@@ -79,6 +79,22 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<br>', $e);
     }
 
+    public function testOnlyDisplayedIfString()
+    {
+        $e = new FluentHtml('br');
+        $e->onlyDisplayedIf('abc');
+
+        $this->assertHtmlEquals('<br>', $e);
+    }
+
+    public function testOnlyDisplayedIfNull()
+    {
+        $e = new FluentHtml('p');
+        $e->onlyDisplayedIf(null);
+
+        $this->assertHtmlEquals('', $e);
+    }
+
     public function testOnlyDisplayedIfCallableTrue()
     {
         $e = new FluentHtml('br');
@@ -94,6 +110,16 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $e = new FluentHtml('p');
         $e->onlyDisplayedIf(function () {
             return false;
+        });
+
+        $this->assertHtmlEquals('', $e);
+    }
+
+    public function testOnlyDisplayedIfCallableNull()
+    {
+        $e = new FluentHtml('p');
+        $e->onlyDisplayedIf(function () {
+            return null;
         });
 
         $this->assertHtmlEquals('', $e);

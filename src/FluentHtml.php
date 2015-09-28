@@ -213,6 +213,10 @@ class FluentHtml implements Htmlable
      */
     public function onlyDisplayedIf($condition)
     {
+        //Collection::contains() doesn't handle inverted null values very well, so we replace null with false
+        if(is_null($condition)) {
+            $condition = false;
+        }
         $this->render_in_html->push($condition);
 
         return $this;
