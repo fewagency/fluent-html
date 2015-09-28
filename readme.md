@@ -106,4 +106,4 @@ I, Björn Nilsved, work at largest communication agency in southern Sweden. We c
 From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area, so please get in touch!
 
 ## License
-The Fluent HTML builder is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The FEW Agency Fluent HTML builder is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
