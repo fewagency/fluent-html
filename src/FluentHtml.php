@@ -146,6 +146,26 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * Add html contents, each wrapped in an element.
+     *
+     * @param string|Htmlable|callable|array|Arrayable $html_contents,...
+     * @param string|callable $wrapping_html_element_name
+     * @param array|Arrayable $wrapping_tag_attributes
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
+    public function withContentWrappedIn($html_contents, $wrapping_html_element_name, $wrapping_tag_attributes = [])
+    {
+        HtmlBuilder::flatten($html_contents)->each(function ($html_content) use (
+            $wrapping_html_element_name,
+            $wrapping_tag_attributes
+        ) {
+            $this->withContent(self::create($wrapping_html_element_name, $html_content, $wrapping_tag_attributes));
+        });
+
+        return $this;
+    }
+
+    /**
      * Add named attributes to the current element.
      * Overrides any set attributes with same name.
      * Attributes evaluating to falsy will not be set.
@@ -213,8 +233,8 @@ class FluentHtml implements Htmlable
      */
     public function onlyDisplayedIf($condition)
     {
-        //Collection::contains() doesn't handle inverted null values very well, so we replace null with false
         if (is_null($condition)) {
+            //Collection::contains() doesn't handle inverted null values very well, so we replace null with false
             $condition = false;
         }
         $this->render_in_html->push($condition);
@@ -444,6 +464,16 @@ class FluentHtml implements Htmlable
         $html_contents = $this->evaluate($this->html_contents);
 
         return (bool)HtmlBuilder::buildContentsString($html_contents);
+    }
+
+    /**
+     * @param string $attribute key to look for
+     * @return string|callable|Collection The raw attribute set for the key (not evaluated)
+     */
+    public function getAttribute($attribute)
+    {
+        //TODO: we could separate getAttribute & getRawAttribute
+        return $this->html_attributes->get($attribute);
     }
 
     /**
