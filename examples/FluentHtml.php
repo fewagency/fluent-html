@@ -37,11 +37,15 @@ $errors['username'] = ["{$name} is required", "{$name} must be a valid email add
 $help_text = "{$name} is your email address";
 
 $control_help = FluentHtml::create('div')->withAttribute('id', $control_help_id)->onlyDisplayedIfHasContent();
-//TODO: loop through errors and add them to $control_help
-//TODO: add a normal text-block and add it to $control_help
+$control_help->containingElement('ul')->onlyDisplayedIfHasContent()->withClass('help-block', 'list-unstyled')
+    ->withContentWrappedIn($errors, 'li', ['class' => 'text-capitalize-first'])
+    ->followedByElement('span', $help_text)->withClass('help-block')->onlyDisplayedIfHasContent();
 
 echo FluentHtml::create('input')->withAttribute('type', 'text')->withClass('form-control')
     ->withAttribute('name', $name)->withAttribute('id', $control_id)
+    ->withAttribute('aria-describedby', function () use ($control_help) {
+        return $control_help->hasContent() ? $control_help->getAttribute('id') : false;
+    })
     ->siblingsWrappedInElement('div')->withClass('input-group')
     ->precededByElement('label', empty($label) ? $name : $label)->withClass('control-label')
     ->siblingsWrappedInElement('div')->withClass('form-group')
