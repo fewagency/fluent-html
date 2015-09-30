@@ -63,9 +63,11 @@ class HtmlBuilder
 
         $tag_parts['content'] = self::buildContentsString($contents, $escape_contents);
 
-        if ($tag_parts['content'] or !in_array($tag_name, self::$void_elements)) {
+        if (strlen($tag_parts['content']) or !in_array($tag_name, self::$void_elements)) {
             $tag_parts['closing'] = "</$tag_name>";
         }
+
+        $tag_parts = array_filter($tag_parts, 'strlen');
 
         return implode(
             strlen(implode($tag_parts)) > 80 || str_contains($tag_parts['content'], "\n") ? "\n" : '',
