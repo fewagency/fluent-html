@@ -29,33 +29,50 @@ echo FluentHtml::create(function () use ($show_div) {
 
 echo "\n\n";
 
-// Bootstrap form-group generated with options
+// Bootstrap form-group
 $name = 'username';
 $value = 'test@test.com';
 $control_id = $name;
 $control_help_id = "{$control_id}_help";
-$errors['username'] = ["{$name} is required", "{$name} must be a valid email address"];
+// These options can be removed or set and that controls the final rendering
+$errors[$name] = ["{$name} is required", "{$name} must be a valid email address"];
 $help_text = "{$name} is your email address";
+$input_group_prepend = new \Illuminate\Support\HtmlString(
+    '<span class="input-group-addon"><input type="checkbox" aria-label="Addon checkbox"></span>'
+);
+$input_group_append = new \Illuminate\Support\HtmlString(
+    '<span class="input-group-btn"><button class="btn btn-default" type="button">Go!</button></span>'
+);
 
 // Build the input's help (aria-describedby) element and keep a reference
 $control_help = FluentHtml::create('div')->withAttribute('id', $control_help_id)->onlyDisplayedIfHasContent();
 
-// Add any errors as a list in the help element
+// Add any errors relevant to the input as a list in the help element
 $control_help->containingElement('ul')->withClass('help-block', 'list-unstyled')->onlyDisplayedIfHasContent()
-    ->withContentWrappedIn($errors, 'li', ['class' => 'text-capitalize-first'])
-    // Finish the help element with a fixed help message
+    ->withContentWrappedIn($errors[$name], 'li', ['class' => 'text-capitalize-first'])
+    // Put the fixed message at the end of the help element
     ->followedByElement('span', $help_text)->withClass('help-block')->onlyDisplayedIfHasContent();
 
 // Build the input element and keep a reference
 $input = FluentHtml::create('input')->withAttribute('type', 'text')->withClass('form-control')
     ->withAttribute(['name' => $name, 'value' => $value, 'id' => $control_id, 'readonly'])
     ->withAttribute('aria-describedby', function () use ($control_help) {
-        // Only set the input's aria-describedby attribute if that element has content
-        return $control_help->hasContent() ? $control_help->getAttribute('id') : false;
+        // Only set the input's aria-describedby attribute if the help element has any content
+        if ($control_help->hasContent()) {
+            return $control_help->getAttribute('id');
+        }
     });
 
-// Wrap up and print the full result
-echo $input->siblingsWrappedInElement('div')->withClass('input-group')
+// Build the input-group
+$input_group = $input->siblingsWrappedInElement(function ($input_group) {
+    // Print the input-group tag only when there's at least one input group addon next to the input
+    return $input_group->getContentCount() > 1 ? 'div' : false;
+})->withClass('input-group')
+    //Add the input group addons if they are set
+    ->withPrependedContent($input_group_prepend)->withAppendedContent($input_group_append);
+
+// Wrap up and print the full result from here
+echo $input_group
     // Add a label before the input-group, defaulting to the input name if label not specified
     ->precededByElement('label', empty($label) ? $name : $label)->withClass('control-label')
     ->withAttribute('for', function () use ($input) {
@@ -63,9 +80,9 @@ echo $input->siblingsWrappedInElement('div')->withClass('input-group')
     })
     // Wrap the label and input-group in a form-group
     ->siblingsWrappedInElement('div')->withClass('form-group')
-    ->withClass(function () use ($errors) {
+    ->withClass(function () use ($errors, $name) {
         // Set the validation state class on the form-group
-        if (count($errors)) {
+        if (count($errors[$name])) {
             return 'has-error';
         }
     })
