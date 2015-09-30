@@ -333,8 +333,10 @@ class FluentHtml implements Htmlable
      */
     public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: investigate if wrappedInElement empty can be replaced by a Collection::splice() with 3rd argument to replace one item with itself + another item: http://laravel.com/docs/5.1/collections#method-splice
-        return $this->wrappedInElement()->endingWithElement($html_element_name, $tag_contents, $tag_attributes);
+        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1, 0, $e);
+
+        return $e;
     }
 
     /**
@@ -347,8 +349,10 @@ class FluentHtml implements Htmlable
      */
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        //TODO: investigate if wrappedInElement empty can be replaced by a Collection::splice() with 3rd argument to replace one item with itself + another item: http://laravel.com/docs/5.1/collections#method-splice
-        return $this->wrappedInElement()->startingWithElement($html_element_name, $tag_contents, $tag_attributes);
+        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this), 0, $e);
+
+        return $e;
     }
 
     /**
@@ -465,6 +469,23 @@ class FluentHtml implements Htmlable
         $html_contents = $this->evaluate($this->html_contents);
 
         return (bool)HtmlBuilder::buildContentsString($html_contents);
+    }
+
+    /**
+     * @return int the number of separate pieces of content in this element
+     */
+    public function getContentCount()
+    {
+        return count($this->html_contents);
+    }
+
+    /**
+     * @param $content the content to look for
+     * @return mixed key for matching content, or false if not found
+     */
+    protected function getContentOffset($content)
+    {
+        return $this->html_contents->search($content);
     }
 
     /**
@@ -613,7 +634,25 @@ class FluentHtml implements Htmlable
             }
 
             return $item;
+        })->filter(function ($item) {
+            //Filter out empty strings and such
+            return !is_null($item) and !is_bool($item) and '' !== $item;
         });
+    }
+
+    /**
+     * Splice a portion of the underlying content.
+     *
+     * @param  int $offset
+     * @param  int|null $length
+     * @param  mixed $replacement
+     * @return Collection
+     */
+    protected function spliceContent($offset, $length = null, $replacement = [])
+    {
+        $replacement = $this->prepareContentsForInsertion($replacement);
+
+        return $this->html_contents->splice($offset, $length, $replacement);
     }
 
     /**

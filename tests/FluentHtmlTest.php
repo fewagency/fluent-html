@@ -469,4 +469,28 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
         $this->assertHtmlEquals('<ul></ul>', $e);
     }
+
+    public function testGetContentCount()
+    {
+        $e = FluentHtml::create('p');
+
+        $this->assertEquals(0, $e->getContentCount());
+
+        $e->withContent('text 1');
+
+        $this->assertEquals(1, $e->getContentCount());
+
+        $content_element_A = FluentHtml::create('b', 'bold');
+        $e->withContent($content_element_A);
+
+        $this->assertEquals(2, $e->getContentCount());
+
+        $content_element_A->followedByElement('i', 'italics');
+
+        $this->assertEquals(3, $e->getContentCount());
+
+        $content_element_A->withContent('not bold');
+
+        $this->assertEquals(3, $e->getContentCount());
+    }
 }
