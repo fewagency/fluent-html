@@ -28,7 +28,31 @@ well-formatted HTML in every situation.
 For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/#forms) for an input or
 [input-group](http://getbootstrap.com/components/#input-groups) with label,
 [validation states](http://getbootstrap.com/css/#forms-control-validation), and
-[help-text](http://getbootstrap.com/css/#forms-help-text):
+[help-text](http://getbootstrap.com/css/#forms-help-text)
+...the desired HTML would look like this:
+
+```html
+<div class="form-group has-error">
+<label class="control-label" for="username">username</label>
+<div class="input-group">
+<span class="input-group-addon"><input type="checkbox" aria-label="Addon checkbox"></span>
+<input type="text" class="form-control" name="username" value="test@test.com" id="username" readonly aria-describedby="username_help">
+<span class="input-group-btn"><button class="btn btn-default" type="button">Go!</button></span>
+</div>
+<div id="username_help">
+<ul class="help-block list-unstyled">
+<li class="text-capitalize-first">username is required</li>
+<li class="text-capitalize-first">username must be a valid email address</li>
+</ul>
+<span class="help-block">username is your email address</span>
+</div>
+</div>
+```
+
+Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
+Very prone to errors sneaking in.
+Using FluentHtml the code would probably take about the same space, but it would be a lot more readable and can be split
+in manageable and reusable chunks.
 
 ```php
 // Bootstrap form-group
@@ -90,26 +114,6 @@ echo $input_group
     })
     // Add the help element last in the form-group
     ->withAppendedContent($control_help);
-```
-
-...which prints this nice HTML:
-
-```html
-<div class="form-group has-error">
-<label class="control-label" for="username">username</label>
-<div class="input-group">
-<span class="input-group-addon"><input type="checkbox" aria-label="Addon checkbox"></span>
-<input type="text" class="form-control" name="username" value="test@test.com" id="username" readonly aria-describedby="username_help">
-<span class="input-group-btn"><button class="btn btn-default" type="button">Go!</button></span>
-</div>
-<div id="username_help">
-<ul class="help-block list-unstyled">
-<li class="text-capitalize-first">username is required</li>
-<li class="text-capitalize-first">username must be a valid email address</li>
-</ul>
-<span class="help-block">username is your email address</span>
-</div>
-</div>
 ```
 
 Basically, FluentHtml should be used for those cases where you build complex html structures with many if-statements.
