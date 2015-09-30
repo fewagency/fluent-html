@@ -1,7 +1,7 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
-//TODO: replace these silly examples with one good example, e.g. a bootstrap form-group with options 
+
 ```php
-//Simple example
+// Simple example
 echo FluentHtml::create('div')->withClass('wrapper')
     ->containingElement('p')->withAttribute('id', 'p1')->withContent('This is a paragraph.', 'It has two sentences.')
     ->followedByElement('p')->withAttribute('id', 'p2')->withContent('This is another paragraph.');
@@ -24,30 +24,69 @@ The power of FluentHtml comes from the ability to add collections of values, clo
 building, like this:
 
 ```php
-//Example with conditions
-$show_div = $show_2nd_sentence = $p2_id = false;
+// Bootstrap form-group generated with options
+$name = 'username';
+$value = 'test@test.com';
+$control_id = $name;
+$control_help_id = "{$control_id}_help";
+$errors['username'] = ["{$name} is required", "{$name} must be a valid email address"];
+$help_text = "{$name} is your email address";
 
-echo FluentHtml::create(function () use ($show_div) {
-    if ($show_div) {
-        return 'div';
-    }
-})->withClass('wrapper')
-    ->containingElement('p')->withAttribute('id', function () {
-        return 'p1';
-    })->withContent(['This is a paragraph.', 'It may have two sentences.' => $show_2nd_sentence])
-    ->followedByElement('p')->withAttribute('id', $p2_id)->withContent(function () {
-        return 'This is another paragraph.';
+// Build the input's help (aria-describedby) element and keep a reference
+$control_help = FluentHtml::create('div')->withAttribute('id', $control_help_id)->onlyDisplayedIfHasContent();
+
+// Add any errors as a list in the help element
+$control_help->containingElement('ul')->withClass('help-block', 'list-unstyled')->onlyDisplayedIfHasContent()
+    ->withContentWrappedIn($errors, 'li', ['class' => 'text-capitalize-first'])
+    // Finish the help element with a fixed help message
+    ->followedByElement('span', $help_text)->withClass('help-block')->onlyDisplayedIfHasContent();
+
+// Build the input element and keep a reference
+$input = FluentHtml::create('input')->withAttribute('type', 'text')->withClass('form-control')
+    ->withAttribute(['name' => $name, 'value' => $value, 'id' => $control_id, 'readonly'])
+    ->withAttribute('aria-describedby', function () use ($control_help) {
+        // Only set the input's aria-describedby attribute if that element has content
+        return $control_help->hasContent() ? $control_help->getAttribute('id') : false;
     });
+
+// Wrap up and print the full result
+echo $input->siblingsWrappedInElement('div')->withClass('input-group')
+    // Add a label before the input-group, defaulting to the input name if label not specified
+    ->precededByElement('label', empty($label) ? $name : $label)->withClass('control-label')
+    ->withAttribute('for', function () use ($input) {
+        return $input->getAttribute('id');
+    })
+    // Wrap the label and input-group in a form-group
+    ->siblingsWrappedInElement('div')->withClass('form-group')
+    ->withClass(function () use ($errors) {
+        // Set the validation state class on the form-group
+        if (count($errors)) {
+            return 'has-error';
+        }
+    })
+    // Add the help element last in the form-group
+    ->withAppendedContent($control_help);
 ```
 
-...which prints like this when the conditions are falsy:
+...which prints like this:
 
 ```html
-<p id="p1">This is a paragraph.</p>
-<p>This is another paragraph.</p>
+<div class="form-group has-error">
+<label class="control-label" for="username">username</label>
+<div class="input-group">
+<input type="text" class="form-control" name="username" value="test@test.com" id="username" readonly aria-describedby="username_help">
+</div>
+<div id="username_help">
+<ul class="help-block list-unstyled">
+<li class="text-capitalize-first">username is required</li>
+<li class="text-capitalize-first">username must be a valid email address</li>
+</ul>
+<span class="help-block">username is your email address</span>
+</div>
+</div>
 ```
 
-Basically, it should be used for those cases where you build complex html structures with many if-statements.
+Basically, FluentHtml should be used for those cases where you build complex html structures with many if-statements.
 Stay with your standard html views or templates for all the simple stuff! 
 
 This package takes advantage of the [Collection](https://github.com/illuminate/support/blob/master/Collection.php)
@@ -62,6 +101,7 @@ implementation ([docs](http://laravel.com/docs/collections)) and the
 ### Optional facades
 You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` array of your project's
 `config/app.php` configuration file:
+
 ```php
 'FluentHtml'  => FewAgency\FluentHtml\Facades\FluentHtml::class,
 'HtmlBuilder' => FewAgency\FluentHtml\Facades\HtmlBuilder::class,
@@ -96,13 +136,14 @@ conditionals.
 If an html attribute is supplied more than one value, they will be concatenated into a comma-separated list.
 
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Because the 
+Because the string conversion of a FluidHtml instance always returns the full HTML structure from the top element,
+echoing the result in a template is easy:
 `{!! FluidHtml::create('p')->withContent('Text') !!}`
 
 //TODO: describe yielding Blade sections with $__env->yieldContent('section_name','Default content')
 
 ## Authors
-I, Björn Nilsved, work at largest communication agency in southern Sweden. We call ourselves [FEW](http://fewagency.se) (oh, the irony).
+I, Björn Nilsved, work at the largest communication agency in southern Sweden. We call ourselves [FEW](http://fewagency.se) (oh, the irony).
 From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area, so please get in touch!
 
 ## License
