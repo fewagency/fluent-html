@@ -51,18 +51,22 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
 Very prone to errors sneaking in.
-Using FluentHtml the code would probably take about the same space, but it would be a lot more readable and can be split
-in manageable and reusable chunks.
+Using FluentHtml the code would probably take about the same space, but it would be a lot more readable,
+guaranteed to print correct and well-formatted HTML, and can be split in manageable and reusable chunks, like this:
 
 ```php
-// Bootstrap form-group
+// Bootstrap form-group example
+
+// Some basic options
 $name = 'username';
 $value = 'test@test.com';
 $control_id = $name;
 $control_help_id = "{$control_id}_help";
-// These options can be removed or set and that controls the final rendering
+// If there are errors on the input, show it, if not don't even print the elements
 $errors[$name] = ["{$name} is required", "{$name} must be a valid email address"];
+// If a help text is set, print it with aria-describedby
 $help_text = "{$name} is your email address";
+// We declare some optional input addons that makes the input wrapped in an input-group if set
 $input_group_prepend = new \Illuminate\Support\HtmlString(
     '<span class="input-group-addon"><input type="checkbox" aria-label="Addon checkbox"></span>'
 );
