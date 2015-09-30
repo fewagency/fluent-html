@@ -159,7 +159,8 @@ class FluentHtml implements Htmlable
             $wrapping_html_element_name,
             $wrapping_tag_attributes
         ) {
-            $this->withContent(self::create($wrapping_html_element_name, $html_content, $wrapping_tag_attributes));
+            $this->withContent(self::create($wrapping_html_element_name, $html_content, $wrapping_tag_attributes)
+                ->onlyDisplayedIfHasContent());
         });
 
         return $this;
@@ -472,7 +473,7 @@ class FluentHtml implements Htmlable
      */
     public function getAttribute($attribute)
     {
-        //TODO: we could separate getAttribute & getRawAttribute
+        //TODO: we could separate getAttribute & getRawAttribute where getAttribute does evaluate of the attributes before pulling the key
         return $this->html_attributes->get($attribute);
     }
 

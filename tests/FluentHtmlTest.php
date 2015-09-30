@@ -455,4 +455,18 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
         $this->assertHtmlEquals('<ul> <li class="a">1</li> <li class="a">2</li> </ul>', $e);
     }
+
+    public function testWithContentWrappedInEmptyArray()
+    {
+        $e = FluentHtml::create('ul')->withContentWrappedIn([], 'li', ['class' => 'a']);
+
+        $this->assertHtmlEquals('<ul></ul>', $e);
+    }
+
+    public function testWithContentWrappedInNull()
+    {
+        $e = FluentHtml::create('ul')->withContentWrappedIn(null, 'li', ['class' => 'a']);
+
+        $this->assertHtmlEquals('<ul></ul>', $e);
+    }
 }
