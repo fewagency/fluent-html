@@ -60,6 +60,15 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testBuildHtmlElementBooleanAttributes()
+    {
+        $this->assertEquals(
+            "<input disabled>",
+            HtmlBuilder::buildHtmlElement('input',
+                ['autocomplete', 'disabled', ['autocomplete' => false, 'disabled' => false], ['disabled']])
+        );
+    }
+
     public function testBuildHtmlElementBooleans()
     {
         $this->assertEquals(
