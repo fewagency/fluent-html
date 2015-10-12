@@ -224,11 +224,15 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 Echoing the result in a template is easy because the string conversion of a FluentHtml instance always returns
 the full HTML structure from the top element down:
 
-`{!! FluentHtml::create('p')->withContent('Text') !!}`
+```
+{!! FluentHtml::create('p')->withContent('Text') !!}
+```
 
 Blade sections are available to yield as content using Blade's `$__env` variable:
 
-`{!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}`
+```
+{!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
+```
 
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
