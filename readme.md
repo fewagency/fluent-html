@@ -161,24 +161,63 @@ Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.p
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
 evaluated and merged into the collection of it's context.
-All closures will receive the current `FluentHtml` instance as their first parameter, this can be used for pretty advanced
-conditionals.
+All closures will receive the current `FluentHtml` instance as their first parameter, this can be used for pretty
+advanced conditionals.
 
-//TODO: add example of closure using parameter
+```php
+// Example with conditions
+$show_div = $show_2nd_sentence = $p2_id = false;
+
+echo FluentHtml::create(function () use ($show_div) {
+    if ($show_div) {
+        return 'div';
+    }
+})->withClass('wrapper')
+    ->containingElement('p')->withAttribute('id', function () {
+        return 'p1';
+    })->withContent(['This is a paragraph.', 'It may have two sentences.' => $show_2nd_sentence])
+    ->followedByElement('p')->withAttribute('id', $p2_id)->withContent(function (FluentHtml $paragraph) {
+        // The parameter is the current FluentHtml element,
+        // so we can check its properties or related elements' properties
+        if ($paragraph->getParentElement()->getContentCount() > 1) {
+            return 'This is another paragraph.';
+        }
+    });
+```
+
+```html
+<p id="p1">This is a paragraph.</p>
+<p>This is another paragraph.</p>
+```
 
 ### Multiple attribute values
 If an html attribute is supplied more than one value, they will be concatenated into a comma-separated list.
 
-### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion of a FluidHtml instance always returns the full
-HTML structure from the top element down:
-`{!! FluidHtml::create('p')->withContent('Text') !!}`
+```php
+// Example with concatenated attribute values
+echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
+    ->withAttribute('content', ['list', 'of', 'keywords']);
+```
 
-//TODO: describe yielding Blade sections with $__env->yieldContent('section_name','Default content')
+```html
+<meta name="keywords" content="list,of,keywords">
+```
+
+### Usage with [Blade](http://laravel.com/docs/blade) templates
+Echoing the result in a template is easy because the string conversion of a FluentHtml instance always returns
+the full HTML structure from the top element down:
+`{!! FluentHtml::create('p')->withContent('Text') !!}`
+
+Blade sections are available to yield as content in a FluentHtml element with a little bit of trickery using
+Blade's `$__env` variable:
+`{!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}`
 
 ## Authors
-I, Björn Nilsved, work at the largest communication agency in southern Sweden. We call ourselves [FEW](http://fewagency.se) (oh, the irony).
-From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area, so please get in touch!
+I, Björn Nilsved, work at the largest communication agency in southern Sweden.
+We call ourselves [FEW](http://fewagency.se) (oh, the irony).
+From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area,
+so please get in touch!
 
 ## License
-The FEW Agency Fluent HTML builder is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The FEW Agency Fluent HTML builder is open-sourced software licensed under the
+[MIT license](http://opensource.org/licenses/MIT)

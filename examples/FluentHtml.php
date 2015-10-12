@@ -23,9 +23,19 @@ echo FluentHtml::create(function () use ($show_div) {
     ->containingElement('p')->withAttribute('id', function () {
         return 'p1';
     })->withContent(['This is a paragraph.', 'It may have two sentences.' => $show_2nd_sentence])
-    ->followedByElement('p')->withAttribute('id', $p2_id)->withContent(function () {
-        return 'This is another paragraph.';
+    ->followedByElement('p')->withAttribute('id', $p2_id)->withContent(function (FluentHtml $paragraph) {
+        // The parameter is the current FluentHtml element,
+        // so we can check its properties or related elements' properties
+        if ($paragraph->getParentElement()->getContentCount() > 1) {
+            return 'This is another paragraph.';
+        }
     });
+
+echo "\n\n";
+
+// Example with concatenated attribute values
+echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
+    ->withAttribute('content', ['list', 'of', 'keywords']);
 
 echo "\n\n";
 
