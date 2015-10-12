@@ -145,7 +145,7 @@ You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` 
 
 ### Collections as method input
 Most methods accept arrays or Arrayable collections (and other implementations of Arrayable) as input parameters.
-Values may sometimes also be nested collection, in which case the whole collection is recursively flattened
+A value may sometimes also be a nested collection, in which case the whole collection is recursively flattened
 (with preserved associative keys).
 When flattening a collection, any duplicate associative keys will be merged over by those appearing later in the
 collection.
@@ -160,7 +160,7 @@ being true or false.
 Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.php) in which case their evaluation is
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
-evaluated and merged into the collection of it's context.
+evaluated and merged into the collection of its context.
 All closures will receive the current `FluentHtml` instance as their first parameter, this can be used for pretty
 advanced conditionals.
 
@@ -206,10 +206,11 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
 Echoing the result in a template is easy because the string conversion of a FluentHtml instance always returns
 the full HTML structure from the top element down:
+
 `{!! FluentHtml::create('p')->withContent('Text') !!}`
 
-Blade sections are available to yield as content in a FluentHtml element with a little bit of trickery using
-Blade's `$__env` variable:
+Blade sections are available to yield as content using Blade's `$__env` variable:
+
 `{!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}`
 
 ## Authors
