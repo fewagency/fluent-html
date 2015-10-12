@@ -152,7 +152,7 @@ collection.
 Values with numeric keys are always appended.
 
 ```php
-// Example with collections
+// Example with collections and conditions
 echo FluentHtml::create('input')->withAttribute([
     'name' => 'a',
     'disabled' => true,
@@ -180,7 +180,7 @@ All closures will receive the current `FluentHtml` instance as their first param
 advanced conditionals.
 
 ```php
-// Example with conditions and closures
+// Example with closures and conditions
 $show_div = $show_2nd_sentence = $p2_id = false;
 
 echo FluentHtml::create(function () use ($show_div) {

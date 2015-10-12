@@ -12,7 +12,7 @@ echo FluentHtml::create('div')->withClass('wrapper')
 
 echo "\n\n";
 
-// Example with collections
+// Example with collections and conditions
 echo FluentHtml::create('input')->withAttribute([
     'name' => 'a',
     'disabled' => true,
@@ -23,7 +23,7 @@ echo FluentHtml::create('input')->withAttribute([
 
 echo "\n\n";
 
-// Example with conditions and closures
+// Example with closures and conditions
 $show_div = $show_2nd_sentence = $p2_id = false;
 
 echo FluentHtml::create(function () use ($show_div) {
