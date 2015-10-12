@@ -17,7 +17,8 @@ echo FluentHtml::create('input')->withAttribute([
     'name' => 'a',
     'disabled' => true,
     ['name' => 'b', 'disabled' => false, 'value' => 'B'],
-    ['disabled' => true]
+    ['disabled' => true],
+    'autofocus'
 ]);
 
 echo "\n\n";

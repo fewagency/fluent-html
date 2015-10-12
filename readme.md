@@ -157,12 +157,13 @@ echo FluentHtml::create('input')->withAttribute([
     'name' => 'a',
     'disabled' => true,
     ['name' => 'b', 'disabled' => false, 'value' => 'B'],
-    ['disabled' => true]
+    ['disabled' => true],
+    'autofocus'
 ]);
 ```
 
 ```html
-<input name="b" disabled value="B">
+<input name="b" disabled value="B" autofocus>
 ```
 
 #### Conditional output
