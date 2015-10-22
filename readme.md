@@ -234,7 +234,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 {!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
 ```
 
-## TODO: create a structure for generating meaningful & unique element id's throughout an entire document
+## TODO: create a structure for generating meaningful & unique element ids throughout an entire document
 
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.

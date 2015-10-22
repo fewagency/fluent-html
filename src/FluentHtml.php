@@ -5,28 +5,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 
-/*
-Examples how I'd like this to work:
-
-element('input')->withAttribute('type', 'text')->withAttribute('value', 'Value')
-
-element('p')->withContent('This is a string.', '...and this is another string')
-
-element('div')->withContent(element('p','This is a paragraph'), element('p','Second p'))->withAttribute('class','divclass')
-
-element('div')->containingElement('p','P1')->withClass('p1')->followedByElement('p','P2')
-
-element('p','First p in div')->siblingsWrappedInElement('div')->withClass('divclass')->containingElement('p','Second p in div')
-
-element('p','1st p in div')->followedByElement('p', '2nd p in div')->siblingsWrappedInElement('div')
-
-element('p','paragraph')->followedByElement('strong','Strong text')->wrappedInElement('p')
-
-element('div')->containingElement('p','Skipped...')->withClass('p1')->onlyDisplayedIf($falsy)->followedByElement('p','Displayed in div')->withClass('p2')
-
-*/
-
-
 class FluentHtml implements Htmlable
 {
     /**
@@ -490,12 +468,20 @@ class FluentHtml implements Htmlable
 
     /**
      * @param string $attribute key to look for
-     * @return string|callable|Collection The raw attribute set for the key (not evaluated)
+     * @return string|Collection The raw attribute set for the key (not evaluated)
+     */
+    public function getRawAttribute($attribute)
+    {
+        return $this->html_attributes->get($attribute);
+    }
+
+    /**
+     * @param string $attribute key to look for
+     * @return string|Collection The evaluated attribute set for the key
      */
     public function getAttribute($attribute)
     {
-        //TODO: we could separate getAttribute & getRawAttribute where getAttribute does evaluate of the attributes before pulling the key
-        return $this->html_attributes->get($attribute);
+        return $this->evaluate($this->html_attributes->get($attribute));
     }
 
     /**

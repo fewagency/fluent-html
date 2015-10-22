@@ -424,9 +424,35 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<div> <p> text <br> <hr> </p> </div>', $e);
     }
 
+    public function testGetRawAttribute()
+    {
+        $e = FluentHtml::create('p')->withAttribute('id', 'id1');
+
+        $this->assertEquals('id1', $e->getRawAttribute('id'));
+    }
+
+    public function testGetRawAttributeClosure()
+    {
+        $e = FluentHtml::create('p')->withAttribute('id', function () {
+            return 'id1';
+        });
+
+        $this->assertTrue($e->getRawAttribute('id') instanceof Closure);
+    }
+
+
     public function testGetAttribute()
     {
         $e = FluentHtml::create('p')->withAttribute('id', 'id1');
+
+        $this->assertEquals('id1', $e->getAttribute('id'));
+    }
+
+    public function testGetAttributeClosure()
+    {
+        $e = FluentHtml::create('p')->withAttribute('id', function () {
+            return 'id1';
+        });
 
         $this->assertEquals('id1', $e->getAttribute('id'));
     }
