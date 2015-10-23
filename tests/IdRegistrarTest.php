@@ -44,6 +44,7 @@ class IdRegistrarTest extends PHPUnit_Framework_TestCase
     {
         $r = new IdRegistrar();
 
+        //Empty parameter must throw an exception!
         $r->unique(0);
     }
 }
