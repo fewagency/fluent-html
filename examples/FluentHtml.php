@@ -3,6 +3,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use FewAgency\FluentHtml\FluentHtml;
 
+//TODO: use something else than id as example withAttribute() calls
+
 echo "\n";
 
 // Simple example
@@ -53,6 +55,8 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 echo "\n\n";
 
 // Bootstrap form-group example
+
+//TODO: use getId() in the bootstrap example
 
 // Some basic options
 $name = 'username';
