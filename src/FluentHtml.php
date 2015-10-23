@@ -246,6 +246,17 @@ class FluentHtml implements Htmlable
         return $this;
     }
 
+    /**
+     * @param string $desired_id id that will be used if not already taken
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
+    public function withId($desired_id)
+    {
+        $this->withAttribute('id', $this->uniqueId($desired_id));
+
+        return $this;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods creating and returning new element
@@ -490,6 +501,47 @@ class FluentHtml implements Htmlable
     public function getClasses()
     {
         return Collection::make($this->html_attributes->get('class', []));
+    }
+
+    /**
+     * @param string|null $desired_id optional id that will be used if not already taken
+     * @return string a generated unique id (or a previously set id) for this element
+     */
+    public function getId($desired_id = null)
+    {
+        if (!$this->getAttribute('id')) {
+            if (empty($desired_id)) {
+                $desired_id = class_basename($this) . '1';
+            }
+            $this->withId($desired_id);
+        }
+
+        return $this->getAttribute('id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for handling IdRegistrar
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * @param string $desired_id
+     * @return string
+     */
+    protected function uniqueId($desired_id)
+    {
+        return $this->idRegistrar()->unique($desired_id);
+    }
+
+    /**
+     * @return IdRegistrar for this element
+     */
+    public function idRegistrar()
+    {
+        //TODO: make IdRegistrar shared among all FluentHtml instances in the current tree
+        //TODO: make this able to set IdRegistrar instance too!
+        return IdRegistrar::getGlobalInstance();
     }
 
     /*

@@ -464,6 +464,39 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($e->getClasses()->contains('classA'));
     }
 
+    public function testGetIdPreSet()
+    {
+        $e = FluentHtml::create('br')->withAttribute('id', 'id1');
+
+        $this->assertEquals('id1', $e->getId('id2'));
+    }
+
+    public function testGetIdDesired()
+    {
+        $e = FluentHtml::create('br');
+
+        $this->assertEquals('id1', $e->getId('id1'));
+
+        $e2 = FluentHtml::create('br');
+
+        $this->assertNotEmpty($e2->getId('id1'));
+
+        $this->assertNotEquals($e->getId(), $e2->getId());
+    }
+
+    public function testGetIdGenerated()
+    {
+        $e = FluentHtml::create('br');
+        $e_id = $e->getId();
+
+        $this->assertNotEmpty($e_id);
+        $this->assertEquals($e_id, $e->getId());
+
+        $e2 = FluentHtml::create('br');
+
+        $this->assertNotEquals($e->getId(), $e2->getId());
+    }
+
     public function testHasContent()
     {
         $e = FluentHtml::create('p');
