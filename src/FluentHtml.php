@@ -541,7 +541,7 @@ class FluentHtml implements Htmlable
     {
         //TODO: make IdRegistrar shared among all FluentHtml instances in the current tree
         //TODO: make this able to set IdRegistrar instance too!
-        return IdRegistrar::getGlobalInstance();
+        return HtmlIdRegistrar::getGlobalInstance();
     }
 
     /*

@@ -13,7 +13,7 @@ class IdRegistrar
     /**
      * @var IdRegistrar The reference to a global instance of this class
      */
-    private static $global_instance;
+    protected static $global_instance;
 
     /**
      * @var array values are taken id's
@@ -36,10 +36,19 @@ class IdRegistrar
     }
 
     /**
+     * @param string|null $desired_id to check if taken
+     * @return string id string that is unique in the global registrar
+     */
+    public static function globalUnique($desired_id = null)
+    {
+        return static::getGlobalInstance()->unique($desired_id);
+    }
+
+    /**
      * Pass all desired id-strings through this method and use the return value.
      *
      * @param string $desired_id to check if taken
-     * @return string id string that is unique
+     * @return string id to use, guaranteed to be unique in this registrar
      */
     public function unique($desired_id)
     {
