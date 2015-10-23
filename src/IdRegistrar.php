@@ -1,10 +1,46 @@
 <?php namespace FewAgency\FluentHtml;
 
-
+/**
+ * Keeps track of used id strings.
+ * Appends or increments a counter at the end of id strings should the requested id already be taken.
+ * Just pass all suggested ids through the unique() method and use the return value.
+ *
+ * Use getGlobalInstance() to access a static global instance of the class.
+ * This class can also be instantiated several times if you need separate collections of ids within the same script.
+ */
 class IdRegistrar
 {
+    /**
+     * @var IdRegistrar The reference to a global instance of this class
+     */
+    private static $global_instance;
+
+    /**
+     * @var array values are taken id's
+     */
     protected $repository = [];
 
+    /**
+     * Get a global instance of the class.
+     * Useful for keeping ids unique across the currently running PHP script.
+     *
+     * @return IdRegistrar
+     */
+    public static function getGlobalInstance()
+    {
+        if (null === static::$global_instance) {
+            static::$global_instance = new static();
+        }
+
+        return static::$global_instance;
+    }
+
+    /**
+     * Pass all desired id-strings through this method and use the return value.
+     *
+     * @param string $desired_id to check if taken
+     * @return string id string that is unique
+     */
     public function unique($desired_id)
     {
         if (empty($desired_id)) {
@@ -12,18 +48,22 @@ class IdRegistrar
             throw new \InvalidArgumentException($message);
         }
         if ($this->add($desired_id)) {
+            //The id was not taken, now it is registered - use it!
             return $desired_id;
         }
-        //Isolate the last section of digits
+        //Isolate any appended section of digits
         preg_match('/^(.+?)(\d+)?$/', $desired_id, $matches);
-        $base = $matches[1];
+        $base_id = $matches[1];
         $next_number = max($matches[2], 1) + 1;
 
-        return $this->unique($base . $next_number);
+        //Recursively try the next numbered id
+        return $this->unique($base_id . $next_number);
     }
 
     /**
-     * @param $id
+     * Check if an id has been used
+     *
+     * @param string $id
      * @return bool true if the id is already used
      */
     public function exists($id)
@@ -34,7 +74,7 @@ class IdRegistrar
     /**
      * Determine if an id exists in the repository
      *
-     * @param $id
+     * @param string $id
      * @return bool
      */
     protected function has($id)
@@ -44,7 +84,8 @@ class IdRegistrar
 
     /**
      * Store an id in the repository if it does not exist
-     * @param $id string
+     *
+     * @param string $id
      * @return bool
      */
     protected function add($id)
