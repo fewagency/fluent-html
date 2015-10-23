@@ -7,6 +7,10 @@ class IdRegistrar
 
     public function unique($desired_id)
     {
+        if (empty($desired_id)) {
+            $message = __METHOD__ . "() doesn't accept empty parameter ($desired_id)";
+            throw new \InvalidArgumentException($message);
+        }
         if ($this->add($desired_id)) {
             return $desired_id;
         }

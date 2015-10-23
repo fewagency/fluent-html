@@ -21,6 +21,7 @@ class IdRegistrarTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('a', $r->unique('a'));
         $this->assertEquals('a2', $r->unique('a'));
+        $this->assertEquals('a1', $r->unique('a1'));
         $this->assertEquals('a3', $r->unique('a3'));
         $this->assertEquals('a4', $r->unique('a3'));
         $this->assertEquals('a11', $r->unique('a11'));
@@ -34,5 +35,15 @@ class IdRegistrarTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('a1a', $r->unique('a1a'));
         $this->assertEquals('a1a2', $r->unique('a1a'));
         $this->assertEquals('a1a3', $r->unique('a1a2'));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testUniqueEmpty()
+    {
+        $r = new IdRegistrar();
+
+        $r->unique(0);
     }
 }
