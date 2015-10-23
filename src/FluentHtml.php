@@ -550,6 +550,11 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * Get or set an IdRegistrar to use with this element tree.
+     * If no parameter supplied this method will set the global HtmlIdRegistrar.
+     * If an IdRegistrar has already been set or accessed once, that registrar will be returned.
+     * Don't call this method until you really need it to keep the registrar unset as long as possible.
+     *
      * @param null|IdRegistrar $id_registrar to set if not already set
      * @return IdRegistrar for this element's tree
      */
@@ -564,10 +569,6 @@ class FluentHtml implements Htmlable
         }
 
         return $this->getRootElement()->idRegistrar($id_registrar);
-
-        //TODO: make IdRegistrar shared among all FluentHtml instances in the current tree
-        //TODO: make this able to set IdRegistrar instance too!
-
     }
 
     /*
@@ -695,6 +696,10 @@ class FluentHtml implements Htmlable
                     $item = clone $item;
                 }
                 $item->parent = $this;
+                // Reuse inserted element's IdRegistrar upwards in the tree if element has one and the tree doesn't
+                if ($item->id_registrar) {
+                    $this->idRegistrar($item->id_registrar);
+                }
             }
 
             return $item;
