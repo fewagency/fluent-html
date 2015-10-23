@@ -44,6 +44,13 @@ class FluentHtml implements Htmlable
     protected $html_contents;
 
     /**
+     * This element tree's id registrar for keeping id's unique
+     * Usually the root element's registrar is used
+     * @var IdRegistrar
+     */
+    protected $id_registrar;
+
+    /**
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
@@ -427,10 +434,10 @@ class FluentHtml implements Htmlable
      */
     protected function getRootElement()
     {
-        if ($this->parent) {
-            return $this->parent->getRootElement();
-        } else {
+        if ($this->isRootElement()) {
             return $this;
+        } else {
+            return $this->parent->getRootElement();
         }
     }
 
@@ -519,6 +526,14 @@ class FluentHtml implements Htmlable
         return $this->getAttribute('id');
     }
 
+    /**
+     * @return bool true if this element is the root element of its tree
+     */
+    protected function isRootElement()
+    {
+        return !$this->parent;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods for handling IdRegistrar
@@ -535,13 +550,24 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * @return IdRegistrar for this element
+     * @param null|IdRegistrar $id_registrar to set if not already set
+     * @return IdRegistrar for this element's tree
      */
-    public function idRegistrar()
+    public function idRegistrar(IdRegistrar $id_registrar = null)
     {
+        if ($this->isRootElement()) {
+            if (empty($this->id_registrar)) {
+                $this->id_registrar = $id_registrar ?: HtmlIdRegistrar::getGlobalInstance();
+            }
+
+            return $this->id_registrar;
+        }
+
+        return $this->getRootElement()->idRegistrar($id_registrar);
+
         //TODO: make IdRegistrar shared among all FluentHtml instances in the current tree
         //TODO: make this able to set IdRegistrar instance too!
-        return HtmlIdRegistrar::getGlobalInstance();
+
     }
 
     /*

@@ -497,6 +497,16 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals($e->getId(), $e2->getId());
     }
 
+    public function testMultiIdRegistrar() {
+        //TODO: write test with multiple registrars, adding elements to elements in different registrar spaces, inside out and outside in
+        $divA = FluentHtml::create('div');
+        $divA->idRegistrar(new \FewAgency\FluentHtml\HtmlIdRegistrar());
+        $brB = FluentHtml::create('br');
+        $brB->idRegistrar(new \FewAgency\FluentHtml\HtmlIdRegistrar());
+
+        $this->assertEquals($divA->getId(), $brB->getId());
+    }
+
     public function testHasContent()
     {
         $e = FluentHtml::create('p');
