@@ -187,7 +187,7 @@ class HtmlBuilder
                         //If the key is numeric, the value is put in the list
                         $values[] = $value;
                     } else {
-                        //If the key is a string, it's put in the list if the value is truthy
+                        //If the key is a string, it'll be put in the list if the value is truthy
                         $values[] = $key;
                     }
                 }
