@@ -34,13 +34,13 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 ```html
 <div class="form-group has-error">
-<label class="control-label" for="username">username</label>
+<label class="control-label" for="FluentHtml1">username</label>
 <div class="input-group">
 <span class="input-group-addon"><input type="checkbox" aria-label="Addon checkbox"></span>
-<input type="text" class="form-control" name="username" value="test@test.com" id="username" readonly aria-describedby="username_help">
+<input type="text" class="form-control" name="username" value="test@test.com" readonly aria-describedby="FluentHtml2" id="FluentHtml1">
 <span class="input-group-btn"><button class="btn btn-default" type="button">Go!</button></span>
 </div>
-<div id="username_help">
+<div id="FluentHtml2">
 <ul class="help-block list-unstyled">
 <li class="text-capitalize-first">username is required</li>
 <li class="text-capitalize-first">username must be a valid email address</li>
@@ -61,8 +61,6 @@ guaranteed to print correct and well-formatted HTML, and can be split in managea
 // Some basic options
 $name = 'username';
 $value = 'test@test.com';
-$control_id = $name;
-$control_help_id = "{$control_id}_help";
 // If there are errors on the input, show it, if not don't even print the elements
 $errors[$name] = ["{$name} is required", "{$name} must be a valid email address"];
 // If a help text is set, print it with aria-describedby
@@ -76,7 +74,7 @@ $input_group_append = new \Illuminate\Support\HtmlString(
 );
 
 // Build the input's help (aria-describedby) element and keep a reference
-$control_help = FluentHtml::create('div')->withAttribute('id', $control_help_id)->onlyDisplayedIfHasContent();
+$control_help = FluentHtml::create('div')->onlyDisplayedIfHasContent();
 
 // Add any errors relevant to the input as a list in the help element
 $control_help->containingElement('ul')->withClass('help-block', 'list-unstyled')->onlyDisplayedIfHasContent()
@@ -86,11 +84,11 @@ $control_help->containingElement('ul')->withClass('help-block', 'list-unstyled')
 
 // Build the input element and keep a reference
 $input = FluentHtml::create('input')->withAttribute('type', 'text')->withClass('form-control')
-    ->withAttribute(['name' => $name, 'value' => $value, 'id' => $control_id, 'readonly'])
+    ->withAttribute(['name' => $name, 'value' => $value, 'readonly'])
     ->withAttribute('aria-describedby', function () use ($control_help) {
         // Only set the input's aria-describedby attribute if the help element has any content
         if ($control_help->hasContent()) {
-            return $control_help->getAttribute('id');
+            return $control_help->getId();
         }
     });
 
@@ -107,7 +105,7 @@ echo $input_group
     // Add a label before the input-group, defaulting to the input name if label not specified
     ->precededByElement('label', empty($label) ? $name : $label)->withClass('control-label')
     ->withAttribute('for', function () use ($input) {
-        return $input->getAttribute('id');
+        return $input->getId();
     })
     // Wrap the label and input-group in a form-group
     ->siblingsWrappedInElement('div')->withClass('form-group')
