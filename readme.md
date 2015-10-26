@@ -11,6 +11,7 @@
     - [Closures as input](#usage-closures)
     - [Multiple attribute values](#usage-multiple-attributes)
     - [Blade templates](#usage-blade)
+* [Methods reference](#methods)
 * [Authors - FEW Agency](#few)
 * [Licence](#licence)
 
@@ -277,6 +278,10 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ```
 {!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
 ```
+
+<a id="methods"></id>
+## Methods reference
+//TODO: document each group of methods and their usage
 
 <a id="few"></a>
 ## Authors
