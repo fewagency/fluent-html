@@ -5,7 +5,7 @@
     - [Bootstrap example](#example-bootstrap)
     - [When to use (and not)](#when-to-use)
 * [Installation](#install)
-* [Usage](#usage)
+* [Usage](#when-to-use)
     - [Collections as input](#usage-collections)
         * [Conditional output](#usage-conditional-output)
     - [Closures as input](#usage-closures)
@@ -14,8 +14,8 @@
 * [Authors - FEW Agency](#few)
 * [Licence](#licence)
 
-
-## Introduction <a id="intro"></a> 
+<a id="intro"></a>
+## Introduction 
 
 ```php
 // Simple example
@@ -42,7 +42,8 @@ It has two sentences.
 </div>
 ```
 
-__So, then what's the point of it all?__ <a id="point"></a>
+<a id="point"></a>
+__So, then what's the point of it all?__
 The power of FluentHtml comes from the ability to add collections of values, closures and conditions to the html
 building process.
 When the complexity grows you can build elements step by step and and trust the end result to be correct and
@@ -146,12 +147,13 @@ echo $input_group
     ->withAppendedContent($control_help);
 ```
 
-### When to use FluentHtml <a id="when-to-use"></a>
+<a id="when-to-use"></a>
+### When to use FluentHtml
 Basically, FluentHtml should be used for those cases where you build complex html structures with many if-statements.
 Stay with your standard html views or templates for all the simple stuff! 
 
-
-## Installation & configuration <a id="install"></a>
+<a id="install"></a>
+## Installation & configuration
 > composer require fewagency/fluent-html
 
 ### Optional facades
@@ -163,16 +165,19 @@ You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` 
 'HtmlBuilder' => FewAgency\FluentHtml\Facades\HtmlBuilder::class,
 ```
 
-### Dependencies <a id="dependencies"></a>
+<a id="dependencies"></a>
+### Dependencies
 This package takes advantage of the [Collection](https://github.com/illuminate/support/blob/master/Collection.php)
 implementation ([docs](http://laravel.com/docs/collections)) and the
 [Arrayable](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php) and
 [Htmlable](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
-## Usage <a id="usage"></a>
+<a id="usage"></a>
+## Usage
 
-### Collections as method input <a id="usage-collections"></a>
+<a id="usage-collections"></a>
+### Collections as method input
 Most methods accept arrays or Arrayable collections (and other implementations of Arrayable) as input parameters.
 A value may sometimes also be a nested collection, in which case the whole collection is recursively flattened
 (with preserved associative keys).
@@ -195,12 +200,14 @@ echo FluentHtml::create('input')->withAttribute([
 <input name="b" disabled value="B" autofocus>
 ```
 
-#### Conditional output <a id="usage-conditional-output"></a>
+<a id="usage-conditional-output"></a>
+#### Conditional output
 String keys are usually displayed instead of their value if their corresponding evaluated value is truthy.
 This makes it possible to conditionally show or hide html contents and element attributes, depending on their value
 being true or false.
 
-### Closures as method input <a id="usage-closures"></a>
+<a id="usage-closures"></a>
+### Closures as method input
 Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.php) in which case their evaluation is
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
@@ -242,7 +249,8 @@ echo FluentHtml::create(function () use ($show_div) {
 <p>This is another paragraph.</p>
 ```
 
-### Multiple attribute values - comma separated lists <a id="usage-multiple-attributes"></a>
+<a id="usage-multiple-attributes"></a>
+### Multiple attribute values - comma separated lists
 If an html attribute is supplied more than one value, they will be concatenated into a comma-separated list.
 
 ```php
@@ -255,7 +263,8 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 <meta name="keywords" content="list,of,keywords">
 ```
 
-### Usage with [Blade](http://laravel.com/docs/blade) templates <a id="usage-blade"></a>
+<a id="usage-blade"></a>
+### Usage with [Blade](http://laravel.com/docs/blade) templates
 Echoing the result in a template is easy because the string conversion of a FluentHtml instance always returns
 the full HTML structure from the top element down:
 
@@ -269,7 +278,8 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 {!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
 ```
 
-## Authors - FEW Agency <a id="few"></a>
+<a id="few"></a>
+## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
 We call ourselves [FEW](http://fewagency.se) (oh, the irony).
 From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area,
