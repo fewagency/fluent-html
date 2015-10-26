@@ -283,7 +283,7 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * Adds a new element at end children and returns the new element
+     * Adds a new element last among this element's children and returns the new element
      * Alias for endingWithElement()
      *
      * @param string|callable|null $html_element_name
