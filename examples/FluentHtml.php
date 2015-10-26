@@ -3,14 +3,12 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use FewAgency\FluentHtml\FluentHtml;
 
-//TODO: use something else than id as example withAttribute() calls
-
 echo "\n";
 
 // Simple example
 echo FluentHtml::create('div')->withClass('wrapper')
-    ->containingElement('p')->withAttribute('id', 'p1')->withContent('This is a paragraph.', 'It has two sentences.')
-    ->followedByElement('p')->withAttribute('id', 'p2')->withContent('This is another paragraph.');
+    ->containingElement('p')->withAttribute('title', 'p1')->withContent('This is a paragraph.', 'It has two sentences.')
+    ->followedByElement('p')->withAttribute('title', 'p2')->withContent('This is another paragraph.');
 
 echo "\n\n";
 
@@ -35,10 +33,10 @@ echo FluentHtml::create(function () use ($show_div) {
         return 'div';
     }
 })->withClass('wrapper')
-    ->containingElement('p')->withAttribute('id', function () {
+    ->containingElement('p')->withAttribute('title', function () {
         return 'p1';
     })->withContent(['This is a paragraph.', 'It may have two sentences.' => $show_2nd_sentence])
-    ->followedByElement('p')->withAttribute('id', $p2_id)->withContent(function (FluentHtml $paragraph) {
+    ->followedByElement('p')->withAttribute('title', $p2_id)->withContent(function (FluentHtml $paragraph) {
         // The parameter is the current FluentHtml element,
         // so we can check its properties or related elements' properties
         if ($paragraph->getParentElement()->getContentCount() > 1) {
