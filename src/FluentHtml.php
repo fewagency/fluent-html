@@ -123,6 +123,12 @@ class FluentHtml implements Htmlable
         return $this;
     }
 
+    /**
+     * Add a raw string of html content.
+     *
+     * @param string $raw_html_content that will not be escaped
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
     public function withRawHtmlContent($raw_html_content)
     {
         $html = new HtmlString($raw_html_content);
