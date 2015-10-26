@@ -2,7 +2,7 @@
 
 
 /**
- * Keeps track of used HTML element id strings
+ * Keeps track of used HTML element id strings.
  */
 class HtmlIdRegistrar extends IdRegistrar
 {

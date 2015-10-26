@@ -5,6 +5,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 
+/**
+ * Fluent interface style HTML builder for building and displaying advanced elements structures.
+ */
 class FluentHtml implements Htmlable
 {
     /**

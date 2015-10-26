@@ -4,6 +4,9 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * Builds HTML string representations of elements from parameters.
+ */
 class HtmlBuilder
 {
     /**
