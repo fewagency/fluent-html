@@ -190,9 +190,12 @@ class HtmlBuilder
                         //If the key is numeric, the value is put in the list
                         $values[] = $value;
                     } else {
-                        //If the key is a string, it'll be put in the list if the value is truthy
+                        //If the key is a string, it'll be put in the list when the value is truthy
                         $values[] = $key;
                     }
+                } else {
+                    // if the value is falsy, the key will be removed from the list
+                    $values = array_diff($values, [$key]);
                 }
             }
             $attribute_value = implode($attribute_name == 'class' ? ' ' : ',', $values);

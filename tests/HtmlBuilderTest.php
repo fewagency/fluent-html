@@ -143,4 +143,20 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testMultipleClassAttribute()
+    {
+        $this->assertEquals('<br class="a b c">', HtmlBuilder::buildHtmlElement('br', [
+            'class' => [
+                'a',
+                function () {
+                    return 'b';
+                },
+                'c' => true,
+                'd' => false,
+                'e',
+                'e' => false
+            ]
+        ]));
+    }
+
 }
