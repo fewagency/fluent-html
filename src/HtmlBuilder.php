@@ -178,7 +178,7 @@ class HtmlBuilder
      * @param mixed $attribute_value
      * @return string
      */
-    protected static function flattenAttributeValue($attribute_name, $attribute_value)
+    public static function flattenAttributeValue($attribute_name, $attribute_value)
     {
         if (self::isArrayble($attribute_value)) {
             //This attribute is a list of several values, check each value and build a string from them

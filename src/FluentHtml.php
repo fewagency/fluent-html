@@ -475,8 +475,20 @@ class FluentHtml implements Htmlable
         return $this->getAttribute('id');
     }
 
-    //TODO: create hasClass()
-    //TODO: create getClasses()
+    /**
+     * Find out if this element will have a specified class when rendered
+     *
+     * @param string $class
+     * @return bool
+     */
+    public function hasClass($class)
+    {
+        if ($classes = $this->getAttribute('class')) {
+            return in_array($class, explode(' ', HtmlBuilder::flattenAttributeValue('class', $classes)));
+        }
+
+        return false;
+    }
 
     /**
      * Get collection of raw classes.

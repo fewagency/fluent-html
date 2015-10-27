@@ -424,23 +424,6 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<div> <p> text <br> <hr> </p> </div>', $e);
     }
 
-    public function testGetRawAttribute()
-    {
-        $e = FluentHtml::create('p')->withAttribute('id', 'id1');
-
-        $this->assertEquals('id1', $e->getRawAttribute('id'));
-    }
-
-    public function testGetRawAttributeClosure()
-    {
-        $e = FluentHtml::create('p')->withAttribute('id', function () {
-            return 'id1';
-        });
-
-        $this->assertTrue($e->getRawAttribute('id') instanceof Closure);
-    }
-
-
     public function testGetAttribute()
     {
         $e = FluentHtml::create('p')->withAttribute('id', 'id1');
@@ -457,11 +440,25 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('id1', $e->getAttribute('id'));
     }
 
-    public function testGetClasses()
+    public function testHasClass()
     {
-        $e = FluentHtml::create('p')->withClass('classA');
+        $e = FluentHtml::create('p');
 
-        $this->assertTrue($e->getRawClasses()->contains('classA'));
+        $this->assertFalse($e->hasClass('classA'));
+
+        $e->withClass([
+            'classA',
+            function () {
+                return 'classB';
+            },
+            'classC' => true,
+            'classD' => false,
+        ]);
+
+        $this->assertTrue($e->hasClass('classA'));
+        $this->assertTrue($e->hasClass('classB'));
+        $this->assertTrue($e->hasClass('classC'));
+        $this->assertFalse($e->hasClass('classD'));
     }
 
     public function testGetIdPreSet()
@@ -497,7 +494,8 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals($e->getId(), $e2->getId());
     }
 
-    public function testMultiIdRegistrar() {
+    public function testMultiIdRegistrar()
+    {
         $divA = FluentHtml::create('div');
         $divA->idRegistrar(new \FewAgency\FluentHtml\HtmlIdRegistrar());
         $brB = FluentHtml::create('br');
