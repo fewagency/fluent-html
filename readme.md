@@ -286,12 +286,23 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ### Methods modifying and returning the same element
 These methods can be chained to modify the current element in steps.
 
-#### `withContent($html_contents)` / `withAppendedContent($html_contents)`
-Add html content last within the element.
+#### Methods adding content
 
-`@param string|Htmlable|callable|array|Arrayable $html_contents,...`
+##### `withContent($html_contents)`
+Add html content after existing content in the current element.
 
-#### withPrependedContent
+```php
+@param string|Htmlable|callable|array|Arrayable $html_contents,...
+```
+
+Accepts multiple arguments that can be strings (will be escaped), objects implementing `Htmlable` or arrayables. 
+
+_Alias for `withAppendedContent()`_
+
+##### `withPrependedContent($html_contents)`
+Add html content before existing content in the current element.
+
+Same parameters as `withContent()`.
 
 #### withRawHtmlContent
 

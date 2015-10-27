@@ -101,7 +101,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add html content after existing content.
+     * Add html content after existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @return $this|FluentHtml can be method-chained to modify the current element
@@ -114,7 +114,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add html content before existing content.
+     * Add html content before existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @return $this|FluentHtml can be method-chained to modify the current element
