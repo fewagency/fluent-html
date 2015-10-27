@@ -286,7 +286,10 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ### Methods modifying and returning the same element
 These methods can be chained to modify the current element in steps.
 
-#### withContent
+#### `withContent($html_contents)` / `withAppendedContent($html_contents)`
+Add html content last within the element.
+
+`@param string|Htmlable|callable|array|Arrayable $html_contents,...`
 
 #### withPrependedContent
 
@@ -343,6 +346,8 @@ These methods are used to query the properties and states of an element.
 Useful for conditionals within [closures as input](#usage-closures).
 
 #### getId
+
+#### hasClass
 
 #### getAttribute
 
