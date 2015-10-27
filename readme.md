@@ -283,6 +283,29 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ## Methods reference
 //TODO: document each group of methods and their usage
 
+### Methods creating new elements
+
+The constructor and the static function 
+`create($html_element_name = null, $tag_contents = [], $tag_attributes = [])`
+both have the same signature.
+
+Each new `FluentHtml` instance can be the start of a new chain of fluent method calls
+for modifying and adding more elements relative the previous.
+
+```php
+@param string|callable|null $html_element_name
+@param string|Htmlable|array|Arrayable $tag_contents
+@param array|Arrayable $tag_attributes
+```
+
+A blank `$html_element_name` makes the element render only its contents.
+The `$html_element_name` may also be a callable in which case it's evaluated just before rendering
+and that callable's return value will be used as the element name.
+
+The optional `$tag_contents` will be inserted in the same manner as `withContent()`.
+
+The optional `$tag_attributes` will be inserted in the same manner as `withAttribute()`.
+
 ### Methods modifying and returning the same element
 These methods can be chained to modify the current element in steps.
 
@@ -291,22 +314,34 @@ These methods can be chained to modify the current element in steps.
 ##### `withContent($html_contents)`
 Add html content after existing content in the current element.
 
+Accepts multiple arguments that can be
+* strings (will be escaped)
+* objects implementing `Htmlable`
+* arrayables
+or callables returning any of those types. 
+
 ```php
 @param string|Htmlable|callable|array|Arrayable $html_contents,...
 ```
-
-Accepts multiple arguments that can be strings (will be escaped), objects implementing `Htmlable` or arrayables. 
 
 _Alias for `withAppendedContent()`_
 
 ##### `withPrependedContent($html_contents)`
 Add html content before existing content in the current element.
 
-Same parameters as `withContent()`.
+Same parameter options as `withContent()`.
 
-#### withRawHtmlContent
+##### `withRawHtmlContent($raw_html_content)`
+Add a raw string of html content last within this element.
 
-#### withContentWrappedIn
+##### `withContentWrappedIn($html_contents, $wrapping_html_element_name, $wrapping_tag_attributes = [])`
+Add html contents last within this element, each inserted new content wrapped in an element.
+
+```php
+@param string|Htmlable|callable|array|Arrayable $html_contents,...
+@param string|callable $wrapping_html_element_name
+@param array|Arrayable $wrapping_tag_attributes
+```
 
 #### withAttribute
 
@@ -324,7 +359,7 @@ Same parameters as `withContent()`.
 
 #### onlyDisplayedIfHasContent
 
-### Methods returning a new element
+### Methods returning a new element relative to the current
 These methods creates a new element, adds it relative to the current element and returns the new element.
 This makes any method chain switch to operate on the new element after the call.
 

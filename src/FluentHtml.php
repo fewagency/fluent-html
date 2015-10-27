@@ -127,7 +127,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add a raw string of html content.
+     * Add a raw string of html content last within this element.
      *
      * @param string $raw_html_content that will not be escaped
      * @return $this|FluentHtml can be method-chained to modify the current element
@@ -140,7 +140,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add html contents, each wrapped in an element.
+     * Add html contents last within this element, each new inserted content wrapped in an element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @param string|callable $wrapping_html_element_name
@@ -161,7 +161,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add named attributes to the current element.
+     * Add named attributes with value to the current element.
      * Overrides any set attributes with same name.
      * Attributes evaluating to falsy will not be set.
      *
