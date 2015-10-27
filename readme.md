@@ -284,12 +284,11 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 //TODO: document each group of methods and their usage
 
 ### Methods creating new elements
-
-The constructor and the static function 
+The `FluentHtml` constructor and the static function 
 `create($html_element_name = null, $tag_contents = [], $tag_attributes = [])`
-both have the same signature.
+share the same signature.
 
-Each new `FluentHtml` instance can be the start of a new chain of fluent method calls
+Each `FluentHtml` instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
 
 ```php
@@ -307,7 +306,7 @@ The optional `$tag_contents` will be inserted in the same manner as `withContent
 The optional `$tag_attributes` will be inserted in the same manner as `withAttribute()`.
 
 ### Methods modifying and returning the same element
-These methods can be chained to modify the current element in steps.
+These methods can be chained to modify the current element step by step.
 
 #### Methods adding content
 
@@ -318,7 +317,8 @@ Accepts multiple arguments that can be
 * strings (will be escaped)
 * objects implementing `Htmlable`
 * arrayables
-or callables returning any of those types. 
+
+...or callables returning any of those types. 
 
 ```php
 @param string|Htmlable|callable|array|Arrayable $html_contents,...
@@ -329,13 +329,13 @@ _Alias for `withAppendedContent()`_
 ##### `withPrependedContent($html_contents)`
 Add html content before existing content in the current element.
 
-Same parameter options as `withContent()`.
+Same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 ##### `withRawHtmlContent($raw_html_content)`
 Add a raw string of html content last within this element.
 
 ##### `withContentWrappedIn($html_contents, $wrapping_html_element_name, $wrapping_tag_attributes = [])`
-Add html contents last within this element, each inserted new content wrapped in an element.
+Add html contents last within this element, with each inserted new content wrapped in an element.
 
 ```php
 @param string|Htmlable|callable|array|Arrayable $html_contents,...

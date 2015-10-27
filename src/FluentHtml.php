@@ -140,7 +140,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add html contents last within this element, each new inserted content wrapped in an element.
+     * Add html contents last within this element, with each new inserted content wrapped in an element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @param string|callable $wrapping_html_element_name
