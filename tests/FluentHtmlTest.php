@@ -461,7 +461,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
     {
         $e = FluentHtml::create('p')->withClass('classA');
 
-        $this->assertTrue($e->getClasses()->contains('classA'));
+        $this->assertTrue($e->getRawClasses()->contains('classA'));
     }
 
     public function testGetIdPreSet()

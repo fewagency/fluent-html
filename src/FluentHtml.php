@@ -199,6 +199,17 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * @param string $desired_id id that will be used if not already taken
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
+    public function withId($desired_id)
+    {
+        $this->withAttribute('id', $this->uniqueId($desired_id));
+
+        return $this;
+    }
+
+    /**
      * Add class names to the current element.
      *
      * @param string|callable|array|Arrayable $classes,...
@@ -206,7 +217,7 @@ class FluentHtml implements Htmlable
      */
     public function withClass($classes)
     {
-        return $this->withAttribute('class', $this->getClasses()->merge(HtmlBuilder::flatten(func_get_args())));
+        return $this->withAttribute('class', $this->getRawClasses()->merge(HtmlBuilder::flatten(func_get_args())));
     }
 
     /**
@@ -217,7 +228,19 @@ class FluentHtml implements Htmlable
      */
     public function withoutClass($classes)
     {
-        return $this->withAttribute('class', $this->getClasses()->diff(Collection::make(func_get_args())->flatten()));
+        return $this->withAttribute('class',
+            $this->getRawClasses()->diff(Collection::make(func_get_args())->flatten()));
+    }
+
+    /**
+     * @param string|callable $html_element_name
+     * @return $this|FluentHtml can be method-chained to modify the current element
+     */
+    public function withHtmlElementName($html_element_name)
+    {
+        $this->html_element_name = $html_element_name;
+
+        return $this;
     }
 
     /**
@@ -247,28 +270,6 @@ class FluentHtml implements Htmlable
         $this->onlyDisplayedIf(function (FluentHtml $current_object) {
             return $current_object->hasContent();
         });
-
-        return $this;
-    }
-
-    /**
-     * @param string|callable $html_element_name
-     * @return $this|FluentHtml can be method-chained to modify the current element
-     */
-    public function withHtmlElementName($html_element_name)
-    {
-        $this->html_element_name = $html_element_name;
-
-        return $this;
-    }
-
-    /**
-     * @param string $desired_id id that will be used if not already taken
-     * @return $this|FluentHtml can be method-chained to modify the current element
-     */
-    public function withId($desired_id)
-    {
-        $this->withAttribute('id', $this->uniqueId($desired_id));
 
         return $this;
     }
@@ -457,69 +458,8 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * @return bool that is true only if all conditions for rendering this element evaluates to true
-     */
-    public function renderInHtml()
-    {
-        return !$this->render_in_html->contains(function ($key, $value) {
-            return !$this->evaluate($value);
-        });
-    }
-
-    /**
-     * @return bool true if this element has content to render after evaluation
-     */
-    public function hasContent()
-    {
-        $html_contents = $this->evaluate($this->html_contents);
-
-        return (bool)HtmlBuilder::buildContentsString($html_contents);
-    }
-
-    /**
-     * @return int the number of separate pieces of content in this element
-     */
-    public function getContentCount()
-    {
-        return count($this->html_contents);
-    }
-
-    /**
-     * @param $content the content to look for
-     * @return mixed key for matching content, or false if not found
-     */
-    protected function getContentOffset($content)
-    {
-        return $this->html_contents->search($content);
-    }
-
-    /**
-     * @param string $attribute key to look for
-     * @return string|Collection The raw attribute set for the key (not evaluated)
-     */
-    public function getRawAttribute($attribute)
-    {
-        return $this->html_attributes->get($attribute);
-    }
-
-    /**
-     * @param string $attribute key to look for
-     * @return string|Collection The evaluated attribute set for the key
-     */
-    public function getAttribute($attribute)
-    {
-        return $this->evaluate($this->html_attributes->get($attribute));
-    }
-
-    /**
-     * @return Collection of classes currently set on this element
-     */
-    public function getClasses()
-    {
-        return Collection::make($this->html_attributes->get('class', []));
-    }
-
-    /**
+     * Get the id if set, or generate a new id.
+     *
      * @param string|null $desired_id optional id that will be used if not already taken
      * @return string a generated unique id (or a previously set id) for this element
      */
@@ -535,12 +475,94 @@ class FluentHtml implements Htmlable
         return $this->getAttribute('id');
     }
 
+    //TODO: create hasClass()
+    //TODO: create getClasses()
+
     /**
+     * Get collection of raw classes.
+     *
+     * @return Collection of classes currently set on this element
+     */
+    protected function getRawClasses()
+    {
+        return Collection::make($this->html_attributes->get('class', []));
+    }
+
+    /**
+     * Get the value of a named attribute.
+     *
+     * @param string $attribute key to look for
+     * @return string|Collection The evaluated attribute set for the key
+     */
+    public function getAttribute($attribute)
+    {
+        return $this->evaluate($this->html_attributes->get($attribute));
+    }
+
+    /**
+     * Get the raw value of a named attribute.
+     *
+     * @param string $attribute key to look for
+     * @return string|Collection The raw attribute set for the key (not evaluated)
+     */
+    protected function getRawAttribute($attribute)
+    {
+        return $this->html_attributes->get($attribute);
+    }
+
+    /**
+     * Find out if this element will contain any content when rendered.
+     *
+     * @return bool true if this element has content to render after evaluation
+     */
+    public function hasContent()
+    {
+        $html_contents = $this->evaluate($this->html_contents);
+
+        return (bool)HtmlBuilder::buildContentsString($html_contents);
+    }
+
+    /**
+     * Get the number of content pieces in this element.
+     *
+     * @return int the number of separate pieces of content in this element
+     */
+    public function getContentCount()
+    {
+        return count($this->html_contents);
+    }
+
+    /**
+     * Find out if this element is set to render.
+     *
+     * @return bool that is true only if all conditions for rendering this element evaluates to true
+     */
+    public function willRenderInHtml()
+    {
+        return !$this->render_in_html->contains(function ($key, $value) {
+            return !$this->evaluate($value);
+        });
+    }
+
+    /**
+     * Find out if this element is the root of the tree.
+     *
      * @return bool true if this element is the root element of its tree
      */
     protected function isRootElement()
     {
         return !$this->parent;
+    }
+
+    /**
+     * Get the offset of a specified piece of content within this element (internal).
+     *
+     * @param FluentHtml|string|mixed $content to look for
+     * @return mixed key for matching content, or false if not found
+     */
+    protected function getContentOffset($content)
+    {
+        return $this->html_contents->search($content);
     }
 
     /*
@@ -550,8 +572,11 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * @param string $desired_id
-     * @return string
+     * Internal method to register a new unique id with the IdRegistrar.
+     * See withId() and getId() for daily usage.
+     *
+     * @param string $desired_id to check if taken
+     * @return string id to use, guaranteed to be unique in this registrar
      */
     protected function uniqueId($desired_id)
     {
@@ -592,11 +617,13 @@ class FluentHtml implements Htmlable
     */
 
     /**
+     * Render element as html string.
+     *
      * @return string containing rendered html of this element and all its descendants
      */
     public function toHtml()
     {
-        if (!$this->renderInHtml()) {
+        if (!$this->willRenderInHtml()) {
             return '';
         }
 
@@ -612,7 +639,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Renders the full tree from top down, regardless of the position of the last element in the fluent chain of calls.
+     * Renders the full tree from top down as html, regardless of the position of the last element in the fluent chain of calls.
      *
      * @return string containing the full rendered html of the entire tree this element belongs to.
      */

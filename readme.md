@@ -283,6 +283,77 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ## Methods reference
 //TODO: document each group of methods and their usage
 
+### Methods modifying and returning the same element
+These methods can be chained to modify the current element in steps.
+
+#### withContent
+
+#### withPrependedContent
+
+#### withRawHtmlContent
+
+#### withContentWrappedIn
+
+#### withAttribute
+
+#### withoutAttribute
+
+#### withId
+
+#### withClass
+
+#### withoutClass
+
+#### withHtmlElementName
+
+#### onlyDisplayedIf
+
+#### onlyDisplayedIfHasContent
+
+### Methods returning a new element
+These methods creates a new element, adds it relative to the current element and returns the new element.
+This makes any method chain switch to operate on the new element after the call.
+
+#### containingElement
+
+#### startingWithElement
+
+#### followedByElement
+
+#### precededByElement
+
+#### wrappedInElement
+
+#### siblingsWrappedInElement
+
+### Methods for structure navigation
+These methods returns a found existing element or a new empty element.
+Useful for referencing other elements in the current tree,
+especially within [closures as input](#usage-closures)
+but can also be used in a method chain to switch elements.
+
+#### getParentElement
+
+#### getSiblingsCommonParent
+
+#### getRootElement
+
+### Element state methods
+These methods are used to query the properties and states of an element.
+Useful for conditionals within [closures as input](#usage-closures).
+
+#### getId
+
+#### getAttribute
+
+#### hasContent
+
+#### getContentCount
+
+#### willRenderInHtml
+
+#### isRootElement
+
 <a id="few"></a>
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
