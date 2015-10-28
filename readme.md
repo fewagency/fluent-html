@@ -387,26 +387,44 @@ Will not display current element if it has no content.
 Useful to get rid of empty lists or other containers.
 
 ### Methods returning a new element relative to the current
-These methods creates a new element, adds it relative to the current element and returns that new element.
+These methods creates a new element, adds it relative the current element and returns that new element.
 This makes any chained methods switch to operate on the new element after the call.
+
+Most of these methods share signature with the [constructor](#methods-creating-new-elements).
+
+```php
+@param string|callable|null $html_element_name
+@param string|Htmlable|array|Arrayable $tag_contents
+@param array|Arrayable $tag_attributes
+```
 
 #### Inserting within the current element
 
-##### containingElement
+##### `containingElement($html_element_name = null, $tag_contents = [], $tag_attributes = [])`
+Adds a new element last among this element's children and returns the new element.
 
-##### startingWithElement
+_Alias for endingWithElement()_
+
+##### `startingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])`
+Adds a new element first among this element's children and returns the new element.
 
 #### Inserting next to the current element
 
-##### followedByElement
+##### `followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])`
+Adds a new element just after this element and returns the new element.
 
-##### precededByElement
+##### `precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])`
+Adds a new element just before this element and returns the new element.
 
 #### Wrapping around the current element
+The wrapping methods have no parameter for setting contents.
+This is of course because the content is already there to be wrapped.
 
-##### wrappedInElement
+##### `wrappedInElement($html_element_name = null, $tag_attributes = [])`
+Wraps only this element in a new element and returns the new element.
 
-##### siblingsWrappedInElement
+##### `siblingsWrappedInElement($html_element_name, $tag_attributes = [])`
+Wraps this element together with its siblings in a new element and returns the new element.
 
 ### Methods for structure navigation
 These methods returns a found existing element or a new empty element.

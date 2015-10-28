@@ -289,7 +289,7 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * Adds a new element last among this element's children and returns the new element
+     * Adds a new element last among this element's children and returns the new element.
      * Alias for endingWithElement()
      *
      * @param string|callable|null $html_element_name
@@ -303,7 +303,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Adds a new element last among this element's children
+     * Adds a new element last among this element's children and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -319,7 +319,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Adds a new element first among this element's children
+     * Adds a new element first among this element's children and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -335,7 +335,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Adds a new element just after this element
+     * Adds a new element just after this element and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -351,7 +351,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Adds a new element just before this element
+     * Adds a new element just before this element and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -367,7 +367,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Wraps only this element in a new element
+     * Wraps only this element in a new element and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param array|Arrayable $tag_attributes
@@ -392,7 +392,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Wraps this element together with its siblings in a new element
+     * Wraps this element together with its siblings in a new element and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param array|Arrayable $tag_attributes
