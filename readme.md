@@ -1,21 +1,20 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
 
-* [Introduction](#intro)
+* [Introduction](#introduction)
     - [What's the point?](#point)
-    - [Bootstrap example](#example-bootstrap)
-    - [When to use (and not)](#when-to-use)
-* [Installation](#install)
+    - [Advanced Bootstrap example](#example-bootstrap)
+    - [When to use (and not)]()
+* [Installation]()
 * [Usage](#when-to-use)
-    - [Collections as input](#usage-collections)
-        * [Conditional output](#usage-conditional-output)
-    - [Closures as input](#usage-closures)
-    - [Multiple attribute values](#usage-multiple-attributes)
+    - [Collections as input]()
+        * [Conditional output]()
+    - [Closures as input]()
+    - [Multiple attribute values]()
     - [Blade templates](#usage-blade)
-* [Methods reference](#methods)
-* [Authors - FEW Agency](#few)
+* [Methods reference]()
+* [Authors - FEW Agency](#authors)
 * [Licence](#licence)
 
-<a id="intro"></a>
 ## Introduction 
 
 ```php
@@ -148,12 +147,10 @@ echo $input_group
     ->withAppendedContent($control_help);
 ```
 
-<a id="when-to-use"></a>
 ### When to use FluentHtml
 Basically, FluentHtml should be used for those cases where you build complex html structures with many if-statements.
 Stay with your standard html views or templates for all the simple stuff! 
 
-<a id="install"></a>
 ## Installation & configuration
 > composer require fewagency/fluent-html
 
@@ -166,7 +163,6 @@ You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` 
 'HtmlBuilder' => FewAgency\FluentHtml\Facades\HtmlBuilder::class,
 ```
 
-<a id="dependencies"></a>
 ### Dependencies
 This package takes advantage of the [Collection](https://github.com/illuminate/support/blob/master/Collection.php)
 implementation ([docs](http://laravel.com/docs/collections)) and the
@@ -174,10 +170,8 @@ implementation ([docs](http://laravel.com/docs/collections)) and the
 [Htmlable](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
-<a id="usage"></a>
 ## Usage
 
-<a id="usage-collections"></a>
 ### Collections as method input
 Most methods accept arrays or Arrayable collections (and other implementations of Arrayable) as input parameters.
 A value may sometimes also be a nested collection, in which case the whole collection is recursively flattened
@@ -201,13 +195,11 @@ echo FluentHtml::create('input')->withAttribute([
 <input name="b" disabled value="B" autofocus>
 ```
 
-<a id="usage-conditional-output"></a>
 #### Conditional output
 String keys are usually displayed instead of their value if their corresponding evaluated value is truthy.
 This makes it possible to conditionally show or hide html contents and element attributes, depending on their value
 being true or false.
 
-<a id="usage-closures"></a>
 ### Closures as method input
 Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.php) in which case their evaluation is
 deferred as long as possible, usually until the object is rendered as a string.
@@ -250,8 +242,7 @@ echo FluentHtml::create(function () use ($show_div) {
 <p>This is another paragraph.</p>
 ```
 
-<a id="usage-multiple-attributes"></a>
-### Multiple attribute values - comma separated lists
+### Multiple attribute values
 If an html attribute is supplied more than one value, they will be concatenated into a comma-separated list.
 
 ```php
@@ -279,7 +270,6 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 {!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
 ```
 
-<a id="methods"></id>
 ## Methods reference
 //TODO: document each group of methods and their usage
 
@@ -343,37 +333,84 @@ Add html contents last within this element, with each inserted new content wrapp
 @param array|Arrayable $wrapping_tag_attributes
 ```
 
-#### withAttribute
+#### Methods for attributes
 
-#### withoutAttribute
+##### `withAttribute($attributes, $value = true)`
+Add one or more named attributes with value to the current element.
+Overrides any set attributes with same name.
+Attributes evaluating to falsy will be unset.
 
-#### withId
+_Use `withId()` and `withClass()` instead for those attributes._
 
-#### withClass
+The first parameter in the simplest form is the attribute name as string,
+but it can also be an array of attribute names and values,
+or a callable returning such an array.
 
-#### withoutClass
+If the first parameter is an attribute name string, its value is taken from the second parameter.
 
-#### withHtmlElementName
+Boolean values makes the attribute name print only if truthy.
+The attribute is omitted from print if the value is falsy. 
 
-#### onlyDisplayedIf
+##### `withoutAttribute($attributes)`
+Remove one or more named attributes from the current element.
 
-#### onlyDisplayedIfHasContent
+```php
+@param string|array|Arrayable $attributes,...
+```
+
+##### `withId($desired_id)`
+Set the id attribute on the current element.
+Will check if the desired id is already taken and if so set another unique id.
+
+##### `withClass($classes)`
+Add one or more class names to the current element.
+
+```php
+@param string|callable|array|Arrayable $classes,...
+```
+
+##### `withoutClass($classes)`
+Remove one or more class names from the current element.
+
+```php
+@param string|array|Arrayable $classes,...
+```
+
+#### Other fluent methods
+
+##### `withHtmlElementName($html_element_name)`
+Set the html element name. The parameter can be a string or a callable returning a string.
+
+##### `onlyDisplayedIf($condition)`
+Will not display current element if any added condition evaluates to false.
+
+The parameter may be a boolean or a callable returning a boolean.
+
+##### `onlyDisplayedIfHasContent()`
+Will not display current element if it has no content.
+Useful to get rid of empty lists or other containers.
 
 ### Methods returning a new element relative to the current
-These methods creates a new element, adds it relative to the current element and returns the new element.
-This makes any method chain switch to operate on the new element after the call.
+These methods creates a new element, adds it relative to the current element and returns that new element.
+This makes any chained methods switch to operate on the new element after the call.
 
-#### containingElement
+#### Methods inserting within the current element
 
-#### startingWithElement
+##### containingElement
 
-#### followedByElement
+##### startingWithElement
 
-#### precededByElement
+#### Methods inserting next to the current element
 
-#### wrappedInElement
+##### followedByElement
 
-#### siblingsWrappedInElement
+##### precededByElement
+
+#### Methods inserting around the current element
+
+##### wrappedInElement
+
+##### siblingsWrappedInElement
 
 ### Methods for structure navigation
 These methods returns a found existing element or a new empty element.
@@ -381,37 +418,36 @@ Useful for referencing other elements in the current tree,
 especially within [closures as input](#usage-closures)
 but can also be used in a method chain to switch elements.
 
-#### getParentElement
+##### getParentElement
 
-#### getSiblingsCommonParent
+##### getSiblingsCommonParent
 
-#### getRootElement
+##### getRootElement
 
 ### Element state methods
 These methods are used to query the properties and states of an element.
 Useful for conditionals within [closures as input](#usage-closures).
 
-#### getId
+##### getId
 
-#### hasClass
+##### hasClass
 
-#### getAttribute
+##### getAttribute
 
-#### hasContent
+##### hasContent
 
-#### getContentCount
+##### getContentCount
 
-#### willRenderInHtml
+##### willRenderInHtml
 
-#### isRootElement
+##### isRootElement
 
-<a id="few"></a>
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
 We call ourselves [FEW](http://fewagency.se) (oh, the irony).
 From time to time we have positions open for web developers and programmers in the Malmö/Copenhagen area,
 so please get in touch!
 
-## License <a id="licence"></a>
+## License
 The FEW Agency Fluent HTML builder is open-sourced software licensed under the
 [MIT license](http://opensource.org/licenses/MIT)

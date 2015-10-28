@@ -161,9 +161,9 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add named attributes with value to the current element.
+     * Add one or more named attributes with value to the current element.
      * Overrides any set attributes with same name.
-     * Attributes evaluating to falsy will not be set.
+     * Attributes evaluating to falsy will be unset.
      *
      * @param string|callable|array|Arrayable $attributes Attribute name as string, can also be an array of names and values, or a callable returning such an array.
      * @param string|bool|callable|array|Arrayable $value to set, only used if $attributes is a string
@@ -183,7 +183,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Remove named attributes from the current element.
+     * Remove one or more named attributes from the current element.
      *
      * @param string|array|Arrayable $attributes,...
      * @return $this|FluentHtml can be method-chained to modify the current element
@@ -199,6 +199,9 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * Set the id attribute on the current element.
+     * Will check if the desired id is already taken and if so set another unique id.
+     *
      * @param string $desired_id id that will be used if not already taken
      * @return $this|FluentHtml can be method-chained to modify the current element
      */
@@ -210,7 +213,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Add class names to the current element.
+     * Add one or more class names to the current element.
      *
      * @param string|callable|array|Arrayable $classes,...
      * @return $this|FluentHtml can be method-chained to modify the current element
@@ -221,7 +224,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Remove class names from the current element.
+     * Remove one or more class names from the current element.
      *
      * @param string|array|Arrayable $classes,...
      * @return $this|FluentHtml can be method-chained to modify the current element
@@ -233,6 +236,8 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * Set the html element name.
+     *
      * @param string|callable $html_element_name
      * @return $this|FluentHtml can be method-chained to modify the current element
      */
@@ -244,7 +249,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Will not display current element if any added condition evaluates to false
+     * Will not display current element if any added condition evaluates to false.
      *
      * @param bool|callable $condition
      * @return $this|FluentHtml can be method-chained to modify the current element
