@@ -163,10 +163,10 @@ You may add [Laravel facades](http://laravel.com/docs/facades) in the `aliases` 
 ```
 
 ### Dependencies
-This package takes advantage of the [Collection](https://github.com/illuminate/support/blob/master/Collection.php)
+This package takes advantage of the [`Collection`](https://github.com/illuminate/support/blob/master/Collection.php)
 implementation ([docs](http://laravel.com/docs/collections)) and the
-[Arrayable](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php) and
-[Htmlable](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
+[`Arrayable`](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php) and
+[`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
 Internally [`FluentHtml`](src/FluentHtml.php) depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
