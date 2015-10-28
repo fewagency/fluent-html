@@ -314,7 +314,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
     * [`isRootElement()`](#isrootelement)
         
 ### Methods creating new elements
-The `FluentHtml` constructor and the static `create` function share the same signature: 
+The `FluentHtml` constructor and the static `create()` function share the same signature: 
 ```php
 FluentHtml::create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
 ```
