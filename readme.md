@@ -175,7 +175,9 @@ and [`HtmlIdRegistrar`](src/HtmlIdRegistrar.php) to keep track of used element i
 ## Usage
 
 ### Collections as method input
-Most methods accept arrays or Arrayable collections (and other implementations of Arrayable) as input parameters.
+Most methods accept arrays or collections (and other implementations of
+[`Arrayable`](https://github.com/illuminate/contracts/blob/master/Support/Arrayable.php))
+as input parameters.
 A value may sometimes also be a nested collection, in which case the whole collection is recursively flattened
 (with preserved associative keys).
 When flattening a collection, any duplicate associative keys will be merged over by those appearing later in the
@@ -205,7 +207,7 @@ being true or false.
 ### Closures as method input
 Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.php) in which case their evaluation is
 deferred as long as possible, usually until the object is rendered as a string.
-When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
+When a closure is evaluated it may return a value, boolean, arrayable, or even another closure, which in turn will be
 evaluated and merged into the collection of its context.
 All closures will receive the current [`FluentHtml`](src/FluentHtml.php) instance as their first parameter,
 this can be used for pretty advanced conditionals.
@@ -355,7 +357,8 @@ These methods can be chained to modify the current element step by step.
 Add html content after existing content in the current element.
 Accepts multiple arguments that can be:
 * strings (will be escaped)
-* objects implementing `Htmlable`, e.g. another instance of [`FluentHtml`](src/FluentHtml.php)
+* objects implementing [`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php),
+e.g. another instance of [`FluentHtml`](src/FluentHtml.php)
 * arrayables containing any types from this list (including other arrayables) 
 * callables returning any types from this list (including other callables) 
 
