@@ -468,7 +468,7 @@ class FluentHtml implements Htmlable
     */
 
     /**
-     * Get the id if set, or generate a new id.
+     * Get the element's id string if set, or generate a new id.
      *
      * @param string|null $desired_id optional id that will be used if not already taken
      * @return string a generated unique id (or a previously set id) for this element
@@ -486,7 +486,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Find out if this element will have a specified class when rendered
+     * Find out if this element will have a specified class when rendered.
      *
      * @param string $class
      * @return bool
@@ -511,10 +511,10 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Get the value of a named attribute.
+     * Get the evaluated value of a named attribute.
      *
      * @param string $attribute key to look for
-     * @return string|Collection The evaluated attribute set for the key
+     * @return string|bool|Collection|null The evaluated attribute set for the key
      */
     public function getAttribute($attribute)
     {
@@ -546,6 +546,7 @@ class FluentHtml implements Htmlable
 
     /**
      * Get the number of content pieces in this element.
+     * Empty contents are counted too.
      *
      * @return int the number of separate pieces of content in this element
      */
@@ -567,7 +568,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Find out if this element is the root of the tree.
+     * Find out if this element is the root of the element tree.
      *
      * @return bool true if this element is the root element of its tree
      */

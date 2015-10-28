@@ -281,6 +281,7 @@ FluentHtml::create($html_element_name = null, $tag_contents = [], $tag_attribute
 
 Each `FluentHtml` instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
+This is also true for the returned `FluentHtml` of [methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current)
 
 ```php
 @param string|callable|null $html_element_name
@@ -446,19 +447,36 @@ Get the root element of this element's tree.
 These methods are used to query the properties and states of an element.
 Useful for conditionals within [closures as input](#closures-as-method-input).
 
-##### getId
+##### `getId($desired_id = null)`
+Get the element's id string if set, or generate a new id.
+The optional parameter can be used to try a desired id string which will be used if not already taken,
+just like [`withId()`](#withiddesired_id).
 
-##### hasClass
+##### `hasClass($class)`
+Find out if this element will have a specified class when rendered.
+The parameter should be a string and the return value is a boolean.
 
-##### getAttribute
+##### `getAttribute($attribute)`
+Get the evaluated value of a named attribute.
+If an attribute has been set with a callable, it will be evaluated before returning.
 
-##### hasContent
+The parameter should be a string and the returned value is usually a string or a boolean,
+but can be a collection if the attribute has been set with an arrayable.
+The returned value is `null` if the attribute hasn't been set.
 
-##### getContentCount
+##### `hasContent()`
+Find out if this element will contain any content when rendered.
+Will return `true` if this element has content to render after evaluation.
 
-##### willRenderInHtml
+##### `getContentCount()`
+Get the number of content pieces in this element. Empty contents are counted too.
 
-##### isRootElement
+##### `willRenderInHtml()`
+Find out if this element is set to render.
+Returns `false` if any condition for rendering the element fails.
+     
+##### `isRootElement()`
+Find out if this element is the root of the element tree.
 
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
