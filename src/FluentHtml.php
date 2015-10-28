@@ -477,7 +477,7 @@ class FluentHtml implements Htmlable
     {
         if (!$this->getAttribute('id')) {
             if (empty($desired_id)) {
-                $desired_id = class_basename($this) . '1';
+                $desired_id = $this->getDefaultId();
             }
             $this->withId($desired_id);
         }
@@ -593,6 +593,22 @@ class FluentHtml implements Htmlable
     | Methods for handling IdRegistrar
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Internal method to get the default id to try when no desired id has been supplied.
+     * This is a good method to override in subclasses to set another default id.
+     * The default id may be built from other element properties, e.g. id's from ancestors.
+     * If the default id is a fairly static string, expected to be used multiple times,
+     * adding a 1 to the end of the returned string will make the sequence look better.
+     *
+     * @return string
+     */
+    protected function getDefaultId()
+    {
+        $desired_id = class_basename($this) . '1';
+
+        return $desired_id;
+    }
 
     /**
      * Internal method to register a new unique id with the IdRegistrar.
