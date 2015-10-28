@@ -2,7 +2,7 @@
 * [Introduction](#introduction)
     - [What's the point?](#point)
     - [Advanced Bootstrap example](#example-bootstrap)
-    - [When to use (and not)](#when-to-use-fluenthtml)
+    - [When to use (and not)](//TODO: set link)
 * [Installation](#installation--configuration)
 * [Usage](#usage)
     - [Collections as input](#collections-as-method-input)
@@ -43,7 +43,7 @@ It has two sentences.
 
 <a id="point"></a>
 __So, then what's the point of it all?__
-The power of FluentHtml comes from the ability to add collections of values, closures and conditions to the html
+The power of `FluentHtml` comes from the ability to add collections of values, closures and conditions to the html
 building process.
 When the complexity grows you can build elements step by step and and trust the end result to be correct and
 well-formatted HTML in every situation.
@@ -75,7 +75,7 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
 Very prone to errors sneaking in.
-Using FluentHtml the code would probably take about the same space, but it would be a lot more readable,
+Using `FluentHtml` the code would probably take about the same space, but it would be a lot more readable,
 guaranteed to print correct and well-formatted HTML, and can be split in manageable and reusable chunks, like this:
 
 ```php
@@ -146,8 +146,8 @@ echo $input_group
     ->withAppendedContent($control_help);
 ```
 
-### When to use FluentHtml
-Basically, FluentHtml should be used for those cases where you build complex html structures with many if-statements.
+### When to use (and not)
+`FluentHtml` should be used for those cases where you build complex html structures with many if-statements.
 Stay with your standard html views or templates for all the simple stuff! 
 
 ## Installation & configuration
@@ -259,7 +259,7 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 
 <a id="usage-blade"></a>
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion of a FluentHtml instance always returns
+Echoing the result in a template is easy because the string conversion of a `FluentHtml` instance always returns
 the full HTML structure from the top element down:
 
 ```
