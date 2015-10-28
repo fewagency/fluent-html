@@ -13,7 +13,7 @@
     - [Blade templates](#usage-blade)
 * [Methods reference](#methods-reference)
 * [Authors - FEW Agency](#authors)
-* [Licence](#licence)
+* [License](#license)
 
 ## Introduction 
 
@@ -271,7 +271,6 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ```
 
 ## Methods reference
-//TODO: document each group of methods and their usage
 
 ### Methods creating new elements
 The `FluentHtml` constructor and the static function share the same signature: 
