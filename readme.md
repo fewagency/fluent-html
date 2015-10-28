@@ -355,10 +355,9 @@ These methods can be chained to modify the current element step by step.
 Add html content after existing content in the current element.
 Accepts multiple arguments that can be:
 * strings (will be escaped)
-* objects implementing `Htmlable`
-* arrayables
-
-...or callables returning any of those types. 
+* objects implementing `Htmlable`, e.g. another instance of [`FluentHtml`](src/FluentHtml.php)
+* arrayables containing any types from this list (including other arrayables) 
+* callables returning any types from this list (including other callables) 
 
 ```php
 @param string|Htmlable|callable|array|Arrayable $html_contents,...
