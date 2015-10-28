@@ -2,7 +2,7 @@
 * [Introduction](#introduction)
     - [What's the point?](#point)
     - [Advanced Bootstrap example](#example-bootstrap)
-    - [When to use (and not)](//TODO: set link)
+    - [When to use (and not)](#when-to-use-and-not)
 * [Installation](#installation--configuration)
 * [Usage](#usage)
     - [Collections as input](#collections-as-method-input)
