@@ -9,7 +9,7 @@
         * [Conditional output](#conditional-output)
     - [Closures as input](#closures-as-method-input)
     - [Multiple attribute values](#multiple-attribute-values)
-    - [Blade templates](#usage-blade)
+    - [Blade templates](#usage-with-blade-templates)
 * [Methods reference](#methods-reference)
 * [Authors - FEW Agency](#authors)
 * [License](#license)
@@ -257,7 +257,6 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 <meta name="keywords" content="list,of,keywords">
 ```
 
-<a id="usage-blade"></a>
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
 Echoing the result in a template is easy because the string conversion of a [`FluentHtml`](src/FluentHtml.php) instance always returns
 the full HTML structure from the top element down:
