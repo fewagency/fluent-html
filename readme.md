@@ -274,9 +274,10 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 //TODO: document each group of methods and their usage
 
 ### Methods creating new elements
-The `FluentHtml` constructor and the static function 
-`create($html_element_name = null, $tag_contents = [], $tag_attributes = [])`
-share the same signature.
+The `FluentHtml` constructor and the static function share the same signature: 
+```php
+FluentHtml::create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
+```
 
 Each `FluentHtml` instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
@@ -287,23 +288,22 @@ for modifying and adding more elements relative the previous.
 @param array|Arrayable $tag_attributes
 ```
 
-A blank `$html_element_name` makes the element render only its contents.
+A falsy `$html_element_name` makes the element render only its contents.
 The `$html_element_name` may also be a callable in which case it's evaluated just before rendering
 and that callable's return value will be used as the element name.
 
-The optional `$tag_contents` will be inserted in the same manner as `withContent()`.
+The optional `$tag_contents` will be inserted in the same manner as [`withContent()`](#withcontenthtml_contents).
 
-The optional `$tag_attributes` will be inserted in the same manner as `withAttribute()`.
+The optional `$tag_attributes` will be inserted in the same manner as [`withAttribute()`](#withattributeattributes-value--true).
 
 ### Methods modifying and returning the same element
 These methods can be chained to modify the current element step by step.
 
-#### Methods adding content
+#### Adding content
 
 ##### `withContent($html_contents)`
 Add html content after existing content in the current element.
-
-Accepts multiple arguments that can be
+Accepts multiple arguments that can be:
 * strings (will be escaped)
 * objects implementing `Htmlable`
 * arrayables
@@ -318,7 +318,6 @@ _Alias for `withAppendedContent()`_
 
 ##### `withPrependedContent($html_contents)`
 Add html content before existing content in the current element.
-
 Same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 ##### `withRawHtmlContent($raw_html_content)`
@@ -333,21 +332,19 @@ Add html contents last within this element, with each inserted new content wrapp
 @param array|Arrayable $wrapping_tag_attributes
 ```
 
-#### Methods for attributes
+#### Attributes
 
 ##### `withAttribute($attributes, $value = true)`
 Add one or more named attributes with value to the current element.
 Overrides any set attributes with same name.
 Attributes evaluating to falsy will be unset.
-
-_Use `withId()` and `withClass()` instead for those attributes._
+Use [`withId()`](#withiddesired_id) and [`withClass()`](#withclassclasses) instead for those attributes.
 
 The first parameter in the simplest form is the attribute name as string,
 but it can also be an array of attribute names and values,
 or a callable returning such an array.
 
 If the first parameter is an attribute name string, its value is taken from the second parameter.
-
 Boolean values makes the attribute name print only if truthy.
 The attribute is omitted from print if the value is falsy. 
 
@@ -383,7 +380,6 @@ Set the html element name. The parameter can be a string or a callable returning
 
 ##### `onlyDisplayedIf($condition)`
 Will not display current element if any added condition evaluates to false.
-
 The parameter may be a boolean or a callable returning a boolean.
 
 ##### `onlyDisplayedIfHasContent()`
@@ -394,19 +390,19 @@ Useful to get rid of empty lists or other containers.
 These methods creates a new element, adds it relative to the current element and returns that new element.
 This makes any chained methods switch to operate on the new element after the call.
 
-#### Methods inserting within the current element
+#### Inserting within the current element
 
 ##### containingElement
 
 ##### startingWithElement
 
-#### Methods inserting next to the current element
+#### Inserting next to the current element
 
 ##### followedByElement
 
 ##### precededByElement
 
-#### Methods inserting around the current element
+#### Wrapping around the current element
 
 ##### wrappedInElement
 
