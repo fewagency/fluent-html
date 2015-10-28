@@ -1,5 +1,4 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
-
 * [Introduction](#introduction)
     - [What's the point?](#point)
     - [Advanced Bootstrap example](#example-bootstrap)
@@ -271,7 +270,48 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ```
 
 ## Methods reference
-
+* [Methods creating new elements](#methods-creating-new-elements)
+    - `FluentHtml::create`
+    - `new FluentHtml`
+* [Methods modifying and returning the same element](#methods-modifying-and-returning-the-same-element)
+    - [Adding content](#adding-content)
+        * [`withContent`](#withcontenthtml_contents)
+        * [`withPrependedContent`](#withprependedcontenthtml_contents)
+        * [`withRawHtmlContent`](#withrawhtmlcontentraw_html_content)
+        * [`withContentWrappedIn`](#withcontentwrappedinhtml_contents-wrapping_html_element_name-wrapping_tag_attributes--)
+    - [Manipulating attributes](#manipulating-attributes)
+        * [`withAttribute`](#withattributeattributes-value--true)
+        * [`withoutAttribute`](#withoutattributeattributes)
+        * [`withId`](#withiddesired_id)
+        * [`withClass`](#withclassclasses)
+        * [`withoutClass`](#withoutclassclasses)
+    - [Other fluent methods](#other-fluent-methods)
+        * [`withHtmlElementName`](#withhtmlelementnamehtml_element_name)
+        * [`onlyDisplayedIf`](#onlydisplayedifcondition)
+        * [`onlyDisplayedIfHasContent`](#onlydisplayedifhascontent)
+* [Methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current)
+    - [Inserting within the current element](#inserting-within-the-current-element)
+        * [`containingElement`](#containingelementhtml_element_name--null-tag_contents---tag_attributes--)
+        * [`startingWithElement`](#startingwithelementhtml_element_name-tag_contents---tag_attributes--)
+    - [Inserting next to the current element](#inserting-next-to-the-current-element)
+        * [`followedByElement`](#followedbyelementhtml_element_name-tag_contents---tag_attributes--)
+        * [`precededByElement`](#precededbyelementhtml_element_name-tag_contents---tag_attributes--)
+    - [Wrapping around the current element](#wrapping-around-the-current-element)
+        * [`wrappedInElement`](#wrappedinelementhtml_element_name--null-tag_attributes--)
+        * [`siblingsWrappedInElement`](#siblingswrappedinelementhtml_element_name-tag_attributes--)
+* [Methods for structure navigation](#methods-for-structure-navigation)
+        * [`getParentElement`](#getparentelement)
+        * [`getSiblingsCommonParent`](#getsiblingscommonparent)
+        * [`getRootElement`](#getrootelement)
+* [Element state methods](#element-state-methods)
+        * [`getId`](#getiddesired_id--null)
+        * [`hasClass`](#hasclassclass)
+        * [`getAttribute`](#getattributeattribute)
+        * [`hasContent`](#hascontent)
+        * [`getContentCount`](#getcontentcount)
+        * [`willRenderInHtml`](#willrenderinhtml)
+        * [`isRootElement`](#isrootelement)
+        
 ### Methods creating new elements
 The `FluentHtml` constructor and the static `create` function share the same signature: 
 ```php
