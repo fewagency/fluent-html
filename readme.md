@@ -300,7 +300,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`wrappedInElement`](#wrappedinelementhtml_element_name--null-tag_attributes--)
         * [`siblingsWrappedInElement`](#siblingswrappedinelementhtml_element_name-tag_attributes--)
 * [Methods for structure navigation](#methods-for-structure-navigation)
-    - Ancestors
+    - Finding ancestors
         * [`getParentElement`](#getparentelement)
         * [`getSiblingsCommonParent`](#getsiblingscommonparent)
         * [`getRootElement`](#getrootelement)
