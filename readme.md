@@ -273,14 +273,15 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ## Methods reference
 
 ### Methods creating new elements
-The `FluentHtml` constructor and the static function share the same signature: 
+The `FluentHtml` constructor and the static `create` function share the same signature: 
 ```php
 FluentHtml::create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
 ```
 
 Each `FluentHtml` instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
-This is also true for the returned `FluentHtml` of [methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current)
+This is also true for the returned `FluentHtml` of
+[methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current).
 
 ```php
 @param string|callable|null $html_element_name
