@@ -419,6 +419,8 @@ class FluentHtml implements Htmlable
     */
 
     /**
+     * Get or generate the closest parent for this element, even if it's unnamed.
+     *
      * @return FluentHtml existing parent object or a generated empty parent object
      */
     public function getParentElement()
@@ -427,6 +429,9 @@ class FluentHtml implements Htmlable
     }
 
     /**
+     * Get the closest named parent element or an unnamed parent if none found.
+     * This is the common parent of this element and its siblings as rendered in html.
+     *
      * @return FluentHtml representing the closest named parent or an unnamed parent if none found
      */
     public function getSiblingsCommonParent()
@@ -443,7 +448,7 @@ class FluentHtml implements Htmlable
     }
 
     /**
-     * Get the root element of this element's tree
+     * Get the root element of this element's tree.
      *
      * @return $this|FluentHtml
      */

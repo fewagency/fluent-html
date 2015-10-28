@@ -332,7 +332,7 @@ Add html contents last within this element, with each inserted new content wrapp
 @param array|Arrayable $wrapping_tag_attributes
 ```
 
-#### Attributes
+#### Manipulating attributes
 
 ##### `withAttribute($attributes, $value = true)`
 Add one or more named attributes with value to the current element.
@@ -427,20 +427,24 @@ Wraps only this element in a new element and returns the new element.
 Wraps this element together with its siblings in a new element and returns the new element.
 
 ### Methods for structure navigation
-These methods returns a found existing element or a new empty element.
+These methods returns a found existing element or a new empty element put in the requested position.
 Useful for referencing other elements in the current tree,
-especially within [closures as input](#usage-closures)
+especially within [closures as input](#closures-as-method-input)
 but can also be used in a method chain to switch elements.
 
-##### getParentElement
+##### `getParentElement()`
+Get or generate the closest parent for this element, even if it's unnamed.
 
-##### getSiblingsCommonParent
+##### `getSiblingsCommonParent()`
+Get the closest named parent element or an unnamed parent if none found.
+This is the common parent of this element and its siblings as rendered in html.
 
-##### getRootElement
+##### `getRootElement()`
+Get the root element of this element's tree.
 
 ### Element state methods
 These methods are used to query the properties and states of an element.
-Useful for conditionals within [closures as input](#usage-closures).
+Useful for conditionals within [closures as input](#closures-as-method-input).
 
 ##### getId
 
