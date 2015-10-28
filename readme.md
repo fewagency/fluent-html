@@ -43,7 +43,7 @@ It has two sentences.
 
 <a id="point"></a>
 __So, then what's the point of it all?__
-The power of `FluentHtml` comes from the ability to add collections of values, closures and conditions to the html
+The power of [`FluentHtml`](src/FluentHtml.php) comes from the ability to add collections of values, closures and conditions to the html
 building process.
 When the complexity grows you can build elements step by step and and trust the end result to be correct and
 well-formatted HTML in every situation.
@@ -75,7 +75,7 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
 Very prone to errors sneaking in.
-Using `FluentHtml` the code would probably take about the same space, but it would be a lot more readable,
+Using [`FluentHtml`](src/FluentHtml.php) the code would probably take about the same space, but it would be a lot more readable,
 guaranteed to print correct and well-formatted HTML, and can be split in manageable and reusable chunks, like this:
 
 ```php
@@ -147,7 +147,7 @@ echo $input_group
 ```
 
 ### When to use (and not)
-`FluentHtml` should be used for those cases where you build complex html structures with many if-statements.
+[`FluentHtml`](src/FluentHtml.php) should be used for those cases where you build complex html structures with many if-statements.
 Stay with your standard html views or templates for all the simple stuff! 
 
 ## Installation & configuration
@@ -169,7 +169,7 @@ implementation ([docs](http://laravel.com/docs/collections)) and the
 [Htmlable](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
-Internally `FluentHtml` depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
+Internally [`FluentHtml`](src/FluentHtml.php) depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
 and [`HtmlIdRegistrar`](src/HtmlIdRegistrar.php) to keep track of used element ids so they can be kept unique.   
 
 ## Usage
@@ -207,8 +207,8 @@ Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.p
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, Arrayable, or even another closure, which in turn will be
 evaluated and merged into the collection of its context.
-All closures will receive the current `FluentHtml` instance as their first parameter, this can be used for pretty
-advanced conditionals.
+All closures will receive the current [`FluentHtml`](src/FluentHtml.php) instance as their first parameter,
+this can be used for pretty advanced conditionals.
 
 ```php
 // Example with closures and conditions
@@ -259,7 +259,7 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 
 <a id="usage-blade"></a>
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion of a `FluentHtml` instance always returns
+Echoing the result in a template is easy because the string conversion of a [`FluentHtml`](src/FluentHtml.php) instance always returns
 the full HTML structure from the top element down:
 
 ```
@@ -317,7 +317,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
     * [`isRootElement()`](#isrootelement)
         
 ### Methods creating new elements
-The `FluentHtml` constructor and the static `create()` function share the same signature: 
+The [`FluentHtml`](src/FluentHtml.php) constructor and the static `create()` function share the same signature: 
 ```php
 FluentHtml::create(
     $html_element_name = null,
@@ -326,9 +326,9 @@ FluentHtml::create(
 )
 ```
 
-Each `FluentHtml` instance can be the start of a new chain of fluent method calls
+Each [`FluentHtml`](src/FluentHtml.php) instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
-This is also true for the returned `FluentHtml` of
+This is also true for the returned [`FluentHtml`](src/FluentHtml.php) of
 [methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current).
 
 ```php
@@ -341,9 +341,11 @@ A falsy `$html_element_name` makes the element render only its contents.
 The `$html_element_name` may also be a callable in which case it's evaluated just before rendering
 and that callable's return value will be used as the element name.
 
-The optional `$tag_contents` will be inserted in the same manner as [`withContent()`](#withcontenthtml_contents).
+The optional `$tag_contents` will be inserted in the same manner as
+[`withContent()`](#withcontenthtml_contents).
 
-The optional `$tag_attributes` will be inserted in the same manner as [`withAttribute()`](#withattributeattributes-value--true).
+The optional `$tag_attributes` will be inserted in the same manner as
+[`withAttribute()`](#withattributeattributes-value--true).
 
 ### Methods modifying and returning the same element
 These methods can be chained to modify the current element step by step.
