@@ -169,6 +169,9 @@ implementation ([docs](http://laravel.com/docs/collections)) and the
 [Htmlable](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
+Internally `FluentHtml` depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
+and [`HtmlIdRegistrar`](src/HtmlIdRegistrar.php) to keep track of used element ids so they can be kept unique.   
+
 ## Usage
 
 ### Collections as method input
@@ -316,7 +319,11 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 ### Methods creating new elements
 The `FluentHtml` constructor and the static `create()` function share the same signature: 
 ```php
-FluentHtml::create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
+FluentHtml::create(
+    $html_element_name = null,
+    $tag_contents = [],
+    $tag_attributes = []
+)
 ```
 
 Each `FluentHtml` instance can be the start of a new chain of fluent method calls
