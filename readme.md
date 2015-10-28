@@ -300,19 +300,18 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`wrappedInElement`](#wrappedinelementhtml_element_name--null-tag_attributes--)
         * [`siblingsWrappedInElement`](#siblingswrappedinelementhtml_element_name-tag_attributes--)
 * [Methods for structure navigation](#methods-for-structure-navigation)
-    -
+    - Ancestors
         * [`getParentElement`](#getparentelement)
         * [`getSiblingsCommonParent`](#getsiblingscommonparent)
         * [`getRootElement`](#getrootelement)
 * [Element state methods](#element-state-methods)
-    -
-        * [`getId`](#getiddesired_id--null)
-        * [`hasClass`](#hasclassclass)
-        * [`getAttribute`](#getattributeattribute)
-        * [`hasContent`](#hascontent)
-        * [`getContentCount`](#getcontentcount)
-        * [`willRenderInHtml`](#willrenderinhtml)
-        * [`isRootElement`](#isrootelement)
+    * [`getId`](#getiddesired_id--null)
+    * [`hasClass`](#hasclassclass)
+    * [`getAttribute`](#getattributeattribute)
+    * [`hasContent`](#hascontent)
+    * [`getContentCount`](#getcontentcount)
+    * [`willRenderInHtml`](#willrenderinhtml)
+    * [`isRootElement`](#isrootelement)
         
 ### Methods creating new elements
 The `FluentHtml` constructor and the static `create` function share the same signature: 
