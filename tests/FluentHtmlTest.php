@@ -563,5 +563,18 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $content_element_A->withContent('not bold');
 
         $this->assertEquals(3, $e->getContentCount());
+
+        //Test adding empty content
+        $e->withContent(false);
+
+        $this->assertEquals(3, $e->getContentCount());
+
+        $e->withContent(null);
+
+        $this->assertEquals(3, $e->getContentCount());
+
+        $e->withContent('');
+
+        $this->assertEquals(3, $e->getContentCount());
     }
 }
