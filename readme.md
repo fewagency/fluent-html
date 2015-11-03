@@ -529,6 +529,9 @@ Returns `false` if any condition for rendering the element fails.
 ##### `isRootElement()`
 Find out if this element is the root of the element tree.
 
+## Facades
+TODO: test and document facades!
+
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
 We call ourselves [FEW](http://fewagency.se) (oh, the irony).
