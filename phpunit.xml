@@ -13,13 +13,9 @@
     <testsuite name="All package tests">
       <directory suffix=".php">./tests/</directory>
     </testsuite>
-  </testsuites>
-  <testsuites>
     <testsuite name="FluentHtml">
       <file>./tests/FluentHtmlTest.php</file>
     </testsuite>
-  </testsuites>
-  <testsuites>
     <testsuite name="HtmlBuilder">
       <file>./tests/HtmlBuilderTest.php</file>
     </testsuite>
