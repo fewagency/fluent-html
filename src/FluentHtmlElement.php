@@ -452,7 +452,21 @@ abstract class FluentHtmlElement implements Htmlable
         }
     }
 
-    //TODO: add method returning closest ancestor that is instanceof
+    /**
+     * Get the closest ancestor matching class type
+     *
+     * @param string $type class or interface name to find
+     * @return FluentHtmlElement
+     * @throws \Exception if no matching ancestor found
+     */
+    public function getAncestorInstanceOf($type)
+    {
+        if (!$this->parent) {
+            throw new \Exception('No ancestor instanceof ' . $type . ' found');
+        }
+
+        return ($this->parent instanceof $type) ? $this->parent : $this->parent->getAncestorInstanceOf($type);
+    }
 
     /*
     |--------------------------------------------------------------------------

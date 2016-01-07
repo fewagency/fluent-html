@@ -577,4 +577,16 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(3, $e->getContentCount());
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testGetAncestorInstanceOf() {
+        $outer = FluentHtml::create('p');
+        $inner = $outer->containingElement('br');
+
+        $this->assertEquals($outer, $inner->getAncestorInstanceOf('FewAgency\FluentHtml\FluentHtml'));
+        $outer->getAncestorInstanceOf('FewAgency\FluentHtml\FluentHtml');
+    }
+
 }
