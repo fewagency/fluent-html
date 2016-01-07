@@ -679,7 +679,7 @@ class FluentHtml implements FluentHtmlElement
     }
 
     /**
-     * Renders the full tree from top down as html, regardless of the position of the last element in the fluent chain of calls.
+     * Render the full tree from top down as html, regardless of the position of the last element in the fluent chain of calls.
      *
      * @return string containing the full rendered html of the entire tree this element belongs to.
      */
@@ -704,7 +704,7 @@ class FluentHtml implements FluentHtmlElement
     */
 
     /**
-     * Recursively evaluates input value if it's a callable, or returns the original value.
+     * Recursively evaluate input value if it's a callable, or returns the original value.
      * The current FluentHtmlElement object is sent to each callable as the first parameter.
      *
      * @param mixed $value to evaluate, if it's a callback it will be invoked.
@@ -758,8 +758,8 @@ class FluentHtml implements FluentHtmlElement
     */
 
     /**
-     * Takes a multidimensional array of contents and flattens it.
-     * Also makes sure FluentHtmlElement objects are cloned and have their parent set to the current object.
+     * Take a multidimensional array of contents and flattens it.
+     * Also make sure FluentHtmlElement objects are cloned and have their parent set to the current object.
      *
      * @param string|Htmlable|FluentHtmlElement|array|Arrayable $html_contents,...
      * @return Collection of contents that are ok to insert into a FluentHtmlElement element
