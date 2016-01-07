@@ -12,11 +12,20 @@ use Illuminate\Support\Collection;
  */
 interface FluentHtmlElement extends Htmlable
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Methods modifying and returning same element
+    |--------------------------------------------------------------------------
+    |
+    | These methods can be chained to modify the current element.
+    |
+    */
+
     /**
      * Alias for withAppendedContent, to add html content last within this element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withContent($html_contents);
 
@@ -24,7 +33,7 @@ interface FluentHtmlElement extends Htmlable
      * Add html content after existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withAppendedContent($html_contents);
 
@@ -32,7 +41,7 @@ interface FluentHtmlElement extends Htmlable
      * Add html content before existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withPrependedContent($html_contents);
 
@@ -40,7 +49,7 @@ interface FluentHtmlElement extends Htmlable
      * Add a raw string of html content last within this element.
      *
      * @param string $raw_html_content that will not be escaped
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withRawHtmlContent($raw_html_content);
 
@@ -50,7 +59,7 @@ interface FluentHtmlElement extends Htmlable
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @param string|callable $wrapping_html_element_name
      * @param array|Arrayable $wrapping_tag_attributes
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withContentWrappedIn($html_contents, $wrapping_html_element_name, $wrapping_tag_attributes = []);
 
@@ -61,7 +70,7 @@ interface FluentHtmlElement extends Htmlable
      *
      * @param string|callable|array|Arrayable $attributes Attribute name as string, can also be an array of names and values, or a callable returning such an array.
      * @param string|bool|callable|array|Arrayable $value to set, only used if $attributes is a string
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withAttribute($attributes, $value = true);
 
@@ -69,7 +78,7 @@ interface FluentHtmlElement extends Htmlable
      * Remove one or more named attributes from the current element.
      *
      * @param string|array|Arrayable $attributes,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withoutAttribute($attributes);
 
@@ -78,7 +87,7 @@ interface FluentHtmlElement extends Htmlable
      * Will check if the desired id is already taken and if so set another unique id.
      *
      * @param string $desired_id id that will be used if not already taken
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withId($desired_id);
 
@@ -86,7 +95,7 @@ interface FluentHtmlElement extends Htmlable
      * Add one or more class names to the current element.
      *
      * @param string|callable|array|Arrayable $classes,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withClass($classes);
 
@@ -94,7 +103,7 @@ interface FluentHtmlElement extends Htmlable
      * Remove one or more class names from the current element.
      *
      * @param string|array|Arrayable $classes,...
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withoutClass($classes);
 
@@ -102,7 +111,7 @@ interface FluentHtmlElement extends Htmlable
      * Set the html element name.
      *
      * @param string|callable $html_element_name
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withHtmlElementName($html_element_name);
 
@@ -110,16 +119,25 @@ interface FluentHtmlElement extends Htmlable
      * Will not display current element if any added condition evaluates to false.
      *
      * @param bool|callable $condition
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function onlyDisplayedIf($condition);
 
     /**
      * Will not display current element if it has no content
      *
-     * @return \FewAgency\FluentHtml\FluentHtmlElement|FluentHtmlElement can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function onlyDisplayedIfHasContent();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods creating and returning new element
+    |--------------------------------------------------------------------------
+    |
+    | These methods creates and adds a new element relative to the current element.
+    |
+    */
 
     /**
      * Adds a new element last among this element's children and returns the new element.
@@ -190,6 +208,15 @@ interface FluentHtmlElement extends Htmlable
      */
     public function siblingsWrappedInElement($html_element_name, $tag_attributes = []);
 
+    /*
+    |--------------------------------------------------------------------------
+    | Methods returning existing element or a new empty element
+    |--------------------------------------------------------------------------
+    |
+    | Used (mostly internally) to navigate between elements
+    |
+    */
+
     /**
      * Get or generate the closest parent for this element, even if it's unnamed.
      *
@@ -204,6 +231,12 @@ interface FluentHtmlElement extends Htmlable
      * @return FluentHtmlElement representing the closest named parent or an unnamed parent if none found
      */
     public function getSiblingsCommonParent();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for finding out the state of this element
+    |--------------------------------------------------------------------------
+    */
 
     /**
      * Get the element's id string if set, or generate a new id.
@@ -251,6 +284,12 @@ interface FluentHtmlElement extends Htmlable
      */
     public function willRenderInHtml();
 
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for handling IdRegistrar
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * Get or set an IdRegistrar to use with this element tree.
      * If no parameter supplied this method will set the global HtmlIdRegistrar.
@@ -261,6 +300,17 @@ interface FluentHtmlElement extends Htmlable
      * @return IdRegistrar for this element's tree
      */
     public function idRegistrar(IdRegistrar $id_registrar = null);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods converting elements to strings etc
+    |--------------------------------------------------------------------------
+    |
+    | When evaluated as a string, the whole html tree containing this element
+    | will be returned.
+    | This is useful for echoing in templates for example.
+    |
+    */
 
     /**
      * Render element as html string.
