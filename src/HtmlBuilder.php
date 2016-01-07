@@ -1,8 +1,8 @@
 <?php namespace FewAgency\FluentHtml;
 
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 
 /**
  * Builds HTML string representations of elements from parameters.
