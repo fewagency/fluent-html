@@ -400,10 +400,12 @@ abstract class FluentHtmlElement implements Htmlable
 
     /*
     |--------------------------------------------------------------------------
-    | Methods returning existing element or a new empty element
+    | Methods returning an existing element in the tree
     |--------------------------------------------------------------------------
     |
-    | Used (mostly internally) to navigate between elements
+    | Used (mostly internally) to navigate between elements.
+    |
+    | May sometimes return a new empty element if the desired one doesn't yet exist.
     |
     */
 
@@ -439,7 +441,7 @@ abstract class FluentHtmlElement implements Htmlable
     /**
      * Get the root element of this element's tree.
      *
-     * @return $this|FluentHtmlElement
+     * @return FluentHtmlElement
      */
     protected function getRootElement()
     {
@@ -449,6 +451,8 @@ abstract class FluentHtmlElement implements Htmlable
             return $this->parent->getRootElement();
         }
     }
+
+    //TODO: add method returning closest ancestor that is instanceof
 
     /*
     |--------------------------------------------------------------------------
