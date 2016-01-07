@@ -1,14 +1,15 @@
 <?php namespace FewAgency\FluentHtml;
 
+use FewAgency\FluentHtml\Contracts\FluentHtmlElement;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
 /**
  * Fluent interface style HTML builder for building and displaying advanced elements structures.
  */
-class FluentHtml implements Htmlable
+class FluentHtml implements FluentHtmlElement
 {
     /**
      * Quote character used around html attributes' values
@@ -18,7 +19,7 @@ class FluentHtml implements Htmlable
 
     /**
      * This element's parent element, if any
-     * @var FluentHtml
+     * @var FluentHtmlElement
      */
     protected $parent;
 
@@ -73,7 +74,7 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml
+     * @return FluentHtmlElement
      */
     public static function create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
@@ -93,7 +94,7 @@ class FluentHtml implements Htmlable
      * Alias for withAppendedContent, to add html content last within this element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withContent($html_contents)
     {
@@ -104,7 +105,7 @@ class FluentHtml implements Htmlable
      * Add html content after existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withAppendedContent($html_contents)
     {
@@ -117,7 +118,7 @@ class FluentHtml implements Htmlable
      * Add html content before existing content in the current element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withPrependedContent($html_contents)
     {
@@ -130,7 +131,7 @@ class FluentHtml implements Htmlable
      * Add a raw string of html content last within this element.
      *
      * @param string $raw_html_content that will not be escaped
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withRawHtmlContent($raw_html_content)
     {
@@ -145,7 +146,7 @@ class FluentHtml implements Htmlable
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
      * @param string|callable $wrapping_html_element_name
      * @param array|Arrayable $wrapping_tag_attributes
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withContentWrappedIn($html_contents, $wrapping_html_element_name, $wrapping_tag_attributes = [])
     {
@@ -153,7 +154,7 @@ class FluentHtml implements Htmlable
             $wrapping_html_element_name,
             $wrapping_tag_attributes
         ) {
-            $this->withContent(self::create($wrapping_html_element_name, $html_content, $wrapping_tag_attributes)
+            $this->withContent((new FluentHtml($wrapping_html_element_name, $html_content, $wrapping_tag_attributes))
                 ->onlyDisplayedIfHasContent());
         });
 
@@ -167,7 +168,7 @@ class FluentHtml implements Htmlable
      *
      * @param string|callable|array|Arrayable $attributes Attribute name as string, can also be an array of names and values, or a callable returning such an array.
      * @param string|bool|callable|array|Arrayable $value to set, only used if $attributes is a string
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withAttribute($attributes, $value = true)
     {
@@ -186,7 +187,7 @@ class FluentHtml implements Htmlable
      * Remove one or more named attributes from the current element.
      *
      * @param string|array|Arrayable $attributes,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withoutAttribute($attributes)
     {
@@ -203,7 +204,7 @@ class FluentHtml implements Htmlable
      * Will check if the desired id is already taken and if so set another unique id.
      *
      * @param string $desired_id id that will be used if not already taken
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withId($desired_id)
     {
@@ -216,7 +217,7 @@ class FluentHtml implements Htmlable
      * Add one or more class names to the current element.
      *
      * @param string|callable|array|Arrayable $classes,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withClass($classes)
     {
@@ -227,7 +228,7 @@ class FluentHtml implements Htmlable
      * Remove one or more class names from the current element.
      *
      * @param string|array|Arrayable $classes,...
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withoutClass($classes)
     {
@@ -239,7 +240,7 @@ class FluentHtml implements Htmlable
      * Set the html element name.
      *
      * @param string|callable $html_element_name
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function withHtmlElementName($html_element_name)
     {
@@ -252,7 +253,7 @@ class FluentHtml implements Htmlable
      * Will not display current element if any added condition evaluates to false.
      *
      * @param bool|callable $condition
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function onlyDisplayedIf($condition)
     {
@@ -268,11 +269,11 @@ class FluentHtml implements Htmlable
     /**
      * Will not display current element if it has no content
      *
-     * @return $this|FluentHtml can be method-chained to modify the current element
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
     public function onlyDisplayedIfHasContent()
     {
-        $this->onlyDisplayedIf(function (FluentHtml $current_object) {
+        $this->onlyDisplayedIf(function (FluentHtmlElement $current_object) {
             return $current_object->hasContent();
         });
 
@@ -295,7 +296,7 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function containingElement($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
@@ -308,7 +309,7 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function endingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
@@ -324,7 +325,7 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function startingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
@@ -340,11 +341,11 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $e = new FluentHtml($html_element_name, $tag_contents, $tag_attributes);
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1, 0, $e);
 
         return $e;
@@ -356,11 +357,11 @@ class FluentHtml implements Htmlable
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $e = new FluentHtml($html_element_name, $tag_contents, $tag_attributes);
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this), 0, $e);
 
         return $e;
@@ -371,12 +372,12 @@ class FluentHtml implements Htmlable
      *
      * @param string|callable|null $html_element_name
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
         $parent = $this->getParentElement();
-        $wrapper = self::create($html_element_name, $this, $tag_attributes);
+        $wrapper = new FluentHtml($html_element_name, $this, $tag_attributes);
 
         $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
             if ($this === $item) {
@@ -396,12 +397,12 @@ class FluentHtml implements Htmlable
      *
      * @param string|callable|null $html_element_name
      * @param array|Arrayable $tag_attributes
-     * @return FluentHtml representing the new element
+     * @return FluentHtmlElement representing the new element
      */
     public function siblingsWrappedInElement($html_element_name, $tag_attributes = [])
     {
         $parent = $this->getSiblingsCommonParent();
-        $wrapper = self::create($html_element_name, $parent->html_contents, $tag_attributes);
+        $wrapper = new FluentHtml($html_element_name, $parent->html_contents, $tag_attributes);
 
         $parent->html_contents = new Collection();
         $parent->withContent($wrapper);
@@ -421,7 +422,7 @@ class FluentHtml implements Htmlable
     /**
      * Get or generate the closest parent for this element, even if it's unnamed.
      *
-     * @return FluentHtml existing parent object or a generated empty parent object
+     * @return FluentHtmlElement existing parent object or a generated empty parent object
      */
     public function getParentElement()
     {
@@ -432,7 +433,7 @@ class FluentHtml implements Htmlable
      * Get the closest named parent element or an unnamed parent if none found.
      * This is the common parent of this element and its siblings as rendered in html.
      *
-     * @return FluentHtml representing the closest named parent or an unnamed parent if none found
+     * @return FluentHtmlElement representing the closest named parent or an unnamed parent if none found
      */
     public function getSiblingsCommonParent()
     {
@@ -450,7 +451,7 @@ class FluentHtml implements Htmlable
     /**
      * Get the root element of this element's tree.
      *
-     * @return $this|FluentHtml
+     * @return $this|FluentHtmlElement
      */
     protected function getRootElement()
     {
@@ -580,7 +581,7 @@ class FluentHtml implements Htmlable
     /**
      * Get the offset of a specified piece of content within this element (internal).
      *
-     * @param FluentHtml|string|mixed $content to look for
+     * @param FluentHtmlElement|string|mixed $content to look for
      * @return mixed key for matching content, or false if not found
      */
     protected function getContentOffset($content)
@@ -695,16 +696,16 @@ class FluentHtml implements Htmlable
     | Many methods take callables as parameters, these will usually be invoked
     | upon rendering to get the final values.
     |
-    | The callables receives the current FluentHtml element as the first parameter.
+    | The callables receives the current FluentHtmlElement as the first parameter.
     | Use this with caution!
-    | Manipulating the FluentHtml object within the callable is not recommended,
+    | Manipulating the FluentHtmlElement object within the callable is not recommended,
     | use it for reading only!
     |
     */
 
     /**
      * Recursively evaluates input value if it's a callable, or returns the original value.
-     * The current FluentHtml object is sent to each callable as the first parameter.
+     * The current FluentHtmlElement object is sent to each callable as the first parameter.
      *
      * @param mixed $value to evaluate, if it's a callback it will be invoked.
      * @return mixed Evaluated value, guaranteed not to be a callable.
@@ -758,15 +759,15 @@ class FluentHtml implements Htmlable
 
     /**
      * Takes a multidimensional array of contents and flattens it.
-     * Also makes sure FluentHtml objects are cloned and have their parent set to the current object.
+     * Also makes sure FluentHtmlElement objects are cloned and have their parent set to the current object.
      *
-     * @param string|Htmlable|FluentHtml|array|Arrayable $html_contents,...
-     * @return Collection of contents that are ok to insert into a FluentHtml element
+     * @param string|Htmlable|FluentHtmlElement|array|Arrayable $html_contents,...
+     * @return Collection of contents that are ok to insert into a FluentHtmlElement element
      */
     protected function prepareContentsForInsertion($html_contents)
     {
         return HtmlBuilder::flatten(func_get_args())->map(function ($item) {
-            if ($item instanceof FluentHtml) {
+            if ($item instanceof FluentHtmlElement) {
                 if ($item->parent) {
                     $item = clone $item;
                 }
