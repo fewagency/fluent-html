@@ -494,6 +494,8 @@ This is the common parent of this element and its siblings as rendered in html.
 ##### `getRootElement()`
 Get the root element of this element's tree.
 
+TODO: document getAncestorInstanceOf()
+
 ### Element state methods
 These methods are used to query the properties and states of an element.
 Useful for conditionals within [closures as input](#closures-as-method-input).
