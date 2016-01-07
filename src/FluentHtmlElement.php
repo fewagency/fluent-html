@@ -55,14 +55,14 @@ abstract class FluentHtmlElement implements Htmlable
 
 
     /**
-     * Create and return a new basic FluentHtmlElement
+     * Create and return a new basic FluentHtmlElement instance
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
      * @return FluentHtmlElement
      */
-    abstract public function createFluentHtmlElement(
+    abstract protected function createFluentHtmlElement(
         $html_element_name = null,
         $tag_contents = [],
         $tag_attributes = []
