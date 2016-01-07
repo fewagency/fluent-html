@@ -78,7 +78,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public static function create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
-        return new static($html_element_name, $tag_contents, $tag_attributes);
+        return new self($html_element_name, $tag_contents, $tag_attributes);
     }
 
     /*
@@ -154,7 +154,7 @@ class FluentHtml implements FluentHtmlElement
             $wrapping_html_element_name,
             $wrapping_tag_attributes
         ) {
-            $this->withContent((new FluentHtml($wrapping_html_element_name, $html_content, $wrapping_tag_attributes))
+            $this->withContent(self::create($wrapping_html_element_name, $html_content, $wrapping_tag_attributes)
                 ->onlyDisplayedIfHasContent());
         });
 
@@ -313,7 +313,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public function endingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $e = new self($html_element_name, $tag_contents, $tag_attributes);
         $this->withContent($e);
 
         return $e;
@@ -329,7 +329,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public function startingWithElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new static($html_element_name, $tag_contents, $tag_attributes);
+        $e = new self($html_element_name, $tag_contents, $tag_attributes);
         $this->withPrependedContent($e);
 
         return $e;
@@ -345,7 +345,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new FluentHtml($html_element_name, $tag_contents, $tag_attributes);
+        $e = new self($html_element_name, $tag_contents, $tag_attributes);
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1, 0, $e);
 
         return $e;
@@ -361,7 +361,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
-        $e = new FluentHtml($html_element_name, $tag_contents, $tag_attributes);
+        $e = new self($html_element_name, $tag_contents, $tag_attributes);
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this), 0, $e);
 
         return $e;
@@ -377,7 +377,7 @@ class FluentHtml implements FluentHtmlElement
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
         $parent = $this->getParentElement();
-        $wrapper = new FluentHtml($html_element_name, $this, $tag_attributes);
+        $wrapper = new self($html_element_name, $this, $tag_attributes);
 
         $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
             if ($this === $item) {
@@ -402,7 +402,7 @@ class FluentHtml implements FluentHtmlElement
     public function siblingsWrappedInElement($html_element_name, $tag_attributes = [])
     {
         $parent = $this->getSiblingsCommonParent();
-        $wrapper = new FluentHtml($html_element_name, $parent->html_contents, $tag_attributes);
+        $wrapper = new self($html_element_name, $parent->html_contents, $tag_attributes);
 
         $parent->html_contents = new Collection();
         $parent->withContent($wrapper);
@@ -426,7 +426,7 @@ class FluentHtml implements FluentHtmlElement
      */
     public function getParentElement()
     {
-        return $this->parent ?: new FluentHtml(null, $this);
+        return $this->parent ?: new self(null, $this);
     }
 
     /**
