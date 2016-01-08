@@ -308,6 +308,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`getParentElement()`](#getparentelement)
         * [`getSiblingsCommonParent()`](#getsiblingscommonparent)
         * [`getRootElement()`](#getrootelement)
+        * [`getAncestorInstanceOf()`](#getAncestorInstanceOf)
 * [Element state methods](#element-state-methods)
     * [`getId()`](#getiddesired_id--null)
     * [`hasClass()`](#hasclassclass)
@@ -494,7 +495,10 @@ This is the common parent of this element and its siblings as rendered in html.
 ##### `getRootElement()`
 Get the root element of this element's tree.
 
-TODO: document getAncestorInstanceOf()
+##### `getAncestorInstanceOf($type)`
+Get the closest ancestor that is an [instance of](http://php.net/manual/en/language.operators.type.php) the supplied type.
+Remember to supply the fully qualified class name.
+Returns `null` if none found.
 
 ### Element state methods
 These methods are used to query the properties and states of an element.
