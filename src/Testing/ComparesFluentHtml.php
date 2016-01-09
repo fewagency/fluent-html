@@ -1,11 +1,11 @@
 <?php
+namespace FewAgency\FluentHtml\Testing;
 
 use FewAgency\FluentHtml\FluentHtml;
 
-//TODO: break this out into two separate traits in src/Testing
-
-abstract class FluentHtmlTestCase extends PHPUnit_Framework_TestCase
+trait ComparesFluentHtml
 {
+    use MakesHtmlComparable;
 
     /**
      * Helper assertion to check if html strings can be considered equal
@@ -17,15 +17,5 @@ abstract class FluentHtmlTestCase extends PHPUnit_Framework_TestCase
     {
         static::assertEquals(static::comparableHtml($expected), static::comparableHtml($e),
             $message ?: 'Not matching HTML string');
-    }
-
-    /**
-     * Replaces any whitespace characters with a single space
-     * @param $html_string
-     * @return string
-     */
-    protected static function comparableHtml($html_string)
-    {
-        return preg_replace('/\s+/', ' ', $html_string);
     }
 }

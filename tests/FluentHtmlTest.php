@@ -1,11 +1,10 @@
 <?php
-include('FluentHtmlTestCase.php');
-
+use FewAgency\FluentHtml\Testing\ComparesFluentHtml;
 use FewAgency\FluentHtml\FluentHtml;
 
-class FluentHtmlTest extends FluentHtmlTestCase
+class FluentHtmlTest extends PHPUnit_Framework_TestCase
 {
-
+    use ComparesFluentHtml;
 
     public function testCanBeInstantiated()
     {
@@ -557,7 +556,8 @@ class FluentHtmlTest extends FluentHtmlTestCase
         $this->assertEquals(3, $e->getContentCount());
     }
 
-    public function testGetAncestorInstanceOf() {
+    public function testGetAncestorInstanceOf()
+    {
         $outer = FluentHtml::create('p');
         $inner = $outer->containingElement('br');
 
