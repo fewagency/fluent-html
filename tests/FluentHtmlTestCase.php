@@ -2,6 +2,8 @@
 
 use FewAgency\FluentHtml\FluentHtml;
 
+//TODO: break this out into two separate traits in src/Testing
+
 abstract class FluentHtmlTestCase extends PHPUnit_Framework_TestCase
 {
 

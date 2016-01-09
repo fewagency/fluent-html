@@ -5,6 +5,7 @@ use Illuminate\Support\Collection;
 
 class HtmlBuilderTest extends PHPUnit_Framework_TestCase
 {
+    //TODO: use a trait instead of this helper
     protected static function comparableHtml($html_string)
     {
         return str_replace("\n", ' ', $html_string);

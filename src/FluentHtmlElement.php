@@ -7,6 +7,8 @@ use Illuminate\Support\HtmlString;
 
 // All usage of func_get_args() in this class can be replaced by ... on PHP >= 5.6 http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list
 
+//TODO: rename FluentHtmlElement to AbstractFluentHtml
+
 /**
  * Fluent interface style HTML builder for building and displaying advanced elements structures.
  */
