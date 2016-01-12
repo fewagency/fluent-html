@@ -29,7 +29,7 @@ trait ComparesFluentHtml
     {
         $e->withHtmlElementName(null); //Removing the tag name makes the element hidden in html
 
-        static::assertEquals(static::comparableHtml($expected), static::comparableHtml($e),
+        static::assertEquals(static::comparableHtml($expected), static::comparableHtml($e->toHtml()),
             $message ?: 'FluentHtml contents not matching HTML string');
     }
 }
