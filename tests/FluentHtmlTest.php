@@ -565,4 +565,16 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertNull($outer->getAncestorInstanceOf('FewAgency\FluentHtml\FluentHtml'));
     }
 
+    public function testWithDefaultContent()
+    {
+        $e = FluentHtml::create('p')->onlyDisplayedIfHasContent();
+        $e->withDefaultContent('A');
+
+        $this->assertHtmlEquals('<p>A</p>', $e);
+
+        $e->withContent('B');
+
+        $this->assertHtmlEquals('<p>B</p>', $e);
+    }
+
 }

@@ -283,6 +283,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`withPrependedContent()`](#withprependedcontenthtml_contents)
         * [`withRawHtmlContent()`](#withrawhtmlcontentraw_html_content)
         * [`withContentWrappedIn()`](#withcontentwrappedinhtml_contents-wrapping_html_element_name-wrapping_tag_attributes--)
+        * [`withDefaultContent()`](#withdefaultcontenthtml_contents)
     - [Manipulating attributes](#manipulating-attributes)
         * [`withAttribute()`](#withattributeattributes-value--true)
         * [`withoutAttribute()`](#withoutattributeattributes)
@@ -384,6 +385,10 @@ Add html contents last within this element, with each inserted new content wrapp
 @param string|callable $wrapping_html_element_name
 @param array|Arrayable $wrapping_tag_attributes
 ```
+
+##### `withDefaultContent($html_contents)`
+Set html content to display as default if no other content is set.
+Same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 #### Manipulating attributes
 

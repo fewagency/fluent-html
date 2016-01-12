@@ -49,6 +49,12 @@ abstract class FluentHtmlElement implements Htmlable
     protected $html_contents;
 
     /**
+     * This element's default html content
+     * @var Collection
+     */
+    protected $default_html_contents;
+
+    /**
      * This element tree's id registrar for keeping id's unique
      * Usually the root element's registrar is used
      * @var IdRegistrar
@@ -147,6 +153,19 @@ abstract class FluentHtmlElement implements Htmlable
                 static::createFluentHtmlElement($wrapping_html_element_name, $html_content, $wrapping_tag_attributes)
                     ->onlyDisplayedIfHasContent());
         });
+
+        return $this;
+    }
+
+    /**
+     * Set default html content to be used only if no other content is rendered.
+     *
+     * @param string|Htmlable|callable|array|Arrayable $html_contents,...
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function withDefaultContent($html_contents)
+    {
+        $this->default_html_contents = $this->prepareContentsForInsertion(func_get_args());
 
         return $this;
     }
@@ -548,8 +567,9 @@ abstract class FluentHtmlElement implements Htmlable
     public function hasContent()
     {
         $html_contents = $this->evaluate($this->html_contents);
+        $default_html_contents = $this->evaluate($this->default_html_contents);
 
-        return (bool)HtmlBuilder::buildContentsString($html_contents);
+        return (bool)(HtmlBuilder::buildContentsString($html_contents) or HtmlBuilder::buildContentsString($default_html_contents));
     }
 
     /**
@@ -675,6 +695,9 @@ abstract class FluentHtmlElement implements Htmlable
         }
 
         $html_contents = $this->evaluate($this->html_contents);
+        if (empty($html_contents) or ($html_contents instanceof Collection and $html_contents->isEmpty())) {
+            $html_contents = $this->evaluate($this->default_html_contents);
+        }
         $html_element_name = $this->evaluate($this->html_element_name);
         if ($html_element_name) {
             $html_attributes = $this->evaluate($this->html_attributes);
