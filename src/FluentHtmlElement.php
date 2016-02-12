@@ -52,7 +52,7 @@ abstract class FluentHtmlElement implements Htmlable
      * This element's default html content
      * @var Collection
      */
-    protected $default_html_contents;
+    private $default_html_contents;
 
     /**
      * This element tree's id registrar for keeping id's unique
