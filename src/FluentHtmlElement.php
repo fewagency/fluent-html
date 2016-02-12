@@ -28,7 +28,7 @@ abstract class FluentHtmlElement implements Htmlable
      * If any item in the collection evaluates to false, this element and its children should be excluded from string
      * @var Collection
      */
-    protected $render_in_html;
+    private $render_in_html;
 
     /**
      * This element's html tag name, if any
@@ -60,6 +60,23 @@ abstract class FluentHtmlElement implements Htmlable
      * @var IdRegistrar
      */
     protected $id_registrar;
+
+
+    /**
+     * @param string|callable|null $html_element_name
+     * @param string|Htmlable|array|Arrayable $tag_contents
+     * @param array|Arrayable $tag_attributes
+     */
+    public function __construct($html_element_name = null, $tag_contents = [], $tag_attributes = [])
+    {
+        $this->html_attributes = new Collection();
+        $this->html_contents = new Collection();
+        $this->render_in_html = new Collection();
+
+        $this->withHtmlElementName($html_element_name);
+        $this->withContent($tag_contents);
+        $this->withAttribute($tag_attributes);
+    }
 
 
     /**
