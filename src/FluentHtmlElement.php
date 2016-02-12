@@ -34,7 +34,7 @@ abstract class FluentHtmlElement implements Htmlable
      * This element's html tag name, if any
      * @var string|callable
      */
-    protected $html_element_name;
+    private $html_element_name;
 
     /**
      * This element's attributes
@@ -449,7 +449,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function getSiblingsCommonParent()
     {
         if ($this->hasParent()) {
-            if ($this->getParent()->html_element_name) {
+            if ($this->getParent()->hasHtmlElementName()) {
                 return $this->getParent();
             } else {
                 return $this->getParent()->getSiblingsCommonParent();
@@ -626,6 +626,26 @@ abstract class FluentHtmlElement implements Htmlable
         return (bool)$this->getParent();
     }
 
+    /**
+     * Find out if this element has an element name set.
+     *
+     * @return bool true if the element name has been set (even if it's a callable that returns nothing)
+     */
+    protected function hasHtmlElementName()
+    {
+        return !empty($this->html_element_name);
+    }
+
+    /**
+     * Get the evaluated element name.
+     *
+     * @return string|null
+     */
+    protected function getHtmlElementName()
+    {
+        return $this->evaluate($this->html_element_name);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods for handling IdRegistrar
@@ -708,7 +728,7 @@ abstract class FluentHtmlElement implements Htmlable
         if (empty($html_contents) or ($html_contents instanceof Collection and $html_contents->isEmpty())) {
             $html_contents = $this->evaluate($this->default_html_contents);
         }
-        $html_element_name = $this->evaluate($this->html_element_name);
+        $html_element_name = $this->getHtmlElementName();
         if ($html_element_name) {
             $html_attributes = $this->evaluate($this->html_attributes);
 
@@ -771,7 +791,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function __debugInfo()
     {
         $info['OBJECT#'] = spl_object_hash($this);
-        $html_element_name = $this->evaluate($this->html_element_name);
+        $html_element_name = $this->getHtmlElementName();
         if ($html_element_name) {
             $info['tag'] = $html_element_name;
             $html_attributes = $this->evaluate($this->html_attributes);
@@ -780,7 +800,7 @@ abstract class FluentHtmlElement implements Htmlable
             }
         }
         if ($this->hasParent()) {
-            $info['parent']['tag'] = $this->getParent()->html_element_name; //TODO: create method getHtmlElementName()
+            $info['parent']['tag'] = $this->getParent()->getHtmlElementName();
             $info['parent']['OBJECT#'] = spl_object_hash($this->getParent());
             //$info['parent'] = $this->parent->__debugInfo();
         }
