@@ -59,7 +59,7 @@ abstract class FluentHtmlElement implements Htmlable
      * Usually the root element's registrar is used
      * @var IdRegistrar
      */
-    protected $id_registrar;
+    private $id_registrar;
 
     /**
      * @param string|callable|null $html_element_name
@@ -718,7 +718,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function idRegistrar(IdRegistrar $id_registrar = null)
     {
         if ($this->isRootElement()) {
-            if (empty($this->id_registrar)) {
+            if (!$this->hasIdRegistrar()) {
                 $this->id_registrar = $id_registrar ?: HtmlIdRegistrar::getGlobalInstance();
             }
 
@@ -726,6 +726,16 @@ abstract class FluentHtmlElement implements Htmlable
         }
 
         return $this->getRootElement()->idRegistrar($id_registrar);
+    }
+
+    /**
+     * Find out if this element has an IdRegistrar
+     *
+     * @return bool true if IdRegistrar is set explicitly on this element
+     */
+    public function hasIdRegistrar()
+    {
+        return !empty($this->id_registrar);
     }
 
     /*
@@ -866,11 +876,11 @@ abstract class FluentHtmlElement implements Htmlable
                 if ($item->hasParent()) {
                     $item = clone $item;
                 }
-                $item->setParent($this);
                 // Reuse inserted element's IdRegistrar upwards in the tree if element has one and the tree doesn't
-                if ($item->id_registrar) {
-                    $this->idRegistrar($item->id_registrar);
+                if ($item->hasIdRegistrar()) {
+                    $this->idRegistrar($item->idRegistrar());
                 }
+                $item->setParent($this);
             }
 
             return $item;
