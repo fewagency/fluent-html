@@ -22,7 +22,7 @@ abstract class FluentHtmlElement implements Htmlable
      * This element's parent element, if any
      * @var FluentHtmlElement
      */
-    protected $parent;
+    private $parent;
 
     /**
      * If any item in the collection evaluates to false, this element and its children should be excluded from string
@@ -390,7 +390,7 @@ abstract class FluentHtmlElement implements Htmlable
 
         $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
             if ($this === $item) {
-                $wrapper->parent = $parent;
+                $wrapper->setParent($parent);
 
                 return $wrapper;
             } else {
@@ -437,7 +437,7 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function getParentElement()
     {
-        return $this->parent ?: static::createFluentHtmlElement(null, $this);
+        return $this->getParent() ?: static::createFluentHtmlElement(null, $this);
     }
 
     /**
@@ -448,11 +448,11 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function getSiblingsCommonParent()
     {
-        if ($this->parent) {
-            if ($this->parent->html_element_name) {
-                return $this->parent;
+        if ($this->hasParent()) {
+            if ($this->getParent()->html_element_name) {
+                return $this->getParent();
             } else {
-                return $this->parent->getSiblingsCommonParent();
+                return $this->getParent()->getSiblingsCommonParent();
             }
         } else {
             return $this->getParentElement();
@@ -469,7 +469,7 @@ abstract class FluentHtmlElement implements Htmlable
         if ($this->isRootElement()) {
             return $this;
         } else {
-            return $this->parent->getRootElement();
+            return $this->getParent()->getRootElement();
         }
     }
 
@@ -481,11 +481,11 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function getAncestorInstanceOf($type)
     {
-        if (!$this->parent) {
+        if (!$this->hasParent()) {
             return null;
         }
 
-        return ($this->parent instanceof $type) ? $this->parent : $this->parent->getAncestorInstanceOf($type);
+        return ($this->getParent() instanceof $type) ? $this->getParent() : $this->getParent()->getAncestorInstanceOf($type);
     }
 
     /*
@@ -602,7 +602,7 @@ abstract class FluentHtmlElement implements Htmlable
      */
     protected function isRootElement()
     {
-        return !$this->parent;
+        return !$this->hasParent();
     }
 
     /**
@@ -614,6 +614,16 @@ abstract class FluentHtmlElement implements Htmlable
     protected function getContentOffset($content)
     {
         return $this->html_contents->search($content);
+    }
+
+    /**
+     * Find out if this element has a parent element.
+     *
+     * @return bool true if this element has a parent element
+     */
+    protected function hasParent()
+    {
+        return (bool)$this->getParent();
     }
 
     /*
@@ -769,9 +779,9 @@ abstract class FluentHtmlElement implements Htmlable
                 $info['attributes'] = $html_attributes->toArray();
             }
         }
-        if ($this->parent) {
-            $info['parent']['tag'] = $this->parent->html_element_name;
-            $info['parent']['OBJECT#'] = spl_object_hash($this->parent);
+        if ($this->hasParent()) {
+            $info['parent']['tag'] = $this->getParent()->html_element_name; //TODO: create method getHtmlElementName()
+            $info['parent']['OBJECT#'] = spl_object_hash($this->getParent());
             //$info['parent'] = $this->parent->__debugInfo();
         }
         foreach ($this->html_contents as $content) {
@@ -802,10 +812,10 @@ abstract class FluentHtmlElement implements Htmlable
     {
         return HtmlBuilder::flatten(func_get_args())->map(function ($item) {
             if ($item instanceof FluentHtmlElement) {
-                if ($item->parent) {
+                if ($item->hasParent()) {
                     $item = clone $item;
                 }
-                $item->parent = $this;
+                $item->setParent($this);
                 // Reuse inserted element's IdRegistrar upwards in the tree if element has one and the tree doesn't
                 if ($item->id_registrar) {
                     $this->idRegistrar($item->id_registrar);
@@ -841,7 +851,32 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function __clone()
     {
-        $this->parent = null;
+        $this->setParent(null);
         $this->html_contents = $this->prepareContentsForInsertion($this->html_contents);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods for handling internals
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get this element's parent element.
+     * For internal access (without creating a blank parent), see getParentElement() for other use
+     * @return FluentHtmlElement|null
+     */
+    protected function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set this element's parent element
+     * @param FluentHtmlElement|null $parent
+     */
+    protected function setParent(FluentHtmlElement $parent = null)
+    {
+        $this->parent = $parent;
     }
 }
