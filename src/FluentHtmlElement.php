@@ -40,13 +40,13 @@ abstract class FluentHtmlElement implements Htmlable
      * This element's attributes
      * @var Collection
      */
-    protected $html_attributes;
+    private $html_attributes;
 
     /**
      * This element's html content
      * @var Collection
      */
-    protected $html_contents;
+    private $html_contents;
 
     /**
      * This element's default html content
@@ -69,7 +69,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function __construct($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
         $this->html_attributes = new Collection();
-        $this->html_contents = new Collection();
+        $this->clearContents();
         $this->render_in_html = new Collection();
 
         $this->withHtmlElementName($html_element_name);
@@ -181,6 +181,18 @@ abstract class FluentHtmlElement implements Htmlable
     public function withDefaultContent($html_contents)
     {
         $this->default_html_contents = $this->prepareContentsForInsertion(func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * Clear all set contents.
+     *
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    protected function clearContents()
+    {
+        $this->html_contents = new Collection();
 
         return $this;
     }
@@ -428,8 +440,7 @@ abstract class FluentHtmlElement implements Htmlable
         $parent = $this->getSiblingsCommonParent();
         $wrapper = static::createFluentHtmlElement($html_element_name, $parent->html_contents, $tag_attributes);
 
-        $parent->html_contents = new Collection();
-        $parent->withContent($wrapper);
+        $parent->clearContents()->withContent($wrapper);
 
         return $wrapper;
     }
@@ -801,6 +812,7 @@ abstract class FluentHtmlElement implements Htmlable
 
     /**
      * Return debug data for this object
+     *
      * @return mixed
      */
     public function __debugInfo()
@@ -820,11 +832,15 @@ abstract class FluentHtmlElement implements Htmlable
             //$info['parent'] = $this->parent->__debugInfo();
         }
         foreach ($this->html_contents as $content) {
-            $content_html_element_name = (string)$content->html_element_name;
-            if (!isset($info['contents'][$content_html_element_name])) {
-                $info['contents'][$content_html_element_name] = 0;
+            if ($content instanceof FluentHtmlElement) {
+                $content_html_element_name = (string)$content->getHtmlElementName();
+                if (!isset($info['contents'][$content_html_element_name])) {
+                    $info['contents'][$content_html_element_name] = 0;
+                }
+                $info['contents'][$content_html_element_name]++;
+            } else {
+                $info['contents'][] = $content;
             }
-            $info['contents'][$content_html_element_name]++;
         }
 
         return $info;
@@ -899,6 +915,7 @@ abstract class FluentHtmlElement implements Htmlable
     /**
      * Get this element's parent element.
      * For internal access (without creating a blank parent), see getParentElement() for other use
+     *
      * @return FluentHtmlElement|null
      */
     protected function getParent()
@@ -908,6 +925,7 @@ abstract class FluentHtmlElement implements Htmlable
 
     /**
      * Set this element's parent element
+     *
      * @param FluentHtmlElement|null $parent
      */
     protected function setParent(FluentHtmlElement $parent = null)
