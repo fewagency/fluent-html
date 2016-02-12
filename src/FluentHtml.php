@@ -3,7 +3,6 @@ namespace FewAgency\FluentHtml;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Collection;
 
 class FluentHtml extends FluentHtmlElement
 {

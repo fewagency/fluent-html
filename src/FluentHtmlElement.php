@@ -61,7 +61,6 @@ abstract class FluentHtmlElement implements Htmlable
      */
     protected $id_registrar;
 
-
     /**
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -77,7 +76,6 @@ abstract class FluentHtmlElement implements Htmlable
         $this->withContent($tag_contents);
         $this->withAttribute($tag_attributes);
     }
-
 
     /**
      * Create and return a new basic FluentHtmlElement instance
