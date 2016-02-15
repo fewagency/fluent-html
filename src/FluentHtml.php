@@ -59,6 +59,8 @@ class FluentHtml extends FluentHtmlElement
         if ($this->hasParent()) {
             return $this->getParent()->createInstanceOf($classname, $parameters);
         }
+        $message = "$classname could not be created by " . __METHOD__;
+        throw new \InvalidArgumentException($message);
     }
 
 }

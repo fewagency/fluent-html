@@ -13,4 +13,12 @@ class FluentHtmlInheritanceTest extends PHPUnit_Framework_TestCase
 
         $this->assertHtmlEquals('A content B content <p>B sub content</p>', $e);
     }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testCreatingMissingSubclass()
+    {
+        (new FluentTestInheritorElementA())->createMissingSubclass();
+    }
 }
