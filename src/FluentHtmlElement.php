@@ -97,6 +97,15 @@ abstract class FluentHtmlElement implements Htmlable
         $tag_attributes = []
     );
 
+    /**
+     * Create and return an instance of a FluentHtml subclass
+     *
+     * @param string $classname
+     * @param array $parameters
+     * @return FluentHtmlElement
+     */
+    abstract protected function createInstanceOf($classname, $parameters = []);
+
     /*
     |--------------------------------------------------------------------------
     | Methods modifying and returning same element
@@ -947,6 +956,6 @@ abstract class FluentHtmlElement implements Htmlable
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
-        //TODO: trigger parent-set event
+        //TODO: trigger a parent-set event
     }
 }
