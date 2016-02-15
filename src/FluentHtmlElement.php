@@ -61,6 +61,12 @@ abstract class FluentHtmlElement implements Htmlable
      */
     private $id_registrar;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Methods creating new elements
+    |--------------------------------------------------------------------------
+    */
+
     /**
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -941,5 +947,6 @@ abstract class FluentHtmlElement implements Htmlable
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
+        //TODO: trigger parent-set event
     }
 }
