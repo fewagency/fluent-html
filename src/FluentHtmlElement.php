@@ -949,13 +949,13 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
-     * Set this element's parent element
+     * Set this element's parent element.
+     * Can be overridden in subclasses to "boot" the element upon insertion into a tree.
      *
      * @param FluentHtmlElement|null $parent
      */
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
-        //TODO: trigger a parent-set event
     }
 }
