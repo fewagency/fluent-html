@@ -133,8 +133,8 @@ class HtmlBuilder
             if (is_object($attribute_value) and !method_exists($attribute_value, '__toString')) {
                 $attribute_value = false;
             }
+            $attribute_value = self::flattenAttributeValue($attribute_name, $attribute_value);
             if ($attribute_value !== false and !is_null($attribute_value)) {
-                $attribute_value = self::flattenAttributeValue($attribute_name, $attribute_value);
                 $attributes_string .= ' ' . self::escapeHtml($attribute_name);
                 if ($attribute_value !== true) {
                     $attributes_string .= '=' . $attribute_quote_char . self::escapeHtml($attribute_value) . $attribute_quote_char;
@@ -198,10 +198,10 @@ class HtmlBuilder
                     $values = array_diff($values, [$key]);
                 }
             }
-            $attribute_value = implode($attribute_name == 'class' ? ' ' : ',', $values);
-            if($attribute_value === '') {
-                $attribute_value = null;
+            if (count($values) < 1) {
+                return null;
             }
+            $attribute_value = implode($attribute_name == 'class' ? ' ' : ',', $values);
         }
 
         return $attribute_value;

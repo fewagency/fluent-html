@@ -157,4 +157,9 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase
         ]));
     }
 
+    public function testEmptyClassAttribute()
+    {
+        $this->assertEquals('<br>', HtmlBuilder::buildHtmlElement('br', ['class' => ['a' => false]]));
+    }
+
 }
