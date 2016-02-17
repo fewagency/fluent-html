@@ -199,6 +199,9 @@ class HtmlBuilder
                 }
             }
             $attribute_value = implode($attribute_name == 'class' ? ' ' : ',', $values);
+            if($attribute_value === '') {
+                $attribute_value = null;
+            }
         }
 
         return $attribute_value;
