@@ -112,8 +112,8 @@ class HtmlBuilder
                 return $item;
             }
         })->filter(function ($item) {
-            //Filter out empty strings and such
-            return !is_null($item) and !is_bool($item) and '' !== $item;
+            //Filter out empty strings and booleans
+            return isset($item) and !is_bool($item) and '' !== $item;
         })->implode("\n");
     }
 
@@ -134,7 +134,7 @@ class HtmlBuilder
                 $attribute_value = false;
             }
             $attribute_value = self::flattenAttributeValue($attribute_name, $attribute_value);
-            if ($attribute_value !== false and !is_null($attribute_value)) {
+            if (isset($attribute_value) and $attribute_value !== false) {
                 $attributes_string .= ' ' . self::escapeHtml($attribute_name);
                 if ($attribute_value !== true) {
                     $attributes_string .= '=' . $attribute_quote_char . self::escapeHtml($attribute_value) . $attribute_quote_char;

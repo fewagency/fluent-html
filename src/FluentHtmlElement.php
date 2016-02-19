@@ -900,8 +900,8 @@ abstract class FluentHtmlElement implements Htmlable
 
             return $item;
         })->filter(function ($item) {
-            //Filter out empty strings and such
-            return !is_null($item) and !is_bool($item) and '' !== $item;
+            //Filter out empty strings and booleans
+            return isset($item) and !is_bool($item) and '' !== $item;
         });
     }
 
