@@ -10,7 +10,7 @@ class FluentHtml extends FluentHtmlElement
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
      * @param array|Arrayable $tag_attributes
-     * @return static
+     * @return FluentHtml
      */
     public static function create($html_element_name = null, $tag_contents = [], $tag_attributes = [])
     {
