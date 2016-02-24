@@ -63,7 +63,7 @@ class IdRegistrar
         //Isolate any appended section of digits
         preg_match('/^(.+?)(\d+)?$/', $desired_id, $matches);
         $base_id = $matches[1];
-        $next_number = max(isset($matches[2]) ? $matches[2] : null, 1) + 1;
+        $next_number = max(isset($matches[2]) ? $matches[2] : 0, 1) + 1;
 
         //Recursively try the next numbered id
         return $this->unique($base_id . $next_number);
