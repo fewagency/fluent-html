@@ -1,7 +1,7 @@
 <?php
 namespace FewAgency\FluentHtml\Testing;
 
-use FewAgency\FluentHtml\FluentHtml;
+use FewAgency\FluentHtml\FluentHtmlElement;
 
 trait ComparesFluentHtml
 {
@@ -9,11 +9,11 @@ trait ComparesFluentHtml
 
     /**
      * Helper assertion to check if FluentHtml html can be considered equal to expected string
-     * @param $expected
-     * @param FluentHtml $e
+     * @param string $expected
+     * @param FluentHtmlElement $e
      * @param string|null $message
      */
-    protected static function assertHtmlEquals($expected, FluentHtml $e, $message = null)
+    protected static function assertHtmlEquals($expected, FluentHtmlElement $e, $message = null)
     {
         static::assertEquals(static::comparableHtml($expected), static::comparableHtml($e),
             $message ?: 'FluentHtml not matching HTML string');
@@ -21,11 +21,11 @@ trait ComparesFluentHtml
 
     /**
      * Helper assertion to check if FluentHtml html content can be considered equal to expected string
-     * @param $expected
-     * @param FluentHtml $e
+     * @param string $expected
+     * @param FluentHtmlElement $e
      * @param string|null $message
      */
-    protected static function assertHtmlContentEquals($expected, FluentHtml $e, $message = null)
+    protected static function assertHtmlContentEquals($expected, FluentHtmlElement $e, $message = null)
     {
         $e->withHtmlElementName(null); //Removing the tag name makes the element hidden in html
 
