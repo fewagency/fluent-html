@@ -75,8 +75,11 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
 Very prone to errors sneaking in.
-Using [`FluentHtml`](src/FluentHtml.php) the code would probably take about the same space, but it would be a lot more readable,
-guaranteed to print correct and well-formatted HTML, and can be split in manageable and reusable chunks, like this:
+Using [`FluentHtml`](src/FluentHtml.php) the code would probably take about the same space,
+but it would be a lot more readable,
+guaranteed to print correct and well-formatted HTML,
+and can be split in manageable and reusable chunks,
+like this:
 
 ```php
 // Bootstrap form-group example
@@ -539,9 +542,6 @@ Returns `false` if any condition for rendering the element fails.
      
 ##### `isRootElement()`
 Find out if this element is the root of the element tree.
-
-## Facades
-TODO: test and document facades!
 
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
