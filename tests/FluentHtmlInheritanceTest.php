@@ -1,5 +1,4 @@
 <?php
-use FewAgency\FluentHtml\FluentHtml;
 use FewAgency\FluentHtml\Testing\ComparesFluentHtml;
 use FewAgency\FluentHtml\Testing\FluentTestInheritorElementA;
 
