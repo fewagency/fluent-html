@@ -72,10 +72,14 @@ class HtmlBuilder
 
         $tag_parts = array_filter($tag_parts, 'strlen');
 
-        return implode(
-            strlen(implode($tag_parts)) > 80 || str_contains($tag_parts['content'], "\n") ? "\n" : '',
-            $tag_parts
-        );
+        $glue = '';
+        if (strlen(implode($tag_parts)) > 80 or
+            (isset($tag_parts['content']) and str_contains($tag_parts['content'], "\n"))
+        ) {
+            $glue = "\n";
+        }
+
+        return implode($glue, $tag_parts);
     }
 
     /**
@@ -270,7 +274,7 @@ class HtmlBuilder
      * @param mixed $value to evaluate, any contained callbacks will be invoked.
      * @return mixed Evaluated value, guaranteed not to be a callable.
      */
-    protected function evaluate($value)
+    protected static function evaluate($value)
     {
         if (self::useAsCallable($value)) {
             return self::evaluate(call_user_func($value));
