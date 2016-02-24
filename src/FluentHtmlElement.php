@@ -67,20 +67,11 @@ abstract class FluentHtmlElement implements Htmlable
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * @param string|callable|null $html_element_name
-     * @param string|Htmlable|array|Arrayable $tag_contents
-     * @param array|Arrayable $tag_attributes
-     */
-    public function __construct($html_element_name = null, $tag_contents = [], $tag_attributes = [])
+    public function __construct()
     {
-        $this->html_attributes = new Collection();
+        $this->clearAttributes();
         $this->clearContents();
         $this->render_in_html = new Collection();
-
-        $this->withHtmlElementName($html_element_name);
-        $this->withContent($tag_contents);
-        $this->withAttribute($tag_attributes);
     }
 
     /**
@@ -91,20 +82,46 @@ abstract class FluentHtmlElement implements Htmlable
      * @param array|Arrayable $tag_attributes
      * @return FluentHtmlElement
      */
-    abstract protected function createFluentHtmlElement(
+    protected static function createFluentHtmlElement(
         $html_element_name = null,
         $tag_contents = [],
         $tag_attributes = []
-    );
+    ) {
+        return FluentHtml::create($html_element_name, $tag_contents, $tag_attributes);
+    }
 
     /**
-     * Create and return an instance of a FluentHtml subclass
+     * Create and return an instance of another FluentHtmlElement subclass.
+     *
+     * First look in each of the namespaces up through the class hierarchy,
+     * then ask the parent FluentHtmlElement if set.
      *
      * @param string $classname
      * @param array $parameters
      * @return FluentHtmlElement
      */
-    abstract protected function createInstanceOf($classname, $parameters = []);
+    protected function createInstanceOf($classname, $parameters = [])
+    {
+        // Check for class relative the initially called class's namespace
+        $class_refl = new \ReflectionClass(get_called_class());
+        do {
+            $class_ns = $class_refl->getNamespaceName();
+            $namespaced_classname = $class_ns . '\\' . $classname;
+            if (class_exists($namespaced_classname)) {
+                // If found, create and return new instance with $parameters to constructor
+                $class_refl = new \ReflectionClass($namespaced_classname);
+
+                return $class_refl->newInstanceArgs($parameters);
+            }
+            // try again in parent class' namespace if parent class exists
+        } while ($class_refl = $class_refl->getParentClass());
+        // If not found in parent classes, hand off to the parent FluentHtmlElement
+        if ($this->hasParent()) {
+            return $this->getParent()->createInstanceOf($classname, $parameters);
+        }
+        $message = "$classname could not be created by " . __METHOD__;
+        throw new \InvalidArgumentException($message);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -208,6 +225,18 @@ abstract class FluentHtmlElement implements Htmlable
     protected function clearContents()
     {
         $this->html_contents = new Collection();
+
+        return $this;
+    }
+
+    /**
+     * Clear all set attributes.
+     *
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    protected function clearAttributes()
+    {
+        $this->html_attributes = new Collection();
 
         return $this;
     }
