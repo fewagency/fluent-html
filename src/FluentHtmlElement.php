@@ -986,5 +986,6 @@ abstract class FluentHtmlElement implements Htmlable
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
+        //TODO: set up a method afterSetParent(callable) that registers callables to run here - first argument should be the inserted element
     }
 }
