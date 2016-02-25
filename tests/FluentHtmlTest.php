@@ -1,4 +1,5 @@
 <?php
+use FewAgency\FluentHtml\FluentHtmlElement;
 use FewAgency\FluentHtml\Testing\ComparesFluentHtml;
 use FewAgency\FluentHtml\FluentHtml;
 
@@ -575,6 +576,17 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $e->withContent('B');
 
         $this->assertHtmlEquals('<p>B</p>', $e);
+    }
+
+    public function testSetParent()
+    {
+        $e = FluentHtml::create('p')->afterInsertion(function (FluentHtmlElement $e) {
+            if (!$e->hasContent()) {
+                $e->withContent('A');
+            }
+        })->wrappedInElement('div');
+
+        $this->assertHtmlEquals('<div><p>A</p></div>', $e);
     }
 
 }

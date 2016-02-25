@@ -61,6 +61,12 @@ abstract class FluentHtmlElement implements Htmlable
      */
     private $id_registrar;
 
+    /**
+     * Callbacks to run after element is inserted in tree
+     * @var Collection
+     */
+    private $after_insertion_callbacks;
+
     /*
     |--------------------------------------------------------------------------
     | Methods creating new elements
@@ -72,6 +78,7 @@ abstract class FluentHtmlElement implements Htmlable
         $this->clearAttributes();
         $this->clearContents();
         $this->render_in_html = new Collection();
+        $this->after_insertion_callbacks = new Collection();
     }
 
     /**
@@ -356,6 +363,21 @@ abstract class FluentHtmlElement implements Htmlable
         $this->onlyDisplayedIf(function (FluentHtmlElement $current_object) {
             return $current_object->hasContent();
         });
+
+        return $this;
+    }
+
+    /**
+     * Register a new callback to run after element is placed in an element tree.
+     * The inserted element is supplied as the first argument to the function.
+     * It's usually a good idea to check for some condition on the element before manipulating it within the callable,
+     * because an element may be inserted into other elements many times throughout it's lifetime.
+     * @param callable $callback
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function afterInsertion($callback)
+    {
+        $this->after_insertion_callbacks->push($callback);
 
         return $this;
     }
@@ -968,7 +990,7 @@ abstract class FluentHtmlElement implements Htmlable
 
     /**
      * Get this element's parent element.
-     * For internal access (without creating a blank parent), see getParentElement() for other use
+     * For internal access (without creating a blank parent), see getParentElement() for other use!
      *
      * @return FluentHtmlElement|null
      */
@@ -979,13 +1001,14 @@ abstract class FluentHtmlElement implements Htmlable
 
     /**
      * Set this element's parent element.
-     * Can be overridden in subclasses to "boot" the element upon insertion into a tree.
      *
      * @param FluentHtmlElement|null $parent
      */
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
-        //TODO: set up a method afterSetParent(callable) that registers callables to run here - first argument should be the inserted element
+        foreach ($this->after_insertion_callbacks as $callback) {
+            call_user_func($callback, $this);
+        }
     }
 }
