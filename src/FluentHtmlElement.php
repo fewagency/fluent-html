@@ -368,9 +368,9 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
-     * Register a new callback to run after element is placed in an element tree.
-     * The inserted element is supplied as the first argument to the function.
-     * It's usually a good idea to check for some condition on the element before manipulating it within the callable,
+     * Register callbacks to run after element is placed in an element tree.
+     * The inserted element will be supplied as the first argument to the closure.
+     * It's usually a good idea to check for some condition on the element before manipulating it within the closure,
      * because an element may be inserted into other elements many times throughout it's lifetime.
      * @param callable $callback
      * @return $this|FluentHtmlElement can be method-chained to modify the current element

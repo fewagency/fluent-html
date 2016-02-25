@@ -297,6 +297,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`withHtmlElementName()`](#withhtmlelementnamehtml_element_name)
         * [`onlyDisplayedIf()`](#onlydisplayedifcondition)
         * [`onlyDisplayedIfHasContent()`](#onlydisplayedifhascontent)
+        * [`afterInsertion()`](#afterinsertion)
 * [Methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current)
     - [Inserting within the current element](#inserting-within-the-current-element)
         * [`containingElement()`](#containingelementhtml_element_name--null-tag_contents---tag_attributes--)
@@ -446,6 +447,15 @@ The parameter may be a boolean or a callable returning a boolean.
 ##### `onlyDisplayedIfHasContent()`
 Will not display current element if it has no content.
 Useful to get rid of empty lists or other containers.
+
+##### `afterInsertion($callback)`
+Register callbacks to run after the current element is placed in an element tree.
+
+The closure will receive the current FluentHtml instance as the first parameter,
+as with other [closures as input](#closures-as-method-input).
+
+It's usually a good idea to check for some condition on the element before manipulating it within the closure,
+because an element may be inserted into other elements many times throughout it's lifetime.
 
 ### Methods returning a new element relative to the current
 These methods creates a new element, adds it relative the current element and returns that new element.
