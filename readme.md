@@ -297,7 +297,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`withHtmlElementName()`](#withhtmlelementnamehtml_element_name)
         * [`onlyDisplayedIf()`](#onlydisplayedifcondition)
         * [`onlyDisplayedIfHasContent()`](#onlydisplayedifhascontent)
-        * [`afterInsertion()`](#afterinsertion)
+        * [`afterInsertion()`](#afterinsertioncallback)
 * [Methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current)
     - [Inserting within the current element](#inserting-within-the-current-element)
         * [`containingElement()`](#containingelementhtml_element_name--null-tag_contents---tag_attributes--)
