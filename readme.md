@@ -287,6 +287,9 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`withRawHtmlContent()`](#withrawhtmlcontentraw_html_content)
         * [`withContentWrappedIn()`](#withcontentwrappedinhtml_contents-wrapping_html_element_name-wrapping_tag_attributes--)
         * [`withDefaultContent()`](#withdefaultcontenthtml_contents)
+    - [Adding siblings](#adding-siblings)
+        * [`precededBy()`]()
+        * [`followedBy()`]()
     - [Manipulating attributes](#manipulating-attributes)
         * [`withAttribute()`](#withattributeattributes-value--true)
         * [`withoutAttribute()`](#withoutattributeattributes)
@@ -358,6 +361,7 @@ The optional `$tag_attributes` will be inserted in the same manner as
 These methods can be chained to modify the current element step by step.
 
 #### Adding content
+These methods put html content inside the current element.
 
 ##### `withContent($html_contents)`
 Add html content after existing content in the current element.
@@ -393,6 +397,15 @@ Add html contents last within this element, with each inserted new content wrapp
 ##### `withDefaultContent($html_contents)`
 Set html content to display as default if no other content is set.
 Same parameter options as [`withContent()`](#withcontenthtml_contents).
+
+#### Adding siblings
+These methods put html siblings next to the current element. 
+
+##### `precededBy($html_siblings)`
+Add html outside and before this element in the tree.
+ 
+##### `followedBy($html_siblings)`
+Add html outside and after this element in the tree.
 
 #### Manipulating attributes
 
