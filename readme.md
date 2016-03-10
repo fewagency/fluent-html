@@ -399,7 +399,8 @@ Set html content to display as default if no other content is set.
 Same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 #### Adding siblings
-These methods put html siblings next to the current element. 
+These methods put html siblings next to the current element
+and have the same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 ##### `precededBy($html_siblings)`
 Add html outside and before this element in the tree.
