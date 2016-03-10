@@ -177,6 +177,34 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
+     * Add html outside and after this element in the tree.
+     *
+     * @param string|Htmlable|callable|array|Arrayable $html_siblings,...
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function followedBy($html_siblings)
+    {
+        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1,
+            0, func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * Add html outside and before this element in the tree.
+     *
+     * @param string|Htmlable|callable|array|Arrayable $html_siblings,...
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function precededBy($html_siblings)
+    {
+        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this),
+            0, func_get_args());
+
+        return $this;
+    }
+
+    /**
      * Add a raw string of html content last within this element.
      *
      * @param string $raw_html_content that will not be escaped
@@ -438,7 +466,7 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
-     * Adds a new element just after this element and returns the new element.
+     * Adds a new element outside and just after this element and returns the new element.
      *
      * @param string|callable|null $html_element_name
      * @param string|Htmlable|array|Arrayable $tag_contents
@@ -448,7 +476,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function followedByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
         $e = static::createFluentHtmlElement($html_element_name, $tag_contents, $tag_attributes);
-        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1, 0, $e);
+        $this->followedBy($e);
 
         return $e;
     }
@@ -464,7 +492,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
         $e = static::createFluentHtmlElement($html_element_name, $tag_contents, $tag_attributes);
-        $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this), 0, $e);
+        $this->precededBy($e);
 
         return $e;
     }

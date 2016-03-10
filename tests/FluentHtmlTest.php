@@ -589,4 +589,22 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<div><p>A</p></div>', $e);
     }
 
+    public function testFollowedBy()
+    {
+        $e = FluentHtml::create('p');
+        $e->followedByElement('p', 'D');
+        $e->followedBy(FluentHtml::create('p', 'B'), FluentHtml::create('p', 'C'))->withContent('A');
+
+        $this->assertHtmlEquals('<p>A</p> <p>B</p> <p>C</p> <p>D</p>', $e);
+    }
+
+    public function testPrecededBy()
+    {
+        $e = FluentHtml::create('p');
+        $e->precededByElement('p', 'A');
+        $e->precededBy(FluentHtml::create('p', 'B'), FluentHtml::create('p', 'C'))->withContent('D');
+
+        $this->assertHtmlEquals('<p>A</p> <p>B</p> <p>C</p> <p>D</p>', $e);
+    }
+
 }
