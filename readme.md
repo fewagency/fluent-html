@@ -73,8 +73,8 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 </div>
 ```
 
-Generating the above in a PHP template could be a hassle, with if-statements repeated all over the place.
-Very prone to errors sneaking in.
+Generating the above in a PHP template could be a hassle.
+With if-statements repeated all over the place, it would be very prone to errors sneaking in.
 Using [`FluentHtml`](src/FluentHtml.php) the code would probably take about the same space,
 but it would be a lot more readable,
 guaranteed to print correct and well-formatted HTML,
@@ -469,7 +469,7 @@ The closure will receive the current FluentHtml instance as the first parameter,
 as with other [closures as input](#closures-as-method-input).
 
 It's usually a good idea to check for some condition on the element before manipulating it within the closure,
-because an element may be inserted into other elements many times throughout it's lifetime.
+because an element may be inserted into other elements many times throughout its lifetime.
 
 ### Methods returning a new element relative to the current
 These methods creates a new element, adds it relative the current element and returns that new element.
