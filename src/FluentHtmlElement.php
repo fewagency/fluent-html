@@ -122,7 +122,7 @@ abstract class FluentHtmlElement implements Htmlable
             }
             // try again in parent class' namespace if parent class exists
         } while ($class_refl = $class_refl->getParentClass());
-        // If not found in parent classes, hand off to the parent FluentHtmlElement
+        // Hand off to the parent FluentHtmlElement
         if ($this->hasParent()) {
             return $this->getParent()->createInstanceOf($classname, $parameters);
         }
