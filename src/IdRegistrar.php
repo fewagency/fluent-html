@@ -28,7 +28,7 @@ class IdRegistrar
      */
     public static function getGlobalInstance()
     {
-        if (null === static::$global_instance) {
+        if (empty(static::$global_instance)) {
             static::$global_instance = new static();
         }
 
