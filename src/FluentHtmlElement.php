@@ -118,9 +118,7 @@ abstract class FluentHtmlElement implements Htmlable
                 // If found, create and return new instance with $parameters to constructor
                 $class_refl = new \ReflectionClass($namespaced_classname);
                 $instance = $class_refl->newInstanceArgs($parameters);
-                if ($this->hasIdRegistrar()) {
-                    $instance->idRegistrar($this->idRegistrar());
-                } elseif ($this->getRootElement()->hasIdRegistrar()) {
+                if ($this->getRootElement()->hasIdRegistrar()) {
                     $instance->idRegistrar($this->getRootElement()->idRegistrar());
                 }
 
@@ -837,6 +835,8 @@ abstract class FluentHtmlElement implements Htmlable
     {
         return !empty($this->id_registrar);
     }
+
+
 
     /*
     |--------------------------------------------------------------------------
