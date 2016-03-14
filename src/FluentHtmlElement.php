@@ -864,6 +864,14 @@ abstract class FluentHtmlElement implements Htmlable
         if (empty($html_contents) or ($html_contents instanceof Collection and $html_contents->isEmpty())) {
             $html_contents = $this->evaluate($this->default_html_contents);
         }
+        //Set this as parent on any content FluentHtmlElement that doesn't already have a parent
+        $html_contents = HtmlBuilder::flatten($html_contents)->map(function ($item) {
+            if ($item instanceof FluentHtmlElement and !$item->hasParent()) {
+                $item->setParent($this);
+            }
+
+            return $item;
+        });
         $html_element_name = $this->getHtmlElementName();
         if ($html_element_name) {
             $html_attributes = $this->evaluate($this->html_attributes);
@@ -1041,8 +1049,10 @@ abstract class FluentHtmlElement implements Htmlable
     protected function setParent(FluentHtmlElement $parent = null)
     {
         $this->parent = $parent;
-        foreach ($this->after_insertion_callbacks as $callback) {
-            call_user_func($callback, $this);
+        if (!empty($parent)) {
+            foreach ($this->after_insertion_callbacks as $callback) {
+                call_user_func($callback, $this);
+            }
         }
     }
 }
