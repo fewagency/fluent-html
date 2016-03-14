@@ -117,8 +117,14 @@ abstract class FluentHtmlElement implements Htmlable
             if (class_exists($namespaced_classname)) {
                 // If found, create and return new instance with $parameters to constructor
                 $class_refl = new \ReflectionClass($namespaced_classname);
+                $instance = $class_refl->newInstanceArgs($parameters);
+                if ($this->hasIdRegistrar()) {
+                    $instance->idRegistrar($this->idRegistrar());
+                } elseif ($this->getRootElement()->hasIdRegistrar()) {
+                    $instance->idRegistrar($this->getRootElement()->idRegistrar());
+                }
 
-                return $class_refl->newInstanceArgs($parameters);
+                return $instance;
             }
             // try again in parent class' namespace if parent class exists
         } while ($class_refl = $class_refl->getParentClass());

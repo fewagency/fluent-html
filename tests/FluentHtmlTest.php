@@ -473,6 +473,20 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals($e->getId(), $e2->getId());
     }
 
+    public function testParentIdRegistrar()
+    {
+        $divA = FluentHtml::create('div');
+        $brB = FluentHtml::create('br');
+        $divA->withContent($brB);
+        $id_registrar = new \FewAgency\FluentHtml\HtmlIdRegistrar();
+        $divA->idRegistrar($id_registrar);
+        $divA->withId('A');
+        $brB->withId('A');
+
+        $this->assertNotEquals($divA->getId(), $brB->getId());
+        $this->assertSame($brB->idRegistrar(), $id_registrar);
+    }
+
     public function testMultiIdRegistrar()
     {
         $divA = FluentHtml::create('div');
@@ -486,6 +500,16 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $divB = $brB->wrappedInElement('div');
 
         $this->assertEquals($divB->getId(), $brA->getId());
+    }
+
+    public function testInheritedIdRegistrar() {
+        $divA = new \FewAgency\FluentHtml\Testing\FluentTestInheritorBaseElement('div');
+        $id_registrar = new \FewAgency\FluentHtml\HtmlIdRegistrar();
+        $divA->idRegistrar($id_registrar);
+
+        $brB = $divA->createInstanceOf('FluentHtml', ['br']);
+
+        $this->assertSame($brB->idRegistrar(), $id_registrar);
     }
 
     public function testHasContent()
