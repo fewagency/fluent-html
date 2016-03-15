@@ -316,11 +316,12 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
     {
         $e = new FluentHtml('div');
         $e2 = new FluentHtml('p', 'abc');
+        $e2->withId('a');
         $e->withContent($e2);
         $e->withContent($e2);
         $e2->withContent('123');
 
-        $this->assertHtmlEquals("<div> <p> abc 123 </p> <p>abc</p> </div>", $e);
+        $this->assertHtmlEquals('<div> <p id="a"> abc 123 </p> <p id="a2">abc</p> </div>', $e);
     }
 
     public function testWithRawHtmlContent()
@@ -499,10 +500,11 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $brA = $divA->containingElement('br');
         $divB = $brB->wrappedInElement('div');
 
-        $this->assertEquals($divB->getId(), $brA->getId());
+        $this->assertEquals($brA->getId(), $divB->getId());
     }
 
-    public function testInheritedIdRegistrar() {
+    public function testInheritedIdRegistrar()
+    {
         $divA = new \FewAgency\FluentHtml\Testing\FluentTestInheritorBaseElement('div');
         $id_registrar = new \FewAgency\FluentHtml\HtmlIdRegistrar();
         $divA->idRegistrar($id_registrar);

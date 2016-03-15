@@ -511,6 +511,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
         $parent = $this->getParentElement();
+        $this->setParent(null);
         $wrapper = static::createFluentHtmlElement($html_element_name, $this, $tag_attributes);
 
         $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
@@ -981,19 +982,20 @@ abstract class FluentHtmlElement implements Htmlable
     {
         return HtmlBuilder::flatten(func_get_args())->map(function ($item) {
             if ($item instanceof FluentHtmlElement) {
+                $original_id = $item->getAttribute('id');
                 if ($item->hasParent()) {
                     $item = clone $item;
                 }
-                // Reuse inserted element's IdRegistrar upwards in the tree if element has one and the tree doesn't
-                if ($item->hasIdRegistrar()) {
-                    $this->idRegistrar($item->idRegistrar());
-                }
                 $item->setParent($this);
+                if ($item->getAttribute('id') != $original_id) {
+                    $item->withId($original_id);
+                }
             }
 
             return $item;
         })->filter(function ($item) {
             //Filter out empty strings and booleans
+            //TODO: should we really filter out booleans from content? What if we have a string that is set to true or false?
             return isset($item) and !is_bool($item) and '' !== $item;
         });
     }
@@ -1020,8 +1022,12 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function __clone()
     {
-        $this->setParent(null);
+        $this->html_attributes = clone $this->html_attributes;
+        $this->render_in_html = clone $this->render_in_html;
+        $this->after_insertion_callbacks = clone $this->after_insertion_callbacks;
         $this->html_contents = $this->prepareContentsForInsertion($this->html_contents);
+        $this->setParent(null);
+        $this->withoutAttribute('id');
     }
 
     /*
@@ -1048,6 +1054,10 @@ abstract class FluentHtmlElement implements Htmlable
      */
     protected function setParent(FluentHtmlElement $parent = null)
     {
+        if (!empty($parent) and $this->hasIdRegistrar()) {
+            // Move inserted element's IdRegistrar upwards in the tree if element has one and the tree doesn't
+            $parent->idRegistrar($this->idRegistrar());
+        }
         $this->parent = $parent;
         if (!empty($parent)) {
             foreach ($this->after_insertion_callbacks as $callback) {
