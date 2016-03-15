@@ -294,10 +294,13 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
             },
             'c' => function () {
                 return false;
-            }
+            },
+            'd' => true,
+            'e' => false,
+            ['f', 'g' => true, 'h' => false]
         ]);
 
-        $this->assertHtmlEquals('<p> a b </p>', $e);
+        $this->assertHtmlEquals('<p> a b d f g </p>', $e);
     }
 
     public function testWithContentFluentHtml()
@@ -378,9 +381,11 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
     public function testWrappedInElement()
     {
-        $e = FluentHtml::create('br')->wrappedInElement('p');
+        $br = FluentHtml::create('br');
+        $p = $br->wrappedInElement('p');
+        $br->withClass('a'); //This makes the test verify that the element has not been cloned when wrapped
 
-        $this->assertHtmlEquals('<p><br></p>', $e);
+        $this->assertHtmlEquals('<p><br class="a"></p>', $p);
     }
 
     public function testWrappedInElementDeep()
@@ -392,9 +397,11 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
 
     public function testSiblingsWrappedInElement()
     {
-        $e = FluentHtml::create('br')->followedByElement('hr')->siblingsWrappedInElement('div');
+        $br = FluentHtml::create('br');
+        $div = $br->followedByElement('hr')->siblingsWrappedInElement('div');
+        $br->withClass('a'); //This makes the test verify that the element has not been cloned on insert
 
-        $this->assertHtmlEquals('<div> <br> <hr> </div>', $e);
+        $this->assertHtmlEquals('<div> <br class="a"> <hr> </div>', $div);
     }
 
     public function testSiblingsWrappedInElementDeep()

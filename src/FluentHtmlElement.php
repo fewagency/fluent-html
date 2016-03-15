@@ -537,7 +537,12 @@ abstract class FluentHtmlElement implements Htmlable
     public function siblingsWrappedInElement($html_element_name, $tag_attributes = [])
     {
         $parent = $this->getSiblingsCommonParent();
-        $wrapper = static::createFluentHtmlElement($html_element_name, $parent->html_contents, $tag_attributes);
+        $siblings = $parent->html_contents->each(function ($item) {
+            if ($item instanceof FluentHtmlElement) {
+                $item->setParent(null);
+            }
+        });
+        $wrapper = static::createFluentHtmlElement($html_element_name, $siblings, $tag_attributes);
 
         $parent->clearContents()->withContent($wrapper);
 
@@ -994,9 +999,8 @@ abstract class FluentHtmlElement implements Htmlable
 
             return $item;
         })->filter(function ($item) {
-            //Filter out empty strings and booleans
-            //TODO: should we really filter out booleans from content? What if we have a string that is set to true or false?
-            return isset($item) and !is_bool($item) and '' !== $item;
+            //Filter out empty strings and false values
+            return isset($item) and '' !== $item and false !== $item;
         });
     }
 
