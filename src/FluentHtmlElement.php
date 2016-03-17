@@ -888,7 +888,7 @@ abstract class FluentHtmlElement implements Htmlable
                 return HtmlBuilder::buildContentsString($html_contents);
             }
         } catch (\Exception $e) {
-            return '<!-- '. get_class($e) . ' in ' . __METHOD__ . ': ' . $e->getMessage() . '-->';
+            return '<!-- '. get_class($e) . ' in ' . __METHOD__ . ': ' . $e->getMessage() . ' -->';
         }
     }
 

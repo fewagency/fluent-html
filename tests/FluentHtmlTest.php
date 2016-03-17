@@ -28,6 +28,18 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', (string)$e);
     }
 
+    public function testExceptionsInStringConversion()
+    {
+        $e = new FluentHtml('p', function () {
+            throw new Exception('test exception');
+        });
+
+        $this->assertStringStartsWith('<!-- ', (string)$e);
+        $this->assertStringEndsWith(' -->', (string)$e);
+        $this->assertContains('test exception', (string)$e);
+    }
+
+
     public function testCanMakeVoidElement()
     {
         $e = new FluentHtml('br');
