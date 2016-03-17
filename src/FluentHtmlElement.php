@@ -862,29 +862,33 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function toHtml()
     {
-        if (!$this->willRenderInHtml()) {
-            return '';
-        }
-
-        $html_contents = $this->evaluate($this->html_contents);
-        if (empty($html_contents) or ($html_contents instanceof Collection and $html_contents->isEmpty())) {
-            $html_contents = $this->evaluate($this->default_html_contents);
-        }
-        //Set this as parent on any content FluentHtmlElement that doesn't already have a parent
-        $html_contents = HtmlBuilder::flatten($html_contents)->map(function ($item) {
-            if ($item instanceof FluentHtmlElement and !$item->hasParent()) {
-                $item->setParent($this);
+        try {
+            if (!$this->willRenderInHtml()) {
+                return '';
             }
 
-            return $item;
-        });
-        $html_element_name = $this->getHtmlElementName();
-        if ($html_element_name) {
-            $html_attributes = $this->evaluate($this->html_attributes);
+            $html_contents = $this->evaluate($this->html_contents);
+            if (empty($html_contents) or ($html_contents instanceof Collection and $html_contents->isEmpty())) {
+                $html_contents = $this->evaluate($this->default_html_contents);
+            }
+            //Set this as parent on any content FluentHtmlElement that doesn't already have a parent
+            $html_contents = HtmlBuilder::flatten($html_contents)->map(function ($item) {
+                if ($item instanceof FluentHtmlElement and !$item->hasParent()) {
+                    $item->setParent($this);
+                }
 
-            return HtmlBuilder::buildHtmlElement($html_element_name, $html_attributes, $html_contents);
-        } else {
-            return HtmlBuilder::buildContentsString($html_contents);
+                return $item;
+            });
+            $html_element_name = $this->getHtmlElementName();
+            if ($html_element_name) {
+                $html_attributes = $this->evaluate($this->html_attributes);
+
+                return HtmlBuilder::buildHtmlElement($html_element_name, $html_attributes, $html_contents);
+            } else {
+                return HtmlBuilder::buildContentsString($html_contents);
+            }
+        } catch (\Exception $e) {
+            return '<!-- '. get_class($e) . ' in ' . __METHOD__ . ': ' . $e->getMessage() . '-->';
         }
     }
 
