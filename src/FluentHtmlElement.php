@@ -928,7 +928,8 @@ abstract class FluentHtmlElement implements Htmlable
             return $this->evaluate(call_user_func($value, $this));
         }
         if (HtmlBuilder::isArrayble($value)) {
-            return Collection::make($value)->transform(function ($value) {
+            $collection = $value instanceof Collection ? $value->make($value) : new Collection($value);
+            return $collection->transform(function ($value) {
                 return $this->evaluate($value);
             });
         }

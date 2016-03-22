@@ -280,7 +280,8 @@ class HtmlBuilder
             return self::evaluate(call_user_func($value));
         }
         if (self::isArrayble($value)) {
-            return Collection::make($value)->transform(function ($value) {
+            $collection = $value instanceof Collection ? $value->make($value) : new Collection($value);
+            return $collection->transform(function ($value) {
                 return self::evaluate($value);
             });
         }
