@@ -296,7 +296,7 @@ class HtmlBuilder
      */
     public static function flatten($collection)
     {
-        $flat_collection = Collection::make();
+        $flat_collection = $collection instanceof Collection ? $collection->make() : new Collection();
         $collection = func_get_args(); // This can use ... instead of func_get_args() on PHP >= 5.6 http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list
         array_walk_recursive($collection, function ($item, $key) use (&$flat_collection) {
             if ($item instanceof Arrayable) {
