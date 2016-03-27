@@ -1,4 +1,9 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
+This package can be used on its own for building complex HTML structures,
+but most of its power comes when extended for specific purposes.
+For example [fewagency/fluent-form](https://github.com/fewagency/fluent-form)
+helps you create accessible, well-formated, yet customizable HTML forms. 
+
 * [Introduction](#introduction)
     - [What's the point?](#point)
     - [Advanced Bootstrap example](#example-bootstrap)
@@ -11,6 +16,8 @@
     - [Multiple attribute values](#multiple-attribute-values)
     - [Blade templates](#usage-with-blade-templates)
 * [Methods reference](#methods-reference)
+* [Development](#development)
+* [Alternatives](#alternatives)
 * [Authors - FEW Agency](#authors)
 * [License](#license)
 
@@ -566,6 +573,14 @@ Returns `false` if any condition for rendering the element fails.
      
 ##### `isRootElement()`
 Find out if this element is the root of the element tree.
+
+## Development
+
+### Testing
+> vendor/bin/phpunit
+
+## Alternatives
+https://github.com/spatie/html-element has another interesting way of generating html.
 
 ## Authors
 I, Björn Nilsved, work at the largest communication agency in southern Sweden.
