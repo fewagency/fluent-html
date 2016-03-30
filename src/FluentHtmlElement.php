@@ -860,6 +860,9 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function toHtml()
     {
+        //TODO: rename the current toHtml() (which renders this element only) to elementToHtml()
+        //TODO: then create new toHtml() that does what __toString() currently does
+        //TODO: then make __toString() call toHtml() instead
         try {
             if (!$this->willRenderInHtml()) {
                 return '';

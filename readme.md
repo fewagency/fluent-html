@@ -274,13 +274,23 @@ Echoing the result in a template is easy because the string conversion of a [`Fl
 the full HTML structure from the top element down:
 
 ```
-{!! FluentHtml::create('p')->withContent('Text') !!}
+{!! FluentHtml::create('div')->containingElement('p')->withContent('Text') !!}
+```
+
+Because [`FluentHtml`](src/FluentHtml.php) implements
+[`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php),
+using escaping Blade echo-tags will also work...
+*However*, `toHtml()` only returns the rendered element and its contents, 
+so this example will only display the last element on the chain, the outer element will be omitted:
+
+```
+{{ FluentHtml::create('div')->containingElement('p')->withContent('Text' }}
 ```
 
 Blade sections are available to yield as content using Blade's `$__env` variable:
 
 ```
-{!! FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) !!}
+{{ FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) }}
 ```
 
 ## Methods reference
