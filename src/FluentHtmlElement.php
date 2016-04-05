@@ -188,6 +188,7 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function followedBy($html_siblings)
     {
+        //TODO: rename to withFollowingSibling()
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this) + 1,
             0, func_get_args());
 
@@ -202,6 +203,7 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function precededBy($html_siblings)
     {
+        //TODO: rename to withPrecedingSibling()
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this),
             0, func_get_args());
 
