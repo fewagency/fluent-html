@@ -200,9 +200,8 @@ abstract class FluentHtmlElement implements Htmlable
      * @param string|Htmlable|callable|array|Arrayable $html_siblings,...
      * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
-    public function precededBy($html_siblings)
+    public function withPrecedingSibling($html_siblings)
     {
-        //TODO: rename to withPrecedingSibling()
         $this->getParentElement()->spliceContent($this->getParentElement()->getContentOffset($this),
             0, func_get_args());
 
@@ -526,7 +525,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function precededByElement($html_element_name, $tag_contents = [], $tag_attributes = [])
     {
         $e = static::createFluentHtmlElement($html_element_name, $tag_contents, $tag_attributes);
-        $this->precededBy($e);
+        $this->withPrecedingSibling($e);
 
         return $e;
     }
