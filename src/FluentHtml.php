@@ -4,6 +4,9 @@ namespace FewAgency\FluentHtml;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
 
+/**
+ * Implementation of Fluent interface style HTML builder for building and displaying advanced elements structures.
+ */
 class FluentHtml extends FluentHtmlElement
 {
     /**

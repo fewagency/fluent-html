@@ -8,7 +8,7 @@ use Illuminate\Support\HtmlString;
 // All usage of func_get_args() in this class can be replaced by ... on PHP >= 5.6 http://php.net/manual/en/functions.arguments.php#functions.variable-arg-list
 
 /**
- * Fluent interface style HTML builder for building and displaying advanced elements structures.
+ * Abstract Fluent interface style HTML builder, use as a base to extend functionality for specific elements.
  */
 abstract class FluentHtmlElement implements Htmlable
 {

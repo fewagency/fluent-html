@@ -44,7 +44,7 @@ class HtmlBuilder
     ]; // This static array can be made into a const on PHP >= 5.6
 
     /**
-     * Build an html string from parameters describing an element.
+     * Build an HTML string from parameters describing a single element and its children.
      *
      * @param string $tag_name
      * @param array|Arrayable $attributes
