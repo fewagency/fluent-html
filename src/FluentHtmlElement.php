@@ -209,6 +209,35 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
+     * Wrap this element in another element at the same place in the tree.
+     * @param FluentHtmlElement $wrapper
+     * @return $this
+     */
+    protected function wrappedIn(FluentHtmlElement $wrapper)
+    {
+        if ($this->hasParent()) {
+            $parent = $this->getParentElement();
+            $this->setParent(null);
+        }
+
+        $wrapper->withAppendedContent($this);
+
+        if (!empty($parent)) {
+            $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
+                if ($this === $item) {
+                    $wrapper->setParent($parent);
+
+                    return $wrapper;
+                } else {
+                    return $item;
+                }
+            });
+        }
+
+        return $this;
+    }
+
+    /**
      * Add a raw string of html content last within this element.
      *
      * @param string $raw_html_content that will not be escaped
@@ -510,23 +539,8 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
-        if ($this->hasParent()) {
-            $parent = $this->getParentElement();
-            $this->setParent(null);
-        }
-        $wrapper = static::createFluentHtmlElement($html_element_name, $this, $tag_attributes);
-
-        if (!empty($parent)) {
-            $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
-                if ($this === $item) {
-                    $wrapper->setParent($parent);
-
-                    return $wrapper;
-                } else {
-                    return $item;
-                }
-            });
-        }
+        $wrapper = static::createFluentHtmlElement($html_element_name, null, $tag_attributes);
+        $this->wrappedIn($wrapper);
 
         return $wrapper;
     }
