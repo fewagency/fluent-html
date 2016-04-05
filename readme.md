@@ -306,7 +306,7 @@ Blade sections are available to yield as content using Blade's `$__env` variable
         * [`withDefaultContent()`](#withdefaultcontenthtml_contents)
     - [Adding siblings](#adding-siblings)
         * [`precededBy()`](#precededbyhtml_siblings)
-        * [`followedBy()`](#followedbyhtml_siblings)
+        * [`withFollowingSibling()`](#withfollowingsiblinghtml_siblings)
     - [Manipulating attributes](#manipulating-attributes)
         * [`withAttribute()`](#withattributeattributes-value--true)
         * [`withoutAttribute()`](#withoutattributeattributes)
@@ -422,7 +422,7 @@ and have the same parameter options as [`withContent()`](#withcontenthtml_conten
 ##### `precededBy($html_siblings)`
 Add html outside and before this element in the tree.
  
-##### `followedBy($html_siblings)`
+##### `withFollowingSibling($html_siblings)`
 Add html outside and after this element in the tree.
 
 #### Manipulating attributes
