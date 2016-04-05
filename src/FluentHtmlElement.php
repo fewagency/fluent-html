@@ -510,19 +510,23 @@ abstract class FluentHtmlElement implements Htmlable
      */
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
-        $parent = $this->getParentElement();
-        $this->setParent(null);
+        if ($this->hasParent()) {
+            $parent = $this->getParentElement();
+            $this->setParent(null);
+        }
         $wrapper = static::createFluentHtmlElement($html_element_name, $this, $tag_attributes);
 
-        $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
-            if ($this === $item) {
-                $wrapper->setParent($parent);
+        if (!empty($parent)) {
+            $parent->html_contents->transform(function ($item) use ($wrapper, $parent) {
+                if ($this === $item) {
+                    $wrapper->setParent($parent);
 
-                return $wrapper;
-            } else {
-                return $item;
-            }
-        });
+                    return $wrapper;
+                } else {
+                    return $item;
+                }
+            });
+        }
 
         return $wrapper;
     }
@@ -932,6 +936,7 @@ abstract class FluentHtmlElement implements Htmlable
         }
         if (HtmlBuilder::isArrayble($value)) {
             $collection = $value instanceof Collection ? $value->make($value) : new Collection($value);
+
             return $collection->transform(function ($value) {
                 return $this->evaluate($value);
             });

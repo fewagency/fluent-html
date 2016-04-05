@@ -398,6 +398,7 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $br->withClass('a'); //This makes the test verify that the element has not been cloned when wrapped
 
         $this->assertHtmlEquals('<p><br class="a"></p>', $p);
+        $this->assertNull($p->getAncestorInstanceOf('FewAgency\FluentHtml\FluentHtmlElement'), 'A fresh wrapper should not have any parent');
     }
 
     public function testWrappedInElementDeep()
