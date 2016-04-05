@@ -635,22 +635,24 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<div><p>A</p></div>', $e);
     }
 
-    public function testFollowedBy()
+    public function testFollowing()
     {
         $e = FluentHtml::create('p');
         $e->followedByElement('p', 'D');
         $e->withFollowingSibling(FluentHtml::create('p', 'B'), FluentHtml::create('p', 'C'))->withContent('A');
+        $e->withFollowingRawHtml('<hr>');
 
-        $this->assertHtmlEquals('<p>A</p> <p>B</p> <p>C</p> <p>D</p>', $e);
+        $this->assertHtmlEquals('<p>A</p> <hr> <p>B</p> <p>C</p> <p>D</p>', $e);
     }
 
-    public function testPrecededBy()
+    public function testPreceding()
     {
         $e = FluentHtml::create('p');
         $e->precededByElement('p', 'A');
         $e->withPrecedingSibling(FluentHtml::create('p', 'B'), FluentHtml::create('p', 'C'))->withContent('D');
+        $e->withPrecedingRawHtml('<hr>');
 
-        $this->assertHtmlEquals('<p>A</p> <p>B</p> <p>C</p> <p>D</p>', $e);
+        $this->assertHtmlEquals('<p>A</p> <p>B</p> <p>C</p> <hr> <p>D</p>', $e);
     }
 
 }

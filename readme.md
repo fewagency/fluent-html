@@ -307,6 +307,8 @@ Blade sections are available to yield as content using Blade's `$__env` variable
     - [Adding siblings](#adding-siblings)
         * [`withPrecedingSibling()`](#withprecedingsiblinghtml_siblings)
         * [`withFollowingSibling()`](#withfollowingsiblinghtml_siblings)
+        * [`withPrecedingRawHtml()`](#withprecedingrawhtmlraw_html_sibling)
+        * [`withFollowingRawHtml()`](#withfollowingrawhtmlraw_html_sibling)
     - [Manipulating attributes](#manipulating-attributes)
         * [`withAttribute()`](#withattributeattributes-value--true)
         * [`withoutAttribute()`](#withoutattributeattributes)
@@ -417,13 +419,20 @@ Same parameter options as [`withContent()`](#withcontenthtml_contents).
 
 #### Adding siblings
 These methods put html siblings next to the current element
-and have the same parameter options as [`withContent()`](#withcontenthtml_contents).
+and have the same parameter options as [`withContent()`](#withcontenthtml_contents)
+or just one string for the raw html ones.
 
 ##### `withPrecedingSibling($html_siblings)`
 Add html outside and before this element in the tree.
  
 ##### `withFollowingSibling($html_siblings)`
 Add html outside and after this element in the tree.
+
+##### `withPrecedingRawHtml($raw_html_sibling)`
+Add a raw string of html outside and before this element in the tree.
+
+##### `withFollowingRawHtml($raw_html_sibling)`
+Add a raw string of html outside and after this element in the tree.
 
 #### Manipulating attributes
 

@@ -251,6 +251,32 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
+     * Add a raw string of html outside and after this element in the tree.
+     *
+     * @param string $raw_html_sibling that will not be escaped
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function withFollowingRawHtml($raw_html_sibling)
+    {
+        $html = new HtmlString($raw_html_sibling);
+
+        return $this->withFollowingSibling($html);
+    }
+
+    /**
+     * Add a raw string of html outside and before this element in the tree.
+     *
+     * @param string $raw_html_sibling that will not be escaped
+     * @return $this|FluentHtmlElement can be method-chained to modify the current element
+     */
+    public function withPrecedingRawHtml($raw_html_sibling)
+    {
+        $html = new HtmlString($raw_html_sibling);
+
+        return $this->withPrecedingSibling($html);
+    }
+
+    /**
      * Add html contents last within this element, with each new inserted content wrapped in an element.
      *
      * @param string|Htmlable|callable|array|Arrayable $html_contents,...
