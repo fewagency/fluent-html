@@ -36,6 +36,8 @@ class IdRegistrar
     }
 
     /**
+     * Make sure an id-string is unique in the global id registrar.
+     *
      * @param string|null $desired_id to check if taken
      * @return string id string that is unique in the global registrar
      */
@@ -45,6 +47,7 @@ class IdRegistrar
     }
 
     /**
+     * Make sure an id-string is unique in this id registrar.
      * Pass all desired id-strings through this method and use the return value.
      *
      * @param string $desired_id to check if taken
