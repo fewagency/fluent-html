@@ -648,7 +648,7 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
-     * Get the closest ancestor matching class type
+     * Get the closest ancestor in the tree matching class type.
      *
      * @param string $type class or interface name to find
      * @return FluentHtmlElement|null

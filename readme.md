@@ -585,8 +585,9 @@ This is the common parent of this element and its siblings as rendered in html.
 Get the root element of this element's tree.
 
 ##### `getAncestorInstanceOf($type)`
-Get the closest ancestor that is an [instance of](http://php.net/manual/en/language.operators.type.php) the supplied type.
-Remember to supply the fully qualified class name.
+Get the closest ancestor in the tree that is an [instance of](http://php.net/manual/en/language.operators.type.php)
+the supplied type.
+Remember to supply the *fully qualified* class name.
 Returns `null` if none found.
 
 ### Element state methods
