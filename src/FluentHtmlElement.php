@@ -213,7 +213,7 @@ abstract class FluentHtmlElement implements Htmlable
      * @param FluentHtmlElement $wrapper
      * @return $this
      */
-    protected function wrappedIn(FluentHtmlElement $wrapper)
+    protected function withWrapper(FluentHtmlElement $wrapper)
     {
         if ($this->hasParent()) {
             $parent = $this->getParentElement();
@@ -566,7 +566,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function wrappedInElement($html_element_name = null, $tag_attributes = [])
     {
         $wrapper = static::createFluentHtmlElement($html_element_name, null, $tag_attributes);
-        $this->wrappedIn($wrapper);
+        $this->withWrapper($wrapper);
 
         return $wrapper;
     }
