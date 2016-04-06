@@ -1,13 +1,16 @@
 # [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) HTML builder for PHP
 This package can be used on its own for building complex HTML structures,
 but most of its power comes when extended for specific purposes.
-For example, [fewagency/fluent-form](https://github.com/fewagency/fluent-form), one of our other packages
-helps you create accessible, well-formated, yet customizable HTML forms based on `FluentHtml`. 
+
+For example, [fewagency/fluent-form](https://github.com/fewagency/fluent-form),
+one of our other packages, helps you create accessible, well-formated, yet customizable HTML forms
+extending [`FluentHtmlElement`](src/FluentHtmlElement.php). 
 
 * [Introduction](#introduction)
     - [What's the point?](#point)
     - [Advanced Bootstrap example](#example-bootstrap)
     - [When to use (and not)](#when-to-use-and-not)
+    - [Naming principles](#naming-principles)
 * [Installation](#installation--configuration)
 * [Usage](#usage)
     - [Collections as input](#collections-as-method-input)
@@ -50,7 +53,7 @@ It has two sentences.
 
 <a id="point"></a>
 __So, then what's the point of it all?__
-The power of [`FluentHtml`](src/FluentHtml.php) comes from the ability to add collections of values, closures and conditions to the html
+The power of `FluentHtml` comes from the ability to add collections of values, closures and conditions to the html
 building process.
 When the complexity grows you can build elements step by step and and trust the end result to be correct and
 well-formatted HTML in every situation.
@@ -82,7 +85,7 @@ For example when generating [Bootstrap form-groups](http://getbootstrap.com/css/
 
 Generating the above in a PHP template could be a hassle.
 With if-statements repeated all over the place, it would be very prone to errors sneaking in.
-Using [`FluentHtml`](src/FluentHtml.php) the code would probably take about the same space,
+Using `FluentHtml` the code would probably take about the same space,
 but it would be a lot more readable,
 guaranteed to print correct and well-formatted HTML,
 and can be split in manageable and reusable chunks,
@@ -157,8 +160,37 @@ echo $input_group
 ```
 
 ### When to use (and not)
-[`FluentHtml`](src/FluentHtml.php) should be used for those cases where you build complex html structures with many if-statements.
-Stay with your standard html views or templates for all the simple stuff! 
+`FluentHtml` should be used for those cases where you build
+complex html structures with many if-statements.
+Stay with your standard html views or templates for all the simple stuff!
+
+If you're making something that should be reusable, consider creating a package of Elements extending
+[`FluentHtmlElement`](src/FluentHtmlElement.php) and publish it!
+
+### Naming principles
+Public methods available on implementations of [`FluentHtmlElement`](src/FluentHtmlElement.php) (of which `FluentHtml` is one)
+should be named to hint their return types.
+
+Method names starting with `with...` should always return the current element for fluent chaining.
+Like `withContent()` and `withAttribute()`, and in this category we also find `withoutAttribute()`.
+
+Methods **adding conditions** to an element may have names containing
+`If` or `Unless`, like `onlyDisplayedIfHasContent()`.
+Methods adding conditions should always return the current element for fluid chaining.
+
+Methods **adding callbacks** that will be triggered at certain events start with `on...`, `before...`, or `after...`.
+`afterInsertion()` is the only event currently supported.
+Methods adding callbacks should always return the current element for fluid chaining.
+
+Methods that create, insert and return new `FluentHtml` instances relative to the current element ends with `...Element`.
+Like `containingElement()`, `precededByElement()`, and `wrappedInElement()`.
+Extending packages may add similarly named methods that return specific types of elements,
+see [fewagency/fluent-form](https://github.com/fewagency/fluent-form) for some examples.
+
+Methods starting with `get...` of course returns values of the expected type,
+like `getParentElement()` returning an implementation of `FluentHtmlElement` and `getId()` returning a string.
+
+Methods returning **booleans** start with `is...`, `has...`, or `will...`
 
 ## Installation & configuration
 > composer require fewagency/fluent-html
@@ -179,7 +211,7 @@ implementation ([docs](http://laravel.com/docs/collections)) and the
 [`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php) interfaces from
 [Laravel](http://laravel.com/docs)'s [Illuminate](https://github.com/illuminate) components.
 
-Internally [`FluentHtml`](src/FluentHtml.php) depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
+Internally `FluentHtmlElement` depends on [`HtmlBuilder`](src/HtmlBuilder.php) to render html elements as strings
 and [`HtmlIdRegistrar`](src/HtmlIdRegistrar.php) to keep track of used element ids so they can be kept unique.   
 
 ## Usage
@@ -219,7 +251,7 @@ Most values can be [PHP closures](http://php.net/manual/en/functions.anonymous.p
 deferred as long as possible, usually until the object is rendered as a string.
 When a closure is evaluated it may return a value, boolean, arrayable, or even another closure, which in turn will be
 evaluated and merged into the collection of its context.
-All closures will receive the current [`FluentHtml`](src/FluentHtml.php) instance as their first parameter,
+All closures will receive the current `FluentHtmlElement` instance as their first parameter,
 this can be used for pretty advanced conditionals.
 
 ```php
@@ -270,8 +302,8 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 ```
 
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion of a [`FluentHtml`](src/FluentHtml.php) instance always returns
-the full HTML structure from the top element down:
+Echoing the result in a template is easy because the string conversion of a [`FluentHtmlElement`] implementation
+always returns the full HTML structure from the top element down:
 
 ```
 {!! FluentHtml::create('div')->containingElement('p')->withContent('Text') !!}
@@ -343,7 +375,6 @@ Blade sections are available to yield as content using Blade's `$__env` variable
     * [`hasContent()`](#hascontent)
     * [`getContentCount()`](#getcontentcount)
     * [`willRenderInHtml()`](#willrenderinhtml)
-    * [`isRootElement()`](#isrootelement)
         
 ### Methods creating new elements
 The [`FluentHtml`](src/FluentHtml.php) constructor and the static `create()` function share the same signature: 
@@ -355,9 +386,9 @@ FluentHtml::create(
 )
 ```
 
-Each [`FluentHtml`](src/FluentHtml.php) instance can be the start of a new chain of fluent method calls
+Each [`FluentHtmlElement`](src/FluentHtmlElement.php) instance can be the start of a new chain of fluent method calls
 for modifying and adding more elements relative the previous.
-This is also true for the returned [`FluentHtml`](src/FluentHtml.php) of
+This is also true for the returned `FluentHtml` of
 [methods returning a new element relative to the current](#methods-returning-a-new-element-relative-to-the-current).
 
 ```php
@@ -387,7 +418,7 @@ Add html content after existing content in the current element.
 Accepts multiple arguments that can be:
 * strings (will be escaped)
 * objects implementing [`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php),
-e.g. another instance of [`FluentHtml`](src/FluentHtml.php)
+e.g. another instance of `FluentHtmlElement`
 * arrayables containing any types from this list (including other arrayables) 
 * callables returning any types from this list (including other callables) 
 
@@ -589,9 +620,6 @@ Get the number of content pieces in this element. Empty contents are counted too
 ##### `willRenderInHtml()`
 Find out if this element is set to render.
 Returns `false` if any condition for rendering the element fails.
-     
-##### `isRootElement()`
-Find out if this element is the root of the element tree.
 
 ## Development
 
