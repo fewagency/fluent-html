@@ -780,7 +780,7 @@ abstract class FluentHtmlElement implements Htmlable
     }
 
     /**
-     * Get the offset of a specified piece of content within this element (internal).
+     * Get the offset of a specified piece of content within this element.
      *
      * @param FluentHtmlElement|string|mixed $content to look for
      * @return mixed key for matching content, or false if not found
@@ -1058,13 +1058,14 @@ abstract class FluentHtmlElement implements Htmlable
      * @param  int $offset
      * @param  int|null $length
      * @param  mixed $replacement
-     * @return Collection
+     * @return $this
      */
     protected function spliceContent($offset, $length = null, $replacement = [])
     {
         $replacement = $this->prepareContentsForInsertion($replacement);
+        $this->html_contents->splice($offset, $length, $replacement->toArray());
 
-        return $this->html_contents->splice($offset, $length, $replacement);
+        return $this;
     }
 
     /**
