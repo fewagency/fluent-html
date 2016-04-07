@@ -168,8 +168,8 @@ If you're making something that should be reusable, consider creating a package 
 [`FluentHtmlElement`](src/FluentHtmlElement.php) and publish it!
 
 ### Naming principles
-Public methods available on implementations of [`FluentHtmlElement`](src/FluentHtmlElement.php) (of which `FluentHtml` is one)
-should be named to hint their return types.
+Public methods available on implementations of [`FluentHtmlElement`](src/FluentHtmlElement.php)
+(of which `FluentHtml` is one) should be named to hint their return types.
 
 Method names starting with `with...` should always return the current element for fluent chaining.
 Like `withContent()` and `withAttribute()`, and in this category we also find `withoutAttribute()`.
@@ -182,7 +182,7 @@ Methods **adding callbacks** that will be triggered at certain events start with
 `afterInsertion()` is the only event currently supported.
 Methods adding callbacks should always return the current element for fluid chaining.
 
-Methods that create, insert and return new `FluentHtml` instances relative to the current element ends with `...Element`.
+Methods that create, insert and return **new `FluentHtml` instances** relative to the current element ends with `...Element`.
 Like `containingElement()`, `precededByElement()`, and `wrappedInElement()`.
 Extending packages may add similarly named methods that return specific types of elements,
 see [fewagency/fluent-form](https://github.com/fewagency/fluent-form) for some examples.
