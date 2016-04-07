@@ -171,16 +171,10 @@ If you're making something that should be reusable, consider creating a package 
 Public methods available on implementations of [`FluentHtmlElement`](src/FluentHtmlElement.php)
 (of which `FluentHtml` is one) should be named to hint their return types.
 
-Method names starting with `with...` should always return the current element for fluent chaining.
-Like `withContent()` and `withAttribute()`, and in this category we also find `withoutAttribute()`.
+Any method that can, should return the called upon element (`$this`) to enable fluent chaining.
+Any method name not hinting about returning something else, should be fluent.
 
-Methods **adding conditions** to an element may have names containing
-`If` or `Unless`, like `onlyDisplayedIfHasContent()`.
-Methods adding conditions should always return the current element for fluid chaining.
-
-Methods **adding callbacks** that will be triggered at certain events start with `on...`, `before...`, or `after...`.
-`afterInsertion()` is the only event currently supported.
-Methods adding callbacks should always return the current element for fluid chaining.
+#### Methods not returning the same element
 
 Methods that create, insert and return **new `FluentHtml` instances** relative to the current element ends with `...Element`.
 Like `containingElement()`, `precededByElement()`, and `wrappedInElement()`.
@@ -190,7 +184,20 @@ see [fewagency/fluent-form](https://github.com/fewagency/fluent-form) for some e
 Methods starting with `get...` of course returns values of the expected type,
 like `getParentElement()` returning an implementation of `FluentHtmlElement` and `getId()` returning a string.
 
-Methods returning **booleans** start with `is...`, `has...`, or `will...`
+Methods returning **booleans** start with `is...`, `has...`, or `will...`.
+
+#### Fluent methods - returning the same element
+
+Method names starting with `with...` should always return the current element for fluent chaining.
+Like `withContent()` and `withAttribute()`, and in this category we also find `withoutAttribute()`.
+
+Methods **adding conditions** to an element may have names containing
+`If` or `Unless`, like `onlyDisplayedIfHasContent()`.
+
+Methods **adding callbacks** that will be triggered at certain events start with `on...`, `before...`, or `after...`.
+`afterInsertion()` is the only event currently supported.
+
+**Any other methods not following the above patterns, should return the current element for fluent chaining.**
 
 ## Installation & configuration
 > composer require fewagency/fluent-html
