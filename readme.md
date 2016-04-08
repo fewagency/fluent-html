@@ -309,21 +309,14 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 ```
 
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion of a [`FluentHtmlElement`] implementation
-always returns the full HTML structure from the top element down:
+Echoing the result in a template is easy because the string conversion as well as `toHtml()`of a [`FluentHtmlElement`] implementation
+always returns the full HTML structure from the top element down.
 
-```
-{!! FluentHtml::create('div')->containingElement('p')->withContent('Text') !!}
-```
-
-Because [`FluentHtml`](src/FluentHtml.php) implements
-[`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php),
-using escaping Blade echo-tags will also work...
-*However*, `toHtml()` only returns the rendered element and its contents, 
-so this example will only display the last element on the chain, the outer element will be omitted:
+Both the escaping and the non-escaping Blade echo statements will render the full html tree: 
 
 ```
 {{ FluentHtml::create('div')->containingElement('p')->withContent('Text' }}
+{!! FluentHtml::create('div')->containingElement('p')->withContent('Text') !!}
 ```
 
 Blade sections are available to yield as content using Blade's `$__env` variable:

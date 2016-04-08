@@ -902,7 +902,7 @@ abstract class FluentHtmlElement implements Htmlable
      *
      * @return string containing rendered html of this element and all its descendants
      */
-    public function toHtml()
+    public function branchToHtml()
     {
         try {
             if (!$this->willRenderInHtml()) {
@@ -939,9 +939,19 @@ abstract class FluentHtmlElement implements Htmlable
      *
      * @return string containing the full rendered html of the entire tree this element belongs to.
      */
+    public function toHtml()
+    {
+        return $this->getRootElement()->branchToHtml();
+    }
+
+    /**
+     * Get the full rendered html tree.
+     *
+     * @return string
+     */
     public function __toString()
     {
-        return $this->getRootElement()->toHtml();
+        return $this->toHtml();
     }
 
     /*

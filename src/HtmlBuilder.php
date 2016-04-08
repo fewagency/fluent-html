@@ -95,7 +95,9 @@ class HtmlBuilder
     {
         return self::flatten(self::evaluate($contents))->transform(function ($item, $key) use ($escape_contents) {
             if (is_object($item)) {
-                if ($item instanceof Htmlable) {
+                if ($item instanceof FluentHtmlElement) {
+                    return $item->branchToHtml();
+                } elseif ($item instanceof Htmlable) {
                     return $item->toHtml();
                 } elseif (method_exists($item, '__toString')) {
                     $item = strval($item);
@@ -285,6 +287,7 @@ class HtmlBuilder
         }
         if (self::isArrayble($value)) {
             $collection = $value instanceof Collection ? $value->make($value) : new Collection($value);
+
             return $collection->transform(function ($value) {
                 return self::evaluate($value);
             });
