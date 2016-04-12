@@ -17,7 +17,7 @@ extending [`FluentHtmlElement`](src/FluentHtmlElement.php).
         * [Conditional output](#conditional-output)
     - [Closures as input](#closures-as-method-input)
     - [Multiple attribute values](#multiple-attribute-values)
-    - [Blade templates](#usage-with-blade-templates)
+    - [In Blade templates](#usage-with-blade-templates)
 * [Methods reference](#methods-reference)
 * [Development](#development)
 * [Alternatives](#alternatives)
@@ -309,13 +309,14 @@ echo FluentHtml::create('meta')->withAttribute('name', 'keywords')
 ```
 
 ### Usage with [Blade](http://laravel.com/docs/blade) templates
-Echoing the result in a template is easy because the string conversion as well as `toHtml()`of a [`FluentHtmlElement`] implementation
-always returns the full HTML structure from the top element down.
+Echoing the result in a template is easy because the string conversion as well as `toHtml()`of a
+[`FluentHtmlElement`](src/FluentHtmlElement.php) implementation always returns the full HTML structure
+from the top element down.
 
 Both the escaping and the non-escaping Blade echo statements will render the full html tree: 
 
 ```
-{{ FluentHtml::create('div')->containingElement('p')->withContent('Text' }}
+{{ FluentHtml::create('div')->containingElement('p')->withContent('Text') }}
 {!! FluentHtml::create('div')->containingElement('p')->withContent('Text') !!}
 ```
 
@@ -323,6 +324,19 @@ Blade sections are available to yield as content using Blade's `$__env` variable
 
 ```
 {{ FluentHtml::create('div')->withRawContent($__env->yieldContent('section_name','Default content')) }}
+```
+
+Within Blade echo statements newlines as well as php comments are accepted, making it easy to enhance readability:
+
+```
+{{
+FluentHtml::create('div') // A div
+  // Add a paragraph
+  ->containingElement('p')
+  
+  // Paragraph contents
+  ->withContent('Text')
+}}
 ```
 
 ## Methods reference
@@ -417,8 +431,8 @@ These methods put html content inside the current element.
 Add html content after existing content in the current element.
 Accepts multiple arguments that can be:
 * strings (will be escaped)
-* objects implementing [`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php),
-e.g. another instance of `FluentHtmlElement`
+* objects implementing [`Htmlable`](https://github.com/illuminate/contracts/blob/master/Support/Htmlable.php)
+* another instance of `FluentHtmlElement`
 * arrayables containing any types from this list (including other arrayables) 
 * callables returning any types from this list (including other callables) 
 
