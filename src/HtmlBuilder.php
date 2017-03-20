@@ -165,7 +165,7 @@ class HtmlBuilder
         $flat_attributes = [];
         foreach ($attributes as $attribute_name => $attribute_value) {
             if (is_int($attribute_name)) {
-                if (self::isArrayble($attribute_value)) {
+                if (self::isArrayable($attribute_value)) {
                     $flat_attributes = array_merge($flat_attributes, self::flattenAttributes($attribute_value));
                 } else {
                     $flat_attributes[$attribute_value] = true;
@@ -188,7 +188,7 @@ class HtmlBuilder
      */
     public static function flattenAttributeValue($attribute_name, $attribute_value)
     {
-        if (self::isArrayble($attribute_value)) {
+        if (self::isArrayable($attribute_value)) {
             //This attribute is a list of several values, check each value and build a string from them
             $attribute_value = self::flatten($attribute_value);
             $values = [];
@@ -258,7 +258,7 @@ class HtmlBuilder
      * @param $value
      * @return bool
      */
-    public static function isArrayble($value)
+    public static function isArrayable($value)
     {
         return is_array($value) or $value instanceof Arrayable;
     }
@@ -285,7 +285,7 @@ class HtmlBuilder
         if (self::useAsCallable($value)) {
             return self::evaluate(call_user_func($value));
         }
-        if (self::isArrayble($value)) {
+        if (self::isArrayable($value)) {
             $collection = $value instanceof Collection ? $value->make($value) : new Collection($value);
 
             return $collection->transform(function ($value) {
