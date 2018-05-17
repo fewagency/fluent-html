@@ -76,7 +76,7 @@ abstract class FluentHtmlElement implements Htmlable
     public function __construct()
     {
         $this->clearAttributes();
-        $this->clearContents();
+        $this->withoutContent();
         $this->render_in_html = new Collection();
         $this->after_insertion_callbacks = new Collection();
     }
@@ -316,7 +316,7 @@ abstract class FluentHtmlElement implements Htmlable
      *
      * @return $this|FluentHtmlElement can be method-chained to modify the current element
      */
-    protected function clearContents()
+    public function withoutContent()
     {
         $this->html_contents = new Collection();
 
@@ -588,7 +588,7 @@ abstract class FluentHtmlElement implements Htmlable
         });
         $wrapper = static::createFluentHtmlElement($html_element_name, $siblings, $tag_attributes);
 
-        $parent->clearContents()->withContent($wrapper);
+        $parent->withoutContent()->withContent($wrapper);
 
         return $wrapper;
     }

@@ -280,6 +280,15 @@ class FluentHtmlTest extends PHPUnit_Framework_TestCase
         $this->assertHtmlEquals('<p>a</p>', $e);
     }
 
+    public function testWithoutContent()
+    {
+        $e = new FluentHtml('p');
+        $e->withContent('a');
+        $e->withoutContent();
+
+        $this->assertHtmlEquals('', $e);
+    }
+
     public function testWithAppendedContent()
     {
         $e = new FluentHtml('p');
